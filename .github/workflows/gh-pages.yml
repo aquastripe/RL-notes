@@ -26,9 +26,9 @@ jobs:
         with:
           node-version: '14'
         run: |
-        cd themes/geekdoc
-        npm install
-        npx gulp default
+          cd themes/geekdoc
+          npm install
+          npx gulp default
 
       - name: Build Hugo
         run: hugo --minify
