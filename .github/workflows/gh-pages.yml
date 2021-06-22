@@ -21,7 +21,16 @@ jobs:
           hugo-version: 'latest'
           # extended: true
 
-      - name: Build
+      - name: Build Geekdocs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+        run: |
+        cd themes/geekdoc
+        npm install
+        npx gulp default
+
+      - name: Build Hugo
         run: hugo --minify
 
       - name: Deploy
