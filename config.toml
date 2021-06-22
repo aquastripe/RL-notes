@@ -1,5 +1,5 @@
 baseURL = "https://aquastripe.github.io/RL-notes/"
-languageCode = "zh-TW"
+defaultContentLanguage = "zh-Hant-TW"
 title = "Reinforcement Learning Notes"
 theme = "geekdoc"
 hasCJKLanguage = true
@@ -19,3 +19,9 @@ disablePathToLower = true
   [markup.tableOfContents]
     startLevel = 1
     endLevel = 9
+
+[languages.zh-Hant-TW]
+  languageCode = "zh-tw"
+  languageName = "繁體中文"
+
+googleAnalyticsID = "G-TKV34FTVEE"
