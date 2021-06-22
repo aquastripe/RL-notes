@@ -9,3 +9,5 @@ math: true
 
 - Reinforcement Learning: An Introduction (Richard S. Sutton and Andrew G. Barto)
   - http://incompleteideas.net/book/the-book.html
+- OpenAI
+  - https://openai.com/
