@@ -1,4 +1,4 @@
-baseURL = "http://localhost"
+baseURL = "https://aquastripe.github.io/RL-notes/"
 languageCode = "zh-TW"
 title = "Reinforcement Learning Notes"
 theme = "geekdoc"
