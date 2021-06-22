@@ -1,2 +1,3 @@
 # RL-notes
-Reinforcement Learning: An Introduction 學習筆記
+
+Reinforcement Learning 學習筆記
