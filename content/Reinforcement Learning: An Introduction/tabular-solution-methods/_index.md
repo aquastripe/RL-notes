@@ -1,7 +1,7 @@
 ---
 title: "Tabular Solution Methods"
 date: 2021-07-04T11:22:06+08:00
-draft: true
+draft: false
 math: true
 resources:
     - name:

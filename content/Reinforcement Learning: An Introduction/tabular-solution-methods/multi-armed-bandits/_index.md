@@ -1,7 +1,7 @@
 ---
-title: "Multi Armed Bandits"
+title: "Multi-Armed Bandits"
 date: 2021-07-04T11:17:55+08:00
-draft: true
+draft: false
 math: true
 resources:
   - name: 2.1
