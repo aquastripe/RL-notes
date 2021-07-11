@@ -117,7 +117,7 @@ Q_{n+1} &=Q_{n}+\alpha\left[R_{n}-Q_{n}\right] \newline
 - 當 $(1 - \alpha) < 0$:  稱為 exponential recency-weighted average
 - 當 $(1 - \alpha) = 0$: 所有權重都會給最近的獎勵值。
 
-## 可變長度的步長 (step-size)
+### 可變長度的步長 (step-size)
 
 設 在第 $n$ 個選擇了動作 $a$ 之後的步長 (step-size) 為 $\alpha_n (a)$
 
