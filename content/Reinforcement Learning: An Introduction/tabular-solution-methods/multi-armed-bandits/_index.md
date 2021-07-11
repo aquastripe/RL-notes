@@ -56,7 +56,7 @@ $\varepsilon$-greedy 比 greedy 還要看情況決定
 
 - 如果獎勵的變異數是 10 而非 1，那麼要花費更多的探索才會找到最佳解。
 - 如果獎勵的變異數是 0，那麼 greedy 可能會找到最佳解而不需要再探索。
-- 如果吃角子老虎機是確定性 (deterministic) 但不穩定的 (nonstationarity)，例如：會隨著時間改變，那麼 $\varepsilon$-greedy 還是比較好。
+- 如果吃角子老虎機是確定性 (deterministic) 但不固定的 (nonstationarity)，例如：會隨著時間改變，那麼 $\varepsilon$-greedy 還是比較好。
 
 
 ## Incremental Implementation
