@@ -1,5 +1,5 @@
 ---
-title: "Tabular Solution Methods"
+title: "Part I: Tabular Solution Methods"
 date: 2021-07-04T11:22:06+08:00
 draft: false
 math: true

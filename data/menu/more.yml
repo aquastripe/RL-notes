@@ -1,0 +1,6 @@
+---
+more:
+  - name: "View Source"
+    ref: "https://github.com/aquastripe/RL-notes"
+    external: true
+    icon: "gdoc_github"

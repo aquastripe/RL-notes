@@ -1,0 +1,13 @@
+---
+main:
+  - name: "Reinforcement Learning: An Introduction"
+    sub:
+    - name: "Ch 1. Introduction"
+      ref: "/Reinforcement Learning: An Introduction/introduction"
+    - name: "Part I: Tabular Solution Methods"
+      ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods"
+      sub:
+        - name: Ch 2. Multi-Armed Bandits
+          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/multi-armed-bandits/"
+        - name: Ch 3. Finite Markov Decision Processes
+          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/finite-markov-decision-processes/"

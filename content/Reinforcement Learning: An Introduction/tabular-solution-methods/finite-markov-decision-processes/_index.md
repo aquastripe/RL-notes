@@ -1,5 +1,5 @@
 ---
-title: "Finite Markov Decision Processes"
+title: "Ch 3. Finite Markov Decision Processes"
 date: 2021-07-25T19:46:40+08:00
 draft: false
 math: true
