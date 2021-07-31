@@ -11,3 +11,5 @@ main:
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/multi-armed-bandits/"
         - name: Ch 3. Finite Markov Decision Processes
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/finite-markov-decision-processes/"
+        - name: Ch 4. Dynamic Programming
+          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/dynamic-programming/"
