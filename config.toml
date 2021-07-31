@@ -1,5 +1,5 @@
 baseURL = "https://aquastripe.github.io/RL-notes/"
-languageCode = "zh-TW"
+DefaultContentLanguage = "zh"
 title = "Reinforcement Learning Notes"
 theme = "geekdoc"
 hasCJKLanguage = true
