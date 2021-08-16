@@ -14,4 +14,4 @@ main:
         - name: Ch 4. Dynamic Programming
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/dynamic-programming/"
         - name: Ch 5. Monte Carlo Methods
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/monte-carlo-methods"
+          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/monte-carlo-methods/"
