@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Monte Carlo Control Monte Carlo Control without Exploring Starts Off-policy Prediction via Importance Sampling Incremental Implementation Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比之下，Monte Carlo 不假設擁有環境的完整知識。 Monte Carlo">
+<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Monte Carlo Control Example 5.3: Solving Blackjack Monte Carlo Control without Exploring Starts Off-policy Prediction via Importance Sampling Incremental Implementation Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比之下，Monte Carlo 不假設擁有環境的完整知">
 <title>Ch 5. Monte Carlo Methods | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
@@ -133,7 +133,11 @@ hidden-mobile" itemprop=breadcrumb>
 </ul>
 </li>
 <li><a href=#monte-carlo-estimation-of-action-values>Monte Carlo Estimation of Action Values</a></li>
-<li><a href=#monte-carlo-control>Monte Carlo Control</a></li>
+<li><a href=#monte-carlo-control>Monte Carlo Control</a>
+<ul>
+<li><a href=#example-53-solving-blackjack>Example 5.3: Solving Blackjack</a></li>
+</ul>
+</li>
 <li><a href=#monte-carlo-control-without-exploring-starts>Monte Carlo Control without Exploring Starts</a></li>
 <li><a href=#off-policy-prediction-via-importance-sampling>Off-policy Prediction via Importance Sampling</a></li>
 <li><a href=#incremental-implementation>Incremental Implementation</a></li>
@@ -187,21 +191,22 @@ Monte Carlo Prediction
 </li>
 <li>Every-visit MC method 以 quadratically (二次函數的) 速率收斂</li>
 </ul>
-<p><img src=alg-1.png alt></p>
+<p><img src=first-visit-mc-prediction.png alt></p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-51-blackjack>
 Example 5.1: Blackjack
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-51-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.1: Blackjack" href=#example-51-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p><img src=ex-5.1.png alt></p>
+</div><p><img src=5.1.png alt></p>
 <p>規則：</p>
 <ul>
 <li>無限牌組（抽完放回）</li>
 <li>莊家加牌，直到 17 點</li>
 <li>no discount</li>
 <li>usable: 玩家拿到 ace 並且可以計數為 11 點，此時應該跟牌 (hit)</li>
-<li>結果：
+<li>假設玩家的 policy 是：拿到 20 或 21 點停止，其餘加注</li>
+<li>結果以下列數值表示：
 <ul>
 <li>+1: 贏</li>
 <li>-1: 輸</li>
@@ -230,7 +235,56 @@ Monte Carlo Control
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control" href=#monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><div class=gdoc-page__anchorwrap>
+</div><p>這一章討論如何把 Monte Carlo estimation 用來近似最佳策略 (optimal policies)。<br>
+整個想法是基於 GPI：以一個迭代的過程，固定 policy 近似 value function，固定 value function 近似 policy。</p>
+<p>假設：</p>
+<ul>
+<li>我們觀察了無限次數 episodes</li>
+<li>這些 episodes 使用 exploring starts 產生</li>
+</ul>
+<p>Policy improvement 會以 policy greedy 並根據目前的 value function 來完成。這種情況下，我們有一個 action-value function，因此不需要 model 來建構 policy greedy。Policy greedy 以決定性的方式選擇最大的 action-value：</p>
+<p>$$
+\pi(s) \doteq \arg \max _{a} q(s, a)
+$$</p>
+<p>根據 policy improvement 定理，對所有 $s \in \mathcal{S}$:</p>
+<p>$$
+\begin{aligned}
+q_{\pi_{k}}\left(s, \pi_{k+1}(s)\right) &=q_{\pi_{k}}\left(s, \underset{a}{\arg \max } q_{\pi_{k}}(s, a)\right) \newline
+&=\max _{a} q_{\pi_{k}}(s, a) \newline
+& \geq q_{\pi_{k}}\left(s, \pi_{k}(s)\right) \newline
+& \geq v_{\pi_{k}}(s)
+\end{aligned}
+$$</p>
+<p>每一輪的 policy 都會比上一輪的更好。</p>
+<p>接下來討論如何消除第一個假設：觀察 <em>無限次數</em> episodes。對 DP 和 MC 兩者來說，都有兩種方式來消除。<br>
+一種方式是給定誤差範圍的大小來計算估計誤差的機率，可以確保在一定數量的步數內會收斂在這個誤差範圍內。不過，有可能需要太多的步數，導致只能套用在極少數的實務應用上。<br>
+另一種方式，是放棄完整的 policy evaluation。一種極端的情形是 value iteration，在每兩個 policy improvement 之間它只會進行一次迭代 iterative policy evaluation。而 in-place 版本的 value iteration 更為極端，它會在 improvement 和 evaluation 迭代一個狀態。</p>
+<p>Monte Carlo ES: 對於每個 episode，觀察到的 returns 會拿去算 policy evaluation，然後以該 episode 觀察到所有的 states 進行 policy improvement。完整演算法如下：</p>
+<p><img src=monte-carlo-es.png alt></p>
+<p>（可以用 2.4 的方式進行增量計算）</p>
+<ul>
+<li>Monte Carlo ES 不會收斂到任何 suboptimal policy。
+<ul>
+<li>如果發生了，value function 就會到該 policy，導致 policy 改變。</li>
+</ul>
+</li>
+<li>只會在 policy 和 value function 都是 optimal 的時候進入穩定。</li>
+<li>收歛性：雖然看起來無可避免的，隨著時間過去 action-value function 改變量會越來越少，不過還沒有形式化的證明。
+<ul>
+<li>以作者的觀點認為這是一個開放的 RL 基礎理論問題。</li>
+</ul>
+</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h3 id=example-53-solving-blackjack>
+Example 5.3: Solving Blackjack
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-53-solving-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.3: Solving Blackjack" href=#example-53-solving-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>接續 Example 5.1，使用 &ldquo;20, 21 就停止，其他則跟注&rdquo; 作為初始的 policy，再以 Monte Carlo ES 找到 optimal policy，結果如下圖：</p>
+<p><img src=5.2.png alt></p>
+<p>結果跟 Thorp&rsquo;s strategy 幾乎一致，除了 usable ace 左邊的缺口有所不同。</p>
+<div class=gdoc-page__anchorwrap>
 <h2 id=monte-carlo-control-without-exploring-starts>
 Monte Carlo Control without Exploring Starts
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control-without-exploring-starts class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control without Exploring Starts" href=#monte-carlo-control-without-exploring-starts><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
