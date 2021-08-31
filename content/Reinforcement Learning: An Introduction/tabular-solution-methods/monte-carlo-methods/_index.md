@@ -64,9 +64,13 @@ Monte Carlo 採樣並平均 (sample and average) 每個 state-action pair 的 **
 - Every-visit MC method: 平均所有遇到的 state-action 的 returns
 
 有些 state-action pairs 可能不會遇到。如果 $\pi$ 是確定性的：從每個 state 只會觀察到一個 action，對於沒有 returns 可以平均的 actions， MC 無法從經驗獲得改善。\
-為了可以比較，必須估計所有 action 的 value。方法是：在每個 episode 開始時指定一個 state-action pair，強迫所有 pair 都有機會被選擇到。這個方法稱為 ****exploring starts****。
+這個問題稱為 **maintaining exploration**。
 
-這個方法有時候很有用，除了「和環境模型直接互動」外。這種情況下，最常見的替代方案是只考慮「在每個 state 以非 0 的機率來選擇所有動作」的 policies 來確保所有 state-action pairs 都會遇到。
+### Exploring starts
+
+為了可以比較，必須估計所有 action 的 value。**Exploring starts** 假設：在每個 episode 開始時會指定一個 state-action pair，並強迫所有 pair 都有機會被選擇到。
+
+這個假設有時候有用，除了「和環境模型直接互動」這種情形。這種情況下，最常見的替代方案是只考慮「在每個 state 以非 0 的機率 *隨機性的* 來選擇所有動作」的 policies，來確保所有 state-action pairs 都會遇到。
 
 以下先討論 exploring starts 的假設情況。
 
@@ -123,6 +127,38 @@ Monte Carlo ES: 對於每個 episode，觀察到的 returns 會拿去算 policy 
 結果跟 Thorp's strategy 幾乎一致，除了 usable ace 左邊的缺口有所不同。
 
 ## Monte Carlo Control without Exploring Starts
+
+Exploring starts 是一種不太可能發生的情形，因此以下討論如何避免這項假設。\
+避免這項假設，需要確保所有動作都會無限次的被選擇
+有兩種方式達到：
+- on-policy: 嘗試評估 (evaluate) 或改善 (improve) 被選擇的用來決策的 policy
+  - Monte Carlo ES method
+- off-policy: 嘗試評估 (evaluate) 或改善 (improve) 被選擇的用來產生資料的 policy
+
+### On-policy control methods
+
+這類的方法，policy 一般來說都是 *soft*: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$--greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。
+
+$\varepsilon$--soft: $\pi(a | s) \ge \frac{\varepsilon}{| \mathcal{A}(s) |}$ 對所有 states, action, 還有某個 $\varepsilon > 0$。\
+$\varepsilon$--greedy 是一種 $\varepsilon$--soft。
+
+On-policy Monte Carlo control 整體的想法還是基於 GPI。少了 exploring starts 的假設，不能直接根據目前的 value function 並使用 greedy 取樣來改善 policy，因為這樣會阻止探索 non-greedy actions。
+
+對任意 $\varepsilon$--soft policy $\pi$，任何根據 $q_{\pi}$ 的 $\varepsilon$--greedy policy 都保證比 $\pi$ 更好，或是一樣好。演算法如下：
+
+![](on-policy-first-visit-mc-control.png)
+
+$$
+\begin{aligned}
+q_{\pi}\left(s, \pi^{\prime}(s)\right) &=\sum_{a} \pi^{\prime}(a \mid s) q_{\pi}(s, a) \newline
+&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \max _{a} q_{\pi}(s, a) \newline
+& \geq \frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \sum_{a} \frac{\pi(a \mid s)-\frac{\varepsilon}{|\mathcal{A}(s)|}}{1-\varepsilon} q_{\pi}(s, a) \newline
+&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)-\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+\sum_{a} \pi(a \mid s) q_{\pi}(s, a) \newline
+&=v_{\pi}(s)
+\end{aligned}
+$$
+
+因此，根據 policy improvement 定理，$v_{\pi^\prime}(s) \ge v_{\pi}(s), \forall s \in \mathcal{S}$。
 
 ## Off-policy Prediction via Importance Sampling
 
