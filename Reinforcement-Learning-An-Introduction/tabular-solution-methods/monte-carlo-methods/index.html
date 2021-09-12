@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Exploring starts Monte Carlo Control Example 5.3: Solving Blackjack Monte Carlo Control without Exploring Starts On-policy control methods Off-policy Prediction via Importance Sampling Incremental Implementation Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比之下，Monte Carlo 不假設擁有環">
+<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Exploring starts Monte Carlo Control Example 5.3: Solving Blackjack Monte Carlo Control without Exploring Starts On-policy control methods Off-policy Prediction via Importance Sampling Example 5.4: Off-policy Estimation of a Blackjack State Value Incremental Implementation Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比之下，Mon">
 <title>Ch 5. Monte Carlo Methods | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
@@ -150,7 +150,11 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#on-policy-control-methods>On-policy control methods</a></li>
 </ul>
 </li>
-<li><a href=#off-policy-prediction-via-importance-sampling>Off-policy Prediction via Importance Sampling</a></li>
+<li><a href=#off-policy-prediction-via-importance-sampling>Off-policy Prediction via Importance Sampling</a>
+<ul>
+<li><a href=#example-54-off-policy-estimation-of-a-blackjack-state-value>Example 5.4: Off-policy Estimation of a Blackjack State Value</a></li>
+</ul>
+</li>
 <li><a href=#incremental-implementation>Incremental Implementation</a></li>
 <li><a href=#off-policy-monte-carlo-control>Off-policy Monte Carlo Control</a></li>
 <li><a href=#discounting-aware-importance-sampling>*Discounting-aware Importance Sampling</a></li>
@@ -325,7 +329,7 @@ On-policy control methods
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#on-policy-control-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor On-policy control methods" href=#on-policy-control-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p>這類的方法，policy 一般來說都是 <em>soft</em>: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$&ndash;greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。</p>
+</div><p>這類的方法，policy 一般來說都是 <em>soft</em>: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 optimal policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$&ndash;greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。</p>
 <p>$\varepsilon$&ndash;soft: $\pi(a | s) \ge \frac{\varepsilon}{| \mathcal{A}(s) |}$ 對所有 states, action, 還有某個 $\varepsilon > 0$。<br>
 $\varepsilon$&ndash;greedy 是一種 $\varepsilon$&ndash;soft。</p>
 <p>On-policy Monte Carlo control 整體的想法還是基於 GPI。少了 exploring starts 的假設，不能直接根據目前的 value function 並使用 greedy 取樣來改善 policy，因為這樣會阻止探索 non-greedy actions。</p>
@@ -347,7 +351,120 @@ Off-policy Prediction via Importance Sampling
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#off-policy-prediction-via-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Prediction via Importance Sampling" href=#off-policy-prediction-via-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><div class=gdoc-page__anchorwrap>
+</div><p>所有的學習控制 (learning control) 方法都面臨兩難：</p>
+<ul>
+<li>學習最佳的動作</li>
+<li>探索所有的動作</li>
+</ul>
+<p>如何做到這件事？</p>
+<ul>
+<li>On-policy: 不為最佳動作學習，而是學習靠近最佳動作</li>
+<li>Off-policy: learning from data off the target policy<br>
+採用兩個 policies:
+<ul>
+<li>目標策略 (target policy): 用來學習最佳策略</li>
+<li>行為策略 (behavior policy): 用來產生行為進行探索</li>
+</ul>
+</li>
+</ul>
+<p>兩者的差異：</p>
+<ul>
+<li>On-policy:
+<ul>
+<li>較簡單</li>
+</ul>
+</li>
+<li>Off-policy:
+<ul>
+<li>較複雜</li>
+<li>較大的變異性，收斂更慢</li>
+<li>更強大且更通用</li>
+<li>更多額外的應用方式
+<ul>
+<li>可以學習由 專家或是傳統非學習的控制器 (controller) 所產生的資料</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>從兩種 policy 來估計 $v_\pi$ 或 $q_\pi$：</p>
+<ul>
+<li>目標策略: $\pi$</li>
+<li>行為策略: $b$</li>
+</ul>
+<p>為了使用 $b$ 的資料來估計 $\pi$ 的價值，需要覆蓋性假設 (the assumption of coverage): 每個以 $\pi$ 策略所採取的動作也同時要考慮以 $b$ 策略來採取。亦即：$\pi (a|s) \gt \text{ implies } b(a|s) \gt 0$。</p>
+<ul>
+<li>因此，$b$ 必須是隨機性的，並且與 $\pi$ 不同。</li>
+<li>$\pi$ 可能是確定性的</li>
+</ul>
+<p>幾乎所有 off-policy 方法都會利用 importance sampling: 一種通用的技術，在某個分佈下透過給定另一個分佈來估計期望值。<a class=gdoc-markdown__link href=https://en.wikipedia.org/wiki/Importance_sampling>(Importance sampling Wiki)</a></p>
+<blockquote class="gdoc-hint info">
+<p><strong>Importance sampling</strong></p>
+<p>有時我們可能想從一個隨機分佈上面進行採樣，其中想要採樣的範圍發生的機率很低。使用 MC 採樣時，因為發生的機率很低，會導致產生的樣本數極少而失效。在這個「重要的區域」給予更多的權重，稱為「重要性採樣」。一個基本的重要性採樣方法是：想要計算某個分佈 $p$ 時，透過採用另一個分佈 $q$ 來完成。例如：</p>
+<p>$$
+\mu=\int_{\mathcal{D}} f(\boldsymbol{x}) p(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\int_{\mathcal{D}} \frac{f(\boldsymbol{x}) p(\boldsymbol{x})}{q(\boldsymbol{x})} q(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\mathbb{E}_{q}\left(\frac{f(\boldsymbol{X}) p(\boldsymbol{X})}{q(\boldsymbol{X})}\right)
+$$</p>
+<p>Ref: <a class=gdoc-markdown__link href=https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf>https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf</a></p>
+</blockquote>
+<p>給定一個起始狀態 $S_t$，state-action trajectory $A_t, S_{t+1}, A_{t+1}, \ldots, S_T$ 在任意策略 $\pi$ 之下發生的機率為:</p>
+<p>$$
+\begin{array}{l}
+\operatorname{Pr} \lbrace A_{t}, S_{t+1}, A_{t+1}, \ldots, S_{T} \mid S_{t}, A_{t: T-1} \sim \pi \rbrace \newline
+\quad=\pi\left(A_{t} \mid S_{t}\right) p\left(S_{t+1} \mid S_{t}, A_{t}\right) \pi\left(A_{t+1} \mid S_{t+1}\right) \cdots p\left(S_{T} \mid S_{T-1}, A_{T-1}\right) \newline
+\quad=\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)
+\end{array}
+$$</p>
+<p>其中，$p$ 是狀態轉移機率函數，在 3.4 中定義。因此，在目標策略和行為策略之下的 trajectory 的相對機率 (importance sampling ratio) 為:</p>
+<p>$$
+\begin{aligned}
+\rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
+&=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\end{aligned}
+$$</p>
+<p>雖然兩個 trajectory probabilities 依賴於 MDP 的狀態轉移機率，但它們在分子和分母都有出現且值一樣，所以兩個會消掉。最後，importance sampling ratio 只和兩個 policies 和序列有關，和 MDP 無關。</p>
+<p>我們使用行為策略採樣到的 returns 會估計出 <strong>行為策略</strong> 的 value function:</p>
+<p>$$
+\mathbb{E}\left[ G_{t} \mid S_{t}=s \right]=v_{b}(s)
+$$</p>
+<p>但是，透過上面的 importance sampling ratio 可以得到 <strong>目標策略</strong> 的 value function:</p>
+<p>$$
+\mathbb{E}\left[\rho_{t: T-1} G_{t} \mid S_{t}=s\right]=v_{\pi}(s)
+$$</p>
+<p>Notation:</p>
+<ul>
+<li>$\mathcal{T}(s)$: 當 state $s$ 被探訪的情況下，所有 time steps 的集合</li>
+<li>$T(t)$: 在時間點 $t$ 之後第一次停止的時間</li>
+<li>$G_t$: 從 $t$ 到 $T(t)$ 之間的 returns</li>
+<li>$\lbrace G_{t} \rbrace_{t \in \mathcal{T}(s)}$: 屬於 state $s$ 的 returns</li>
+<li>$\lbrace \rho_{t: T(t)-1}\rbrace _{t \in \mathcal{T}(s)}$: 上面對應的重要性採樣比率 (importance-sampling ratios)</li>
+</ul>
+<p>為了估計 $v_\pi(s)$，我們簡單的藉由 ratios 並計算平均來放大 returns:</p>
+<p>$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+$$</p>
+<p>如果重要性採樣是透過單純的計算平均來完成，稱為 <strong>ordinary importance sampling</strong>。<br>
+另一種方式，是計算加權平均，稱為 <strong>weighted importance sampling</strong>:</p>
+<p>$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1}}
+$$</p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=example-54-off-policy-estimation-of-a-blackjack-state-value>
+Example 5.4: Off-policy Estimation of a Blackjack State Value
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-54-off-policy-estimation-of-a-blackjack-state-value class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.4: Off-policy Estimation of a Blackjack State Value" href=#example-54-off-policy-estimation-of-a-blackjack-state-value><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>以行為策略來估計目標策略的 value。</p>
+<p>設定以下條件：</p>
+<ul>
+<li>莊家有 deuce</li>
+<li>玩家牌總和為 13</li>
+<li>玩家有 usable ace</li>
+<li>行為策略: 以各半的機率決定要不要加牌</li>
+<li>目標策略: 加牌加到總和為 20 或 21</li>
+</ul>
+<p>估計誤差如下：
+<img src=5.3.png alt></p>
+<div class=gdoc-page__anchorwrap>
 <h2 id=incremental-implementation>
 Incremental Implementation
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#incremental-implementation class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Incremental Implementation" href=#incremental-implementation><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
