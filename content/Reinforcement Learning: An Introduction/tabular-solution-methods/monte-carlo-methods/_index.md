@@ -137,7 +137,7 @@ Exploring starts 是一種不太可能發生的情形，因此以下討論如何
 
 ### On-policy control methods
 
-這類的方法，policy 一般來說都是 *soft*: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$--greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。
+這類的方法，policy 一般來說都是 *soft*: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 optimal policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$--greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。
 
 $\varepsilon$--soft: $\pi(a | s) \ge \frac{\varepsilon}{| \mathcal{A}(s) |}$ 對所有 states, action, 還有某個 $\varepsilon > 0$。\
 $\varepsilon$--greedy 是一種 $\varepsilon$--soft。
@@ -161,6 +161,118 @@ $$
 因此，根據 policy improvement 定理，$v_{\pi^\prime}(s) \ge v_{\pi}(s), \forall s \in \mathcal{S}$。
 
 ## Off-policy Prediction via Importance Sampling
+
+所有的學習控制 (learning control) 方法都面臨兩難：
+- 學習最佳的動作
+- 探索所有的動作
+
+如何做到這件事？
+- On-policy: 不為最佳動作學習，而是學習靠近最佳動作
+- Off-policy: learning from data off the target policy\
+  採用兩個 policies:
+  - 目標策略 (target policy): 用來學習最佳策略
+  - 行為策略 (behavior policy): 用來產生行為進行探索
+
+兩者的差異：
+- On-policy:
+  - 較簡單
+- Off-policy:
+  - 較複雜
+  - 較大的變異性，收斂更慢
+  - 更強大且更通用
+  - 更多額外的應用方式
+    - 可以學習由 專家或是傳統非學習的控制器 (controller) 所產生的資料
+
+從兩種 policy 來估計 $v_\pi$ 或 $q_\pi$：
+- 目標策略: $\pi$
+- 行為策略: $b$
+
+為了使用 $b$ 的資料來估計 $\pi$ 的價值，需要覆蓋性假設 (the assumption of coverage): 每個以 $\pi$ 策略所採取的動作也同時要考慮以 $b$ 策略來採取。亦即：$\pi (a|s) \gt \text{ implies } b(a|s) \gt 0$。
+- 因此，$b$ 必須是隨機性的，並且與 $\pi$ 不同。
+- $\pi$ 可能是確定性的
+
+幾乎所有 off-policy 方法都會利用 importance sampling: 一種通用的技術，在某個分佈下透過給定另一個分佈來估計期望值。[(Importance sampling Wiki)](https://en.wikipedia.org/wiki/Importance_sampling)
+
+{{< hint info >}}
+**Importance sampling**
+
+有時我們可能想從一個隨機分佈上面進行採樣，其中想要採樣的範圍發生的機率很低。使用 MC 採樣時，因為發生的機率很低，會導致產生的樣本數極少而失效。在這個「重要的區域」給予更多的權重，稱為「重要性採樣」。一個基本的重要性採樣方法是：想要計算某個分佈 $p$ 時，透過採用另一個分佈 $q$ 來完成。例如：
+
+$$
+\mu=\int_{\mathcal{D}} f(\boldsymbol{x}) p(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\int_{\mathcal{D}} \frac{f(\boldsymbol{x}) p(\boldsymbol{x})}{q(\boldsymbol{x})} q(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\mathbb{E}_{q}\left(\frac{f(\boldsymbol{X}) p(\boldsymbol{X})}{q(\boldsymbol{X})}\right)
+$$
+
+Ref: https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf
+
+{{< /hint >}}
+
+給定一個起始狀態 $S_t$，state-action trajectory $A_t, S_{t+1}, A_{t+1}, \ldots, S_T$ 在任意策略 $\pi$ 之下發生的機率為:
+
+$$
+\begin{array}{l}
+\operatorname{Pr} \lbrace A_{t}, S_{t+1}, A_{t+1}, \ldots, S_{T} \mid S_{t}, A_{t: T-1} \sim \pi \rbrace \newline
+\quad=\pi\left(A_{t} \mid S_{t}\right) p\left(S_{t+1} \mid S_{t}, A_{t}\right) \pi\left(A_{t+1} \mid S_{t+1}\right) \cdots p\left(S_{T} \mid S_{T-1}, A_{T-1}\right) \newline
+\quad=\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)
+\end{array}
+$$
+
+其中，$p$ 是狀態轉移機率函數，在 3.4 中定義。因此，在目標策略和行為策略之下的 trajectory 的相對機率 (importance sampling ratio) 為:
+
+$$
+\begin{aligned}
+  \rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
+  &=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\end{aligned}
+$$
+
+雖然兩個 trajectory probabilities 依賴於 MDP 的狀態轉移機率，但它們在分子和分母都有出現且值一樣，所以兩個會消掉。最後，importance sampling ratio 只和兩個 policies 和序列有關，和 MDP 無關。
+
+我們使用行為策略採樣到的 returns 會估計出 **行為策略** 的 value function:
+
+$$
+\mathbb{E}\left[ G_{t} \mid S_{t}=s \right]=v_{b}(s)
+$$
+
+但是，透過上面的 importance sampling ratio 可以得到 **目標策略** 的 value function:
+
+$$
+\mathbb{E}\left[\rho_{t: T-1} G_{t} \mid S_{t}=s\right]=v_{\pi}(s)
+$$
+
+Notation:
+- $\mathcal{T}(s)$: 當 state $s$ 被探訪的情況下，所有 time steps 的集合
+- $T(t)$: 在時間點 $t$ 之後第一次停止的時間
+- $G_t$: 從 $t$ 到 $T(t)$ 之間的 returns
+- $\lbrace G_{t} \rbrace_{t \in \mathcal{T}(s)}$: 屬於 state $s$ 的 returns
+- $\lbrace \rho_{t: T(t)-1}\rbrace _{t \in \mathcal{T}(s)}$: 上面對應的重要性採樣比率 (importance-sampling ratios)
+
+為了估計 $v_\pi(s)$，我們簡單的藉由 ratios 並計算平均來放大 returns:
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+$$
+
+如果重要性採樣是透過單純的計算平均來完成，稱為 **ordinary importance sampling**。\
+另一種方式，是計算加權平均，稱為 **weighted importance sampling**:
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1}}
+$$
+
+### Example 5.4: Off-policy Estimation of a Blackjack State Value
+
+以行為策略來估計目標策略的 value。
+
+設定以下條件：
+- 莊家有 deuce
+- 玩家牌總和為 13
+- 玩家有 usable ace
+- 行為策略: 以各半的機率決定要不要加牌
+- 目標策略: 加牌加到總和為 20 或 21
+
+估計誤差如下：
+![](5.3.png)
+
 
 ## Incremental Implementation
 
