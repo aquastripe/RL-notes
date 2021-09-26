@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Exploring starts Monte Carlo Control Example 5.3: Solving Blackjack Monte Carlo Control without Exploring Starts On-policy control methods Off-policy Prediction via Importance Sampling Example 5.4: Off-policy Estimation of a Blackjack State Value Incremental Implementation Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比之下，Mon">
+<meta name=description content="Monte Carlo Prediction Example 5.1: Blackjack Monte Carlo Estimation of Action Values Exploring starts Monte Carlo Control Example 5.3: Solving Blackjack Monte Carlo Control without Exploring Starts On-policy control methods Off-policy Prediction via Importance Sampling Example 5.4: Off-policy Estimation of a Blackjack State Value Incremental Implementation Ordinary importance sampling Weighted importance sampling Off-policy Monte Carlo Control *Discounting-aware Importance Sampling *Per-decision Importance Sampling 和前面的方法相比">
 <title>Ch 5. Monte Carlo Methods | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
@@ -155,7 +155,12 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#example-54-off-policy-estimation-of-a-blackjack-state-value>Example 5.4: Off-policy Estimation of a Blackjack State Value</a></li>
 </ul>
 </li>
-<li><a href=#incremental-implementation>Incremental Implementation</a></li>
+<li><a href=#incremental-implementation>Incremental Implementation</a>
+<ul>
+<li><a href=#ordinary-importance-sampling>Ordinary importance sampling</a></li>
+<li><a href=#weighted-importance-sampling>Weighted importance sampling</a></li>
+</ul>
+</li>
 <li><a href=#off-policy-monte-carlo-control>Off-policy Monte Carlo Control</a></li>
 <li><a href=#discounting-aware-importance-sampling>*Discounting-aware Importance Sampling</a></li>
 <li><a href=#per-decision-importance-sampling>*Per-decision Importance Sampling</a></li>
@@ -470,13 +475,60 @@ Incremental Implementation
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#incremental-implementation class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Incremental Implementation" href=#incremental-implementation><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><div class=gdoc-page__anchorwrap>
+</div><p>以下考慮如何以增量計算進行 MC prediction。</p>
+<p>在 Ch 2. 中對 rewards 進行增量計算，在 on-policy MC prediction 只需要改成 returns 即可。
+對於 off-policy，需要分開考慮 ordinary importance sampling 和 weighted importance sampling。</p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=ordinary-importance-sampling>
+Ordinary importance sampling
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#ordinary-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Ordinary importance sampling" href=#ordinary-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>Ordinary importance sampling 中，returns 以 importance sampling ratio $\rho_{t:T(t)-1}$ 進行放大，如下：</p>
+<p>$$
+\begin{aligned}
+\rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
+&=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\end{aligned}
+$$</p>
+<p>然後再平均：</p>
+<p>$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+$$</p>
+<p>可以直接套用 Ch 2. 的方法並且計算放大和平均來做增量計算。</p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=weighted-importance-sampling>
+Weighted importance sampling
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#weighted-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Weighted importance sampling" href=#weighted-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>假設我們有 returns 序列 $G_1, G_2, \ldots, G_{n-1}$，從相同的狀態開始，每個狀態對應一個隨機的權重 $W_i$。我們要估計的如下式：</p>
+<p>$$
+V_{n} \doteq \frac{\sum_{k=1}^{n-1} W_{k} G_{k}}{\sum_{k=1}^{n-1} W_{k}}, \quad n \geq 2
+$$</p>
+<p>更新規則如下：</p>
+<p>$$
+V_{n+1} \doteq V_{n}+\frac{W_{n}}{C_{n}}\left[G_{n}-V_{n}\right], \quad n \geq 1
+$$</p>
+<p>$C_n$ 為累積和，計算如下：</p>
+<p>$$
+C_{n+1} \doteq C_{n}+W_{n+1}
+$$</p>
+<p>其中，$C_0 \doteq 0$。</p>
+<p><img src=off-policy-mc-prediction.png alt></p>
+<div class=gdoc-page__anchorwrap>
 <h2 id=off-policy-monte-carlo-control>
 Off-policy Monte Carlo Control
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#off-policy-monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Monte Carlo Control" href=#off-policy-monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><div class=gdoc-page__anchorwrap>
+</div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_*$ 和 $q_*$。</p>
+<ul>
+<li>目標策略：根據 $Q$ 的 greedy policy，是一個 $q_\pi$ 的估計值。</li>
+<li>行為策略：可以是任意的，不過為了確保 $\pi$ 收斂到最佳策略，必須對每一組 state 和 action 取得無限多的 returns。</li>
+</ul>
+<p><img src=off-policy-mc-control.png alt></p>
+<div class=gdoc-page__anchorwrap>
 <h2 id=discounting-aware-importance-sampling>
 *Discounting-aware Importance Sampling
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#discounting-aware-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor *Discounting-aware Importance Sampling" href=#discounting-aware-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
