@@ -276,7 +276,63 @@ $$
 
 ## Incremental Implementation
 
+以下考慮如何以增量計算進行 MC prediction。
+
+在 Ch 2. 中對 rewards 進行增量計算，在 on-policy MC prediction 只需要改成 returns 即可。
+對於 off-policy，需要分開考慮 ordinary importance sampling 和 weighted importance sampling。
+
+### Ordinary importance sampling
+
+Ordinary importance sampling 中，returns 以 importance sampling ratio $\rho_{t:T(t)-1}$ 進行放大，如下：
+
+$$
+\begin{aligned}
+  \rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
+  &=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\end{aligned}
+$$
+
+然後再平均：
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+$$
+
+可以直接套用 Ch 2. 的方法並且計算放大和平均來做增量計算。
+
+### Weighted importance sampling
+
+假設我們有 returns 序列 $G_1, G_2, \ldots, G_{n-1}$，從相同的狀態開始，每個狀態對應一個隨機的權重 $W_i$。我們要估計的如下式：
+
+$$
+V_{n} \doteq \frac{\sum_{k=1}^{n-1} W_{k} G_{k}}{\sum_{k=1}^{n-1} W_{k}}, \quad n \geq 2
+$$
+
+更新規則如下：
+
+$$
+V_{n+1} \doteq V_{n}+\frac{W_{n}}{C_{n}}\left[G_{n}-V_{n}\right], \quad n \geq 1
+$$
+
+$C_n$ 為累積和，計算如下：
+
+$$
+C_{n+1} \doteq C_{n}+W_{n+1}
+$$
+
+其中，$C_0 \doteq 0$。
+
+![](off-policy-mc-prediction.png)
+
 ## Off-policy Monte Carlo Control
+
+以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_*$ 和 $q_*$。
+- 目標策略：根據 $Q$ 的 greedy policy，是一個 $q_\pi$ 的估計值。
+- 行為策略：可以是任意的，不過為了確保 $\pi$ 收斂到最佳策略，必須對每一組 state 和 action 取得無限多的 returns。
+
+
+
+![](off-policy-mc-control.png)
 
 ## *Discounting-aware Importance Sampling
 
