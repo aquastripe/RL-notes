@@ -329,11 +329,119 @@ $$
 以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_*$ 和 $q_*$。
 - 目標策略：根據 $Q$ 的 greedy policy，是一個 $q_\pi$ 的估計值。
 - 行為策略：可以是任意的，不過為了確保 $\pi$ 收斂到最佳策略，必須對每一組 state 和 action 取得無限多的 returns。
-
-
+  - 可以選擇將 $b$ 設定為 $\varepsilon$-soft 來達到這個條件。
 
 ![](off-policy-mc-control.png)
 
 ## *Discounting-aware Importance Sampling
 
+考慮一種情況：當 episodes 很長且 $\gamma \ll 1$，例如 100 steps 和 $\gamma = 0$。\
+時間點 $t = 0$ 的時候，return 會是 $G_0 = R_1$，但 importance sampling ratio 會是 100 個乘積：
+
+$$
+\frac{\pi\left(A_{0} \mid S_{0}\right)}{b\left(A_{0} \mid S_{0}\right)} \frac{\pi\left(A_{1} \mid S_{1}\right)}{b\left(A_{1} \mid S_{1}\right)} \cdots \frac{\pi\left(A_{99} \mid S_{99}\right)}{b\left(A_{99} \mid S_{99}\right)}
+$$
+
+在 ordinary importance sampling 的情況下，return 會被這整個乘積放大，但實際需要的只有第一個，也就是 $\frac{\pi\left(A_{0} \mid S_{0}\right)}{b\left(A_{0} \mid S_{0}\right)}$，其他都是不相關的。期望值會是 1 不變，但變異數會不斷增加到無限大。
+
+**Flat partial returns**:
+
+$$
+\bar{G}_ {t: h} \doteq R_{t+1} + R_{t+2} + \cdots + R_{h}, \quad 0 \leq t<h \leq T
+$$
+- $h$: horizon，return 所要考慮的時間長度。
+
+完整版的 return $G_t$ 可以視為 flat partial returns 的總和：
+
+$$
+\begin{aligned}
+G_{t} \doteq & R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T} \newline
+=&(1-\gamma) R_{t+1} \newline
+&+(1-\gamma) \gamma\left(R_{t+1}+R_{t+2}\right) \newline
+&+(1-\gamma) \gamma^{2}\left(R_{t+1}+R_{t+2}+R_{t+3}\right) \newline
+& \vdots \newline
+&+(1-\gamma) \gamma^{T-t-2}\left(R_{t+1}+R_{t+2}+\cdots+R_{T-1}\right) \newline
+&+\gamma^{T-t-1}\left(R_{t+1}+R_{t+2}+\cdots+R_{T}\right) \newline
+=&(1-\gamma) \sum_{h=t+1}^{T-1} \gamma^{h-t-1} \bar{G}_{t: h}+\gamma^{T-t-1} \bar{G}_{t: T}
+\end{aligned}
+$$
+
+對這個 flat partial returns 以 importance-sampling ratio 進行放大，oridinary importance sampling：
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}_{t: h}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{|\mathcal{T}(s)|}
+$$
+
+Weighted importance sampling:
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}_{t: h}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1}\right)}
+$$
+
 ## *Per-decision Importance Sampling
+
+另一種方式來減少變異數，可以用在即使有 discounting ($\gamma$) 的情況。
+
+Off-policy estimators (value functions) 的分子，每一項的總和本身也是個總和，如下 (5.11)：
+
+$$
+\begin{aligned}
+\rho_{t: T-1} G_{t} &=\rho_{t: T-1}\left(R_{t+1}+\gamma R_{t+2}+\cdots+\gamma^{T-t-1} R_{T}\right) \newline
+&=\rho_{t: T-1} R_{t+1}+\gamma \rho_{t: T-1} R_{t+2}+\cdots+\gamma^{T-t-1} \rho_{t: T-1} R_{T}
+\end{aligned}
+$$
+
+每一項都跟期望值有關，所以能用更簡單的方式描述。上式的每項都是一個隨機的 reward 和隨機的 importance-sampling ratio 的乘積，例如：
+
+$$
+\rho_{t: T-1} R_{t+1}=\frac{\pi\left(A_{t} \mid S_{t}\right)}{b\left(A_{t} \mid S_{t}\right)} \frac{\pi\left(A_{t+1} \mid S_{t+1}\right)}{b\left(A_{t+1} \mid S_{t+1}\right)} \frac{\pi\left(A_{t+2} \mid S_{t+2}\right)}{b\left(A_{t+2} \mid S_{t+2}\right)} \cdots \frac{\pi\left(A_{T-1} \mid S_{T-1}\right)}{b\left(A_{T-1} \mid S_{T-1}\right)} R_{t+1}
+$$
+
+- 有人認為只有第一個和最後一個乘數 (reward) 有用，其他都是在這個 reward 之後發生的事件。
+- 其他項的期望值是 $1$：
+
+$$
+\mathbb{E}\left[\frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}\right] \doteq \sum_{a} b\left(a \mid S_{k}\right) \frac{\pi\left(a \mid S_{k}\right)}{b\left(a \mid S_{k}\right)}=\sum_{a} \pi\left(a \mid S_{k}\right)=1
+$$
+
+每個乘數在期望值上都沒有作用，也就是：
+
+$$
+\mathbb{E}\left[\rho_{t: T-1} R_{t+1}\right]=\mathbb{E}\left[\rho_{t: t} R_{t+1}\right]
+$$
+
+如果重複這個流程，對於第 k 個 (5.11) 的子項，可以得到以下：
+
+$$
+\mathbb{E}\left[\rho_{t: T-1} R_{t+k}\right]=\mathbb{E}\left[\rho_{t: t+k-1} R_{t+k}\right]
+$$
+
+原本的期望值可以被寫成如下：
+
+$$
+\mathbb{E}\left[\rho_{t: T-1} G_{t}\right]=\mathbb{E}\left[\tilde{G}_{t}\right]
+$$
+
+其中，
+
+$$
+\tilde{G}_ {t}=\rho_{t: t} R_{t+1}+\gamma \rho_{t: t+1} R_{t+2}+\gamma^{2} \rho_{t: t+2} R_{t+3}+\cdots+\gamma^{T-t-1} \rho_{t: T-1} R_{T}
+$$
+
+這個稱為 **per-decision** importance sampling。
+
+使用這個 importance sampling 套在 ordinary importance sampling 之後，可以得到以下：
+
+$$
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \tilde{G}_{t}}{|\mathcal{T}(s)|}
+$$
+
+這個會產生較小的變異數。
+
+## Summary
+
+Monte Carlo 方法被提出來，以採樣的方式來學習 value functions 和 optimal policies。對比於 DP 法，有至少三個優勢：
+- 直接跟環境互動，不需要環境模型。
+- 可以用模擬 (simulation) 或是採樣模型 (sample models)
+- 有簡單有效的方式把 Monte Carlo 方法用來聚焦處理 所有狀態中的一個小子集 (it is easy and efficient to focus Monte Carlo methods on a small subset of the states)，在 Ch 8. 進行討論。
+- 較少違反 Markov 性質，因為它不會基於連續狀態的 value 來更新 value。也就是沒有 bootstrap。
