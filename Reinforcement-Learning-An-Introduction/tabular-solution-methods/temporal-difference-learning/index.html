@@ -3,8 +3,8 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Reinforcement Learning Notes">
-<title>Tags | Reinforcement Learning Notes</title>
+<meta name=description content="Temporal-difference (TD) learning 是一個 RL 新穎且重要的觀念，它結合 Monte Carlo 和 dynamic programming (DP) 的想法。 Monte Carlo: 類似於 Monte Carlo，TD 法可以直接從原始經驗學習，而不需要環境模型。 DP: 類似於 D">
+<title>Temporal Difference Learning | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
 <link rel=preload as=font href=/RL-notes/fonts/Metropolis.woff2 type=font/woff2 crossorigin=anonymous>
@@ -96,7 +96,7 @@ Ch 5. Monte Carlo Methods
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
+<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class="gdoc-nav__entry is-active">
 Ch 6. Temporal-Difference Learning
 </a>
 </span>
@@ -122,8 +122,89 @@ View Source
 </nav>
 </aside>
 <div class=gdoc-page>
+<div class="gdoc-page__header flex flex-wrap
+justify-between
+hidden-mobile" itemprop=breadcrumb>
+<div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
+<ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/reinforcement-learning-an-introduction/ href=/RL-notes/reinforcement-learning-an-introduction/><span itemprop=name>Reinforcement Learning: An Introduction</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Temporal Difference Learning</span><meta itemprop=position content="5"></li>
+</ol>
+</div>
+</div>
+<script>MathJax={tex:{inlineMath:[["$","$"]]},displayMath:[["$$","$$"],["[[","]]"]],svg:{fontCache:"global"}}</script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
+<article class="gdoc-markdown gdoc-markdown__align--left">
+<h1>Temporal Difference Learning</h1>
+<p>Temporal-difference (TD) learning 是一個 RL 新穎且重要的觀念，它結合 Monte Carlo 和 dynamic programming (DP) 的想法。</p>
+<ul>
+<li>Monte Carlo: 類似於 Monte Carlo，TD 法可以直接從原始經驗學習，而不需要環境模型。</li>
+<li>DP: 類似於 DP，TD 法可以從另一個已學習的估計來更新估計值，而不用等最後結果。</li>
+</ul>
+<div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents><ul>
+<li><a href=#td-prediction>TD Prediction</a></li>
+</ul></nav><hr></div>
+<div class=gdoc-page__anchorwrap>
+<h2 id=td-prediction>
+TD Prediction
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#td-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor TD Prediction" href=#td-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>一個 every-visit Monte Carlo 適用於 nonstationary 的環境，value function 更新如下：</p>
+<p>$$
+V\left(S_{t}\right) \leftarrow V\left(S_{t}\right)+\alpha\left[G_{t}-V\left(S_{t}\right)\right]
+$$</p>
+<ul>
+<li>$G_t$: return following $t$</li>
+<li>$\alpha$: step-size</li>
+</ul>
+<p>這個稱為 constant-$\alpha$ MC。Monte Carlo 法必須等到 episode 結束以後才能更新 $V(S_t)$。因此，TD 法概念是希望可以在每個 time step 都能進行更新。最簡單的 TD 形式如下：</p>
+<p>$$
+V\left(S_{t}\right) \leftarrow V\left(S_{t}\right)+\alpha\left[R_{t+1}+\gamma V\left(S_{t+1}\right)-V\left(S_{t}\right)\right]
+$$</p>
+<p>稱為 TD(0) 或 one-step TD。因為 TD(0) 基於現有的估計值進行更新，所以它是一種 bootstrapping 法，像是 DP。</p>
+<p>比較：</p>
+<ul>
+<li>Monte Carlo: 更新的目標是 $G_t$</li>
+<li>TD: 更新的目標是 $R_{t+1} + \gamma V(S_{t+1})$</li>
+</ul>
+<p><img src=td-0.png alt></p>
+<p>$$
+\begin{aligned}
+v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right]
+\end{aligned}
+$$</p>
+<ul>
+<li>Monte Carlo 使用第一式的估計值當作目標。因為</li>
+<li>DP 使用第三式的估計值當作目標</li>
+</ul>
+<p>&mldr; (?)</p>
+<p>TD(0) 更新值是一種誤差，這個值稱為 TD error:</p>
+<p>$$
+\delta_{t} \doteq R_{t+1}+\gamma V\left(S_{t+1}\right)-V\left(S_{t}\right)
+$$</p>
+<ul>
+<li>TD error 每個時刻的當下產生。但 TD error 相依於下次的 state 和 reward，它要到下一個 time step 才會存在。</li>
+<li>如果 $V$ 在 episode 期間不會改變，那麼 Monte Carlo error 可以寫成 TD error 的和：</li>
+</ul>
+<p>$$
+\begin{aligned}
+G_{t}-V\left(S_{t}\right) &=R_{t+1}+\gamma G_{t+1}-V\left(S_{t}\right)+\gamma V\left(S_{t+1}\right)-\gamma V\left(S_{t+1}\right) \quad(\text { from }(3.9)) \newline
+&=\delta_{t}+\gamma\left(G_{t+1}-V\left(S_{t+1}\right)\right) \newline
+&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2}\left(G_{t+2}-V\left(S_{t+2}\right)\right) \newline
+&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}\left(G_{T}-V\left(S_{T}\right)\right) \newline
+&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}(0-0) \newline
+&=\sum_{k=t}^{T-1} \gamma^{k-t} \delta_{k}
+\end{aligned}
+$$</p>
+<ul>
+<li>如果 $V$ 在 episode 期間會改變，這個等式就不精確，不過 step size 夠小的話還是很接近。</li>
+</ul>
+</article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods"> Ch 5. Monte Carlo Methods</a>
 </span>
 <span class=gdoc-page__nav>
 </span>
