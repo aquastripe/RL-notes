@@ -15,3 +15,5 @@ main:
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/dynamic-programming/"
         - name: Ch 5. Monte Carlo Methods
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/monte-carlo-methods/"
+        - name: Ch 6. Temporal-Difference Learning
+          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/temporal-difference-learning/"
