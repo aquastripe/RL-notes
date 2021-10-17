@@ -69,3 +69,61 @@ G_{t}-V\left(S_{t}\right) &=R_{t+1}+\gamma G_{t+1}-V\left(S_{t}\right)+\gamma V\
 $$
 
 - 如果 $V$ 在 episode 期間會改變，這個等式就不精確，不過 step size 夠小的話還是很接近。
+
+## Advantages of TD Prediction Methods
+
+TD 與 DP 相比的優勢：
+- 不需要環境模型 (model of environment)
+
+TD 與 Monte Carlo 相比的優勢：
+- Monte Carlo 必須等待整個 episode 結束以後才能進行計算
+
+收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_{\pi}$。如果 step-size 參數根據以下 **隨機近似條件** (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：
+
+$$
+\sum_{n=1}^{\infty} \alpha_{n}(a)=\infty \quad \text { and } \quad \sum_{n=1}^{\infty} \alpha_{n}^{2}(a)<\infty
+$$
+
+TD 和 Monte Carlo 都能保證收斂的情況下，哪個收斂得更快？
+- 這還是一個開放問題，目前沒有數學方法證明出來。
+- 實務上，在隨機的任務上 TD 法通常比 constant-$\alpha$ MC 收斂得更快。
+
+![](ex-6.2.png)
+
+## Optimality of TD(0)
+
+### Batch updating
+
+假設在有限個 episodes。這種情況下，有一種常見的訓練策略：\
+利用 (6.1) or (6.2) 的 value function 更新式先對每個 time step $t$ 進行增量計算，最後把整個結果加總後更新 value function 一次。更新完畢以後，再重複以上的過程直到收斂。這個方法稱為批次更新 (batch updating)。
+- 只要 step-size 足夠小，TD(0) 就會收斂到一個確定的解。
+- 然而，constant-$\alpha$ MC 也會確定性的收斂，但有不同的解。
+
+![](6.2.png)
+
+Figure 6.2 展示了利用 batch updating 進行 Example 6.2 的結果。TD 的結果總是比 MC 更好，因為 TD 更相關於預測 returns。
+
+![](ex-6.4.png)
+
+給定以上的 state-rewards，那麼 $V(A)$ 和 $V(B)$ 為何？
+- 有些人可能會認同 $V(B)=\frac{3}{4}$，因為 $\frac{6}{8}$ 個 returns 為 $1$，剩下的為 $0$。
+- $V(A)$ 則有兩種可能：
+  - 根據觀察，$A$ 總是轉移到 $B$，而 $V(B)=\frac{3}{4}$，因此 $V(A)=V(B)=\frac{3}{4}$。可以把它視為一種 Markov process，結果如下圖。這也是 batch TD(0) 計算的結果。
+  - 另一種方式，則是簡單的認為 $A$ 只看過一次且產生出 reward 為 $0$ 的結果，因此 $V(A)=0$。這是 batch MC 的結果。注意到這也會產生最小的訓練誤差，但我們會期望認為第一個答案會更好。如果這個是 Markov process，將會預期在未來的資料產生更小的誤差，而 MC 則會在已知的訓練資料產生較小的誤差。
+
+![](ex-6.4.2.png)
+
+更進一步說明兩種方法的差異：
+- batch MC: 總是找到最小的訓練誤差。
+- batch TD(0): 總是找到正確的 **maximum-likelihood**。
+  - Maximum-likelihood estimate 的參數，是會使得產生這些資料的機率為最大值的。
+  - Maximum-likelihood estimate 是 Markov process 的模型：
+    - 預測 從 $i$ 到 $j$ 的轉移機率是觀測到所有從 $i$ 到 $j$ 的轉移的分數 (fraction)
+    - 對應的 reward 期望值是這些轉移所產生的 rewards 的平均值。
+  - 在這個模型下，如果模型絕對正確，我們就可以計算絕對正確的 value function。
+  - 這稱為 **certainty-equivalence estimate** (確定等值估計)。
+  - 通常 batch TD(0) 會收練到這個 certainty-equivalence estimate。
+
+複雜度：如果有 $n$ 個狀態，
+- 形成 maximum-likelihood estimate 需要 $O(n^2)$ 記憶體
+- 計算 value function 需要 $O(n^3)$ 的複雜度。
