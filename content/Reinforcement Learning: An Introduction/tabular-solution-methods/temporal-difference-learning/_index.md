@@ -127,3 +127,52 @@ Figure 6.2 展示了利用 batch updating 進行 Example 6.2 的結果。TD 的�
 複雜度：如果有 $n$ 個狀態，
 - 形成 maximum-likelihood estimate 需要 $O(n^2)$ 記憶體
 - 計算 value function 需要 $O(n^3)$ 的複雜度。
+
+## Sarsa: On-policy TD Control
+
+現在來探討如何使用 TD prediction 來解決 control problem.
+
+![](sequence-of-states-and-state-action-pairs.png)
+
+確保收歛性的定理也適用於 action values，如下:
+
+$$
+Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma Q\left(S_{t+1}, A_{t+1}\right)-Q\left(S_{t}, A_{t}\right)\right]
+$$
+
+![](backup-diagram-sarsa.png)
+
+收歛性：
+- 只要所有 state-action pairs 都以無限次數經歷過，sarsa 會以 $1$ 的機率收斂到 optimal policy 和 action-value function，並且 policy 收斂到 greedy policy 的極限 (converges in the limit to the greedy policy)。
+
+![](algorithm-sarsa.png)
+
+## Q-learning: Off-policy TD Control
+
+Q-learning 的更新式定義如下：
+
+$$
+Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \max _{a} Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+$$
+
+要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_*$，更新過程與 policy 無關。
+- Policy 決定哪個 state-action pairs 要被經歷。
+- 為了要正確的收斂，所有的 pairs 都要連續的被更新。
+
+![](algorithm-q-learning.png)
+
+### Example 6.6: Cliff Walking
+
+![](ex-6.6.png)
+
+Reward:
+- 在 The Cliff 時: $-100$
+- 其他: $-1$
+
+比較:
+- Sarsa
+- Q-learning + $\varepsilon$-greedy with $\varepsilon = 0.1$
+
+結果：
+- Sarsa: 走了較安全的路，儘管走了較長的路。
+- Q-learning: 學習到 optimal policy，但是 online performance 較差。
