@@ -148,6 +148,12 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#batch-updating>Batch updating</a></li>
 </ul>
 </li>
+<li><a href=#sarsa-on-policy-td-control>Sarsa: On-policy TD Control</a></li>
+<li><a href=#q-learning-off-policy-td-control>Q-learning: Off-policy TD Control</a>
+<ul>
+<li><a href=#example-66-cliff-walking>Example 6.6: Cliff Walking</a></li>
+</ul>
+</li>
 </ul></nav><hr></div>
 <div class=gdoc-page__anchorwrap>
 <h2 id=td-prediction>
@@ -285,6 +291,62 @@ Batch updating
 <ul>
 <li>形成 maximum-likelihood estimate 需要 $O(n^2)$ 記憶體</li>
 <li>計算 value function 需要 $O(n^3)$ 的複雜度。</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h2 id=sarsa-on-policy-td-control>
+Sarsa: On-policy TD Control
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#sarsa-on-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Sarsa: On-policy TD Control" href=#sarsa-on-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>現在來探討如何使用 TD prediction 來解決 control problem.</p>
+<p><img src=sequence-of-states-and-state-action-pairs.png alt></p>
+<p>確保收歛性的定理也適用於 action values，如下:</p>
+<p>$$
+Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma Q\left(S_{t+1}, A_{t+1}\right)-Q\left(S_{t}, A_{t}\right)\right]
+$$</p>
+<p><img src=backup-diagram-sarsa.png alt></p>
+<p>收歛性：</p>
+<ul>
+<li>只要所有 state-action pairs 都以無限次數經歷過，sarsa 會以 $1$ 的機率收斂到 optimal policy 和 action-value function，並且 policy 收斂到 greedy policy 的極限 (converges in the limit to the greedy policy)。</li>
+</ul>
+<p><img src=algorithm-sarsa.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=q-learning-off-policy-td-control>
+Q-learning: Off-policy TD Control
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#q-learning-off-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Q-learning: Off-policy TD Control" href=#q-learning-off-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Q-learning 的更新式定義如下：</p>
+<p>$$
+Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \max _{a} Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+$$</p>
+<p>要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_*$，更新過程與 policy 無關。</p>
+<ul>
+<li>Policy 決定哪個 state-action pairs 要被經歷。</li>
+<li>為了要正確的收斂，所有的 pairs 都要連續的被更新。</li>
+</ul>
+<p><img src=algorithm-q-learning.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=example-66-cliff-walking>
+Example 6.6: Cliff Walking
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#example-66-cliff-walking class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.6: Cliff Walking" href=#example-66-cliff-walking><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p><img src=ex-6.6.png alt></p>
+<p>Reward:</p>
+<ul>
+<li>在 The Cliff 時: $-100$</li>
+<li>其他: $-1$</li>
+</ul>
+<p>比較:</p>
+<ul>
+<li>Sarsa</li>
+<li>Q-learning + $\varepsilon$-greedy with $\varepsilon = 0.1$</li>
+</ul>
+<p>結果：</p>
+<ul>
+<li>Sarsa: 走了較安全的路，儘管走了較長的路。</li>
+<li>Q-learning: 學習到 optimal policy，但是 online performance 較差。</li>
 </ul>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
