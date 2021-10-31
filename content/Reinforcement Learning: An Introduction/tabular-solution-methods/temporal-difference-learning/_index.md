@@ -176,3 +176,29 @@ Reward:
 結果：
 - Sarsa: 走了較安全的路，儘管走了較長的路。
 - Q-learning: 學習到 optimal policy，但是 online performance 較差。
+
+## Expected Sarsa
+
+把尋找 **最大** 的 value 改為尋找其 **期望值**，如下：
+
+$$
+\begin{aligned}
+Q\left(S_{t}, A_{t}\right) & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \mathbb{E}_{\pi}\left[Q\left(S_{t+1}, A_{t+1}\right) \mid S_{t+1}\right]-Q\left(S_{t}, A_{t}\right)\right] \newline
+& \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \sum_{a} \pi\left(a \mid S_{t+1}\right) Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+\end{aligned}
+$$
+
+這稱為 **Expected Sarsa**。
+- 計算量更大
+- 消除選擇動作的變異性
+
+![](6.3.png)
+- Asymptotic: $100000$ episodes 並實驗 10 次的平均
+- Interim: $100$ episodes 並實驗 50000 次的平均
+
+討論：
+- 在走懸崖的例子，狀態轉移都是確定性的，所有的隨機性來自選擇動作。
+- 因此，Expected Sarsa 可以安全的設定為 $\alpha = 1$ 而不會減少任何效能。
+- 相對來說，Sarsa 只能用在長期且很小的 $\alpha$，效果也比較差。
+
+![](6.4.png)
