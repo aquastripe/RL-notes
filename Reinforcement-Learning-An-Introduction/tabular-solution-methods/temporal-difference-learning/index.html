@@ -154,6 +154,7 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#example-66-cliff-walking>Example 6.6: Cliff Walking</a></li>
 </ul>
 </li>
+<li><a href=#expected-sarsa>Expected Sarsa</a></li>
 </ul></nav><hr></div>
 <div class=gdoc-page__anchorwrap>
 <h2 id=td-prediction>
@@ -348,6 +349,36 @@ Example 6.6: Cliff Walking
 <li>Sarsa: 走了較安全的路，儘管走了較長的路。</li>
 <li>Q-learning: 學習到 optimal policy，但是 online performance 較差。</li>
 </ul>
+<div class=gdoc-page__anchorwrap>
+<h2 id=expected-sarsa>
+Expected Sarsa
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#expected-sarsa class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Expected Sarsa" href=#expected-sarsa><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>把尋找 <strong>最大</strong> 的 value 改為尋找其 <strong>期望值</strong>，如下：</p>
+<p>$$
+\begin{aligned}
+Q\left(S_{t}, A_{t}\right) & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \mathbb{E}_{\pi}\left[Q\left(S_{t+1}, A_{t+1}\right) \mid S_{t+1}\right]-Q\left(S_{t}, A_{t}\right)\right] \newline
+& \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \sum_{a} \pi\left(a \mid S_{t+1}\right) Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+\end{aligned}
+$$</p>
+<p>這稱為 <strong>Expected Sarsa</strong>。</p>
+<ul>
+<li>計算量更大</li>
+<li>消除選擇動作的變異性</li>
+</ul>
+<p><img src=6.3.png alt></p>
+<ul>
+<li>Asymptotic: $100000$ episodes 並實驗 10 次的平均</li>
+<li>Interim: $100$ episodes 並實驗 50000 次的平均</li>
+</ul>
+<p>討論：</p>
+<ul>
+<li>在走懸崖的例子，狀態轉移都是確定性的，所有的隨機性來自選擇動作。</li>
+<li>因此，Expected Sarsa 可以安全的設定為 $\alpha = 1$ 而不會減少任何效能。</li>
+<li>相對來說，Sarsa 只能用在長期且很小的 $\alpha$，效果也比較差。</li>
+</ul>
+<p><img src=6.4.png alt></p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
