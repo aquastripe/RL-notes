@@ -170,9 +170,9 @@ Policy Evaluation (Prediction)
 </div><p>Policy evaluation: 如何為任意的策略 $\pi$ 計算 狀態-價值函數 $v_{\pi}$</p>
 <p>$$
 \begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline
 &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]
 \end{aligned}
 $$</p>
@@ -196,7 +196,7 @@ Iterative policy evaluation (迭代策略評估)
 <p>考慮到一個近似價值函數的序列 $v_0, v_1, v_2, \dots,$ 每個映射 $\mathcal{S}^+$ 到 $\mathbb{R}$。
 選定任意初始價值 $v_0$ (除了中止狀態必須給值為 0)，對所有狀態 $s \in \mathcal{S}$，可以利用 Bellman equation (4.4) 進行連續近似：</p>
 <p>$$
-\begin{aligned} v_{k+1}(s) & \doteq \mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right] \end{aligned}
+\begin{aligned} v_{k+1}(s) & \doteq \mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right] \end{aligned}
 $$</p>
 <ul>
 <li>當 $k \rightarrow \infty$ 時， $\lbrace v_k \rbrace$ 收斂到 $v_{\pi}$</li>
@@ -254,7 +254,7 @@ Policy improvement theorem
 <p>Then the policy $\pi^\prime$ must be as good as, or better than, $\pi$. That is, it must obtain greater or equal expected return from all states $s \in \mathcal{S}$, (4.8):</p>
 <p>$$v_{\pi^{\prime}}(s) \geq v_{\pi}(s)$$</p>
 <p>Moreover, if there is strict inequality of (4.7) at any state, then there must be strict inequality of (4.8) at that state.</p>
-<p>$$\begin{aligned}v_{\pi}(s) & \leq q_{\pi}\left(s, \pi^{\prime}(s)\right) \newline&=\mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=\pi^{\prime}(s)\right] \newline&=\mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma q_{\pi}\left(S_{t+1}, \pi^{\prime}\left(S_{t+1}\right)\right) \mid S_{t}=s\right] \newline&=\mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma \mathbb{E}\left[R_{t+2}+\gamma v_{\pi}\left(S_{t+2}\right) \mid S_{t+1}, A_{t+1}=\pi^{\prime}\left(S_{t+1}\right)\right] \mid S_{t}=s\right] \newline&=\mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2} v_{\pi}\left(S_{t+2}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} v_{\pi}\left(S_{t+3}\right) \mid S_{t}=s\right] \newline& \vdots \newline& \leq \mathbb{E}_{\pi^{\prime}}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} R_{t+4}+\cdots \mid S_{t}=s\right] \newline&=v_{\pi^{\prime}}(s) .\end{aligned}$$</p>
+<p>$$\begin{aligned}v_{\pi}(s) & \leq q_{\pi}\left(s, \pi^{\prime}(s)\right) \newline&=\mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=\pi^{\prime}(s)\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma q_{\pi}\left(S_{t+1}, \pi^{\prime}\left(S_{t+1}\right)\right) \mid S_{t}=s\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma \mathbb{E}\left[R_{t+2}+\gamma v_{\pi}\left(S_{t+2}\right) \mid S_{t+1}, A_{t+1}=\pi^{\prime}\left(S_{t+1}\right)\right] \mid S_{t}=s\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} v_{\pi}\left(S_{t+2}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} v_{\pi}\left(S_{t+3}\right) \mid S_{t}=s\right] \newline& \vdots \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} R_{t+4}+\cdots \mid S_{t}=s\right] \newline&=v_{\pi^{\prime}}(s) .\end{aligned}$$</p>
 <p>考慮新的 greedy 策略 $\pi^\prime$</p>
 <p>$$\begin{aligned}\pi^{\prime}(s) & \doteq \underset{a}{\arg \max } q_{\pi}(s, a) \newline&=\underset{a}{\arg \max } \mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline&=\underset{a}{\arg \max } \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
 <p>這個 greedy 策略執行一步後，根據最好的價值 $v_{\pi}$ 來採取動作。</p>
@@ -268,7 +268,7 @@ Policy Iteration
 </h2>
 </div><p>一個策略 $\pi$ 經由價值函數 $v_{\pi}$ 產生更好的策略 $\pi^\prime$，之後進一步計算新的價值函數與更好的策略&mldr;由此可以得到一個序列：</p>
 <p>$$
-\pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{*} \stackrel{\mathrm{E}}{\longrightarrow} v_{*}
+\pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{<em>} \stackrel{\mathrm{E}}{\longrightarrow} v_{</em>}
 $$</p>
 <p>其中 $\mathrm{E}$ 表示為 evaluation，$\mathrm{I}$ 表示為 improvement。</p>
 <p>由於 finite MDP 只會有有限個策略數量，這個過程必定在有限的迭代次數收斂到最佳的策略和價值函數。這個尋找最佳策略的方法稱為 policy iteration。這個方法大幅提昇 policy evaluation 的收斂速度。</p>
@@ -296,7 +296,7 @@ $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in
 <li>&mldr; $\pi(s) \leftarrow \arg \max_ {a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
 <li>&mldr; If old-action $\neq \pi(s)$, then $policy&ndash;stable$ $\leftarrow$ false</li>
 <li>If $policy&ndash;stable$, then</li>
-<li>&mldr; stop and return $V \approx v_{*}$ and $\pi \approx \pi_{*} ;$</li>
+<li>&mldr; stop and return $V \approx v_{<em>}$ and $\pi \approx \pi_{</em>} ;$</li>
 <li>else</li>
 <li>&mldr; go to 2</li>
 </ol>
@@ -310,8 +310,8 @@ Value Iteration
 </a>
 </h2>
 </div><p>Policy iteration 的一個缺陷是迭代涉及 policy evaluation，這需要多次的 sweep (採訪所有狀態後進行更新)，導致計算緩慢。從圖 4.1 可以得到一點線索，或許可以裁剪 policy evaluation，因為在第三次以後 policy evaluation 就不會再改變 policy。裁剪並不破壞收斂性的方式有很多種，最重要的一種方式稱為 value iteration (價值迭代) (4.10):</p>
-<p>$$\begin{aligned}v_{k+1}(s) & \doteq \max _{a} \mathbb{E}\left[R_{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline&=\max _{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
-<p>保證存在 optimal value $v_{*}$ 的條件下，$\lbrace v_k \rbrace$ 最後會收斂到 $v_{*}$。</p>
+<p>$$\begin{aligned}v_{k+1}(s) & \doteq \max <em>{a} \mathbb{E}\left[R</em>{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline&=\max <em>{a} \sum</em>{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
+<p>保證存在 optimal value $v_{<em>}$ 的條件下，$\lbrace v_k \rbrace$ 最後會收斂到 $v_{</em>}$。</p>
 <blockquote class="gdoc-hint info">
 <p><strong>Value Iteration, for estimating</strong> $\pi \approx \pi_{*}$</p>
 <p>Algorithm parameter: a small threshold $\theta>0$ determining accuracy of estimation</p>

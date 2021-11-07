@@ -291,27 +291,27 @@ Policies and Value Functions
 <ul>
 <li>$v_{\pi} (s)$</li>
 </ul>
-<p>$$v_{\pi}(s) \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s\right], \text { for all } s \in \mathcal{S}$$</p>
+<p>$$v_{\pi}(s) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s\right], \text { for all } s \in \mathcal{S}$$</p>
 <ul>
 <li>the state-action-value function for policy $\pi$</li>
 </ul>
-<p>$$q_{\pi}(s, a) \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s, A_{t}=a\right]=\mathbb{E}_{\pi}\left[\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s, A_{t}=a\right]$$</p>
+<p>$$q_{\pi}(s, a) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s, A_{t}=a\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s, A_{t}=a\right]$$</p>
 <ul>
 <li>the state-value function for policy $\pi$</li>
 </ul>
 <p>$$\begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}_{\pi}\left[G_{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
 &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
 \end{aligned}$$</p>
 <p>Monte Carlo method: 採樣的次數越多 (趨近於無限)，價值估計就會越準 (收斂)。</p>
 <p>一個使用 RL 和 動態規劃的價值函數性質：符合遞迴關係式。</p>
 <p>Bellman equation:</p>
 <p>$$\begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}_{\pi}\left[G_{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
 &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
 \end{aligned}$$</p>
 <p>$s^\prime$: 下個狀態</p>
@@ -336,7 +336,7 @@ v_{*}(s) \doteq \max_{\pi}{v_{\pi}(s)} \newline
 <p>Optimal action-value function</p>
 <p>$$q_{*}(s, a) \doteq \max_{\pi} {q_{\pi}(s, a)},$$</p>
 <p>可以用 $v_{*}$ 重寫如下：</p>
-<p>$$q_{*}(s, a)=\mathbb{E}\left[R_{t+1}+\gamma v_{*}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right]$$</p>
+<p>$$q_{<em>}(s, a)=\mathbb{E}\left[R_{t+1}+\gamma v_{</em>}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right]$$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=optimality-and-approximation>
 Optimality and Approximation

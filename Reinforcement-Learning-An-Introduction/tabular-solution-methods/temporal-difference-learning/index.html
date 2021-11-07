@@ -155,6 +155,8 @@ hidden-mobile" itemprop=breadcrumb>
 </ul>
 </li>
 <li><a href=#expected-sarsa>Expected Sarsa</a></li>
+<li><a href=#games-afterstates-and-other-special-cases>Games, Afterstates, and Other Special Cases</a></li>
+<li><a href=#summary>Summary</a></li>
 </ul></nav><hr></div>
 <div class=gdoc-page__anchorwrap>
 <h2 id=td-prediction>
@@ -183,9 +185,9 @@ $$</p>
 <p><img src=td-0.png alt></p>
 <p>$$
 \begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right]
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right]
 \end{aligned}
 $$</p>
 <ul>
@@ -228,7 +230,7 @@ Advantages of TD Prediction Methods
 <ul>
 <li>Monte Carlo 必須等待整個 episode 結束以後才能進行計算</li>
 </ul>
-<p>收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_{\pi}$。如果 step-size 參數根據以下 **隨機近似條件** (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：</p>
+<p>收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_{\pi}$。如果 step-size 參數根據以下 <strong>隨機近似條件</strong> (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：</p>
 <p>$$
 \sum_{n=1}^{\infty} \alpha_{n}(a)=\infty \quad \text { and } \quad \sum_{n=1}^{\infty} \alpha_{n}^{2}(a)&lt;\infty
 $$</p>
@@ -319,7 +321,7 @@ Q-learning: Off-policy TD Control
 </h2>
 </div><p>Q-learning 的更新式定義如下：</p>
 <p>$$
-Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \max _{a} Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \max <em>{a} Q\left(S</em>{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
 $$</p>
 <p>要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_*$，更新過程與 policy 無關。</p>
 <ul>
@@ -358,7 +360,7 @@ Expected Sarsa
 </div><p>把尋找 <strong>最大</strong> 的 value 改為尋找其 <strong>期望值</strong>，如下：</p>
 <p>$$
 \begin{aligned}
-Q\left(S_{t}, A_{t}\right) & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \mathbb{E}_{\pi}\left[Q\left(S_{t+1}, A_{t+1}\right) \mid S_{t+1}\right]-Q\left(S_{t}, A_{t}\right)\right] \newline
+Q\left(S_{t}, A_{t}\right) & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \mathbb{E}<em>{\pi}\left[Q\left(S</em>{t+1}, A_{t+1}\right) \mid S_{t+1}\right]-Q\left(S_{t}, A_{t}\right)\right] \newline
 & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \sum_{a} \pi\left(a \mid S_{t+1}\right) Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
 \end{aligned}
 $$</p>
@@ -379,6 +381,73 @@ $$</p>
 <li>相對來說，Sarsa 只能用在長期且很小的 $\alpha$，效果也比較差。</li>
 </ul>
 <p><img src=6.4.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=games-afterstates-and-other-special-cases>
+Games, Afterstates, and Other Special Cases
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#games-afterstates-and-other-special-cases class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Games, Afterstates, and Other Special Cases" href=#games-afterstates-and-other-special-cases><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>這本書嘗試提出一個通用的方法來處理廣大的應用情境，不過總是會有必須特別對待的例子。</p>
+<ul>
+<li>通用的目標是尋找 action-value，不過第一章使用 state-value 來進行 tic-tac-toe 遊戲</li>
+<li>更仔細來看，一般學習到的 function 不是 action-value 也不是 state-value
+<ul>
+<li>傳統的 state-value function 評估一個 state 在 agent 有選擇動作的選項時</li>
+<li>tic-tac-toe 的 state-value function 評估其狀態在 agent 移動之後。稱為 <strong>afterstates</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>Afterstates 好用在當我們得知 <em>一部分</em> 環境的動態 (dynamics) 而不必是 <em>所有的</em>。</p>
+<ul>
+<li>例如：下棋的時候我們會知道每一個落子之後的位置，但不知道對手如何應對。</li>
+<li>Afterstates value function 更有效的處理這類問題。</li>
+</ul>
+<p><img src=tic-tac-toe.png alt></p>
+<ul>
+<li>這個例子中，下面的結果都來自上面兩種落子順序。</li>
+<li>傳統的方法會個別計算上面兩種落子的 action-value</li>
+<li>但是 afterstates 可以馬上發現這兩種情況是相同的</li>
+</ul>
+<p>Afterstates 其他應用</p>
+<ul>
+<li>queuing tasks:
+<ul>
+<li>指派 customers 給 servers</li>
+<li>拒絕 customers</li>
+<li>丟棄資訊</li>
+</ul>
+</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h2 id=summary>
+Summary
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Temporal-difference (TD)</p>
+<ul>
+<li>prediction problem</li>
+<li>control problem
+<ul>
+<li>GPI</li>
+</ul>
+</li>
+</ul>
+<p>TD control</p>
+<ul>
+<li>on-policy
+<ul>
+<li>Sarsa</li>
+</ul>
+</li>
+<li>off-policy
+<ul>
+<li>Q-learning</li>
+<li>expected Sarsa</li>
+</ul>
+</li>
+<li>actor-critic (Ch. 13)</li>
+</ul>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>

@@ -181,7 +181,7 @@ Sample-average method
 </a>
 </h3>
 </div><p>一個自然的方式是計算平均得到多少的獎勵來當作估計值：</p>
-<p>$$Q_t(a) \doteq \dfrac{\text{sum of rewards when } a \text{ taken prior to }t}{\text{number of times } a \text{ taken prior to }t} = \dfrac{\sum_{i=1}^{t-1}{R_i \cdot \mathbb{1}_{A_i=a}}}{\sum_{i=1}^{t-1}{\mathbb{1}_{A_i=a}}}$$</p>
+<p>$$Q_t(a) \doteq \dfrac{\text{sum of rewards when } a \text{ taken prior to }t}{\text{number of times } a \text{ taken prior to }t} = \dfrac{\sum_{i=1}^{t-1}{R_i \cdot \mathbb{1}<em>{A_i=a}}}{\sum</em>{i=1}^{t-1}{\mathbb{1}_{A_i=a}}}$$</p>
 <p>其中 $\mathbb{1}_{predicate}$ 表示 $predicate$ 為真時設定為 $1$，否則為 $0$。</p>
 <ul>
 <li>當分母趨近於 $0$ 的時候，把 $Q_{t}(a)$ 設定為預設值 (例如 $0$)。</li>
@@ -363,8 +363,8 @@ Gradient Bandit Algorithms
 $$</p>
 <p>使用 stochastic gradient ascent 來更新偏好值：</p>
 <p>$$\begin{aligned}
-H_{t+1}\left(A_{t}\right) & \doteq H_{t}\left(A_{t}\right)+\alpha\left(R_{t}-\bar{R}_{t}\right)\left(1-\pi_{t}\left(A_{t}\right)\right), & & \text { and } \newline
-H_{t+1}(a) & \doteq H_{t}(a)-\alpha\left(R_{t}-\bar{R}_{t}\right) \pi_{t}(a), & & \text { for all } a \neq A_{t},
+H_{t+1}\left(A_{t}\right) & \doteq H_{t}\left(A_{t}\right)+\alpha\left(R_{t}-\bar{R}<em>{t}\right)\left(1-\pi</em>{t}\left(A_{t}\right)\right), & & \text { and } \newline
+H_{t+1}(a) & \doteq H_{t}(a)-\alpha\left(R_{t}-\bar{R}<em>{t}\right) \pi</em>{t}(a), & & \text { for all } a \neq A_{t},
 \end{aligned}$$</p>
 <ul>
 <li>$\alpha > 0$: 步長 (step-size) 參數。</li>

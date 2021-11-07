@@ -284,7 +284,7 @@ $$</p>
 <p>$$
 \begin{aligned}
 q_{\pi_{k}}\left(s, \pi_{k+1}(s)\right) &=q_{\pi_{k}}\left(s, \underset{a}{\arg \max } q_{\pi_{k}}(s, a)\right) \newline
-&=\max _{a} q_{\pi_{k}}(s, a) \newline
+&=\max <em>{a} q</em>{\pi_{k}}(s, a) \newline
 & \geq q_{\pi_{k}}\left(s, \pi_{k}(s)\right) \newline
 & \geq v_{\pi_{k}}(s)
 \end{aligned}
@@ -350,7 +350,7 @@ $\varepsilon$&ndash;greedy 是一種 $\varepsilon$&ndash;soft。</p>
 <p>$$
 \begin{aligned}
 q_{\pi}\left(s, \pi^{\prime}(s)\right) &=\sum_{a} \pi^{\prime}(a \mid s) q_{\pi}(s, a) \newline
-&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \max _{a} q_{\pi}(s, a) \newline
+&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \max <em>{a} q</em>{\pi}(s, a) \newline
 & \geq \frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \sum_{a} \frac{\pi(a \mid s)-\frac{\varepsilon}{|\mathcal{A}(s)|}}{1-\varepsilon} q_{\pi}(s, a) \newline
 &=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)-\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+\sum_{a} \pi(a \mid s) q_{\pi}(s, a) \newline
 &=v_{\pi}(s)
@@ -529,7 +529,7 @@ Off-policy Monte Carlo Control
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#off-policy-monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Monte Carlo Control" href=#off-policy-monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_*$ 和 $q_*$。</p>
+</div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_<em>$ 和 $q_</em>$。</p>
 <ul>
 <li>目標策略：根據 $Q$ 的 greedy policy，是一個 $q_\pi$ 的估計值。</li>
 <li>行為策略：可以是任意的，不過為了確保 $\pi$ 收斂到最佳策略，必須對每一組 state 和 action 取得無限多的 returns。
@@ -568,16 +568,16 @@ G_{t} \doteq & R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R
 & \vdots \newline
 &+(1-\gamma) \gamma^{T-t-2}\left(R_{t+1}+R_{t+2}+\cdots+R_{T-1}\right) \newline
 &+\gamma^{T-t-1}\left(R_{t+1}+R_{t+2}+\cdots+R_{T}\right) \newline
-=&(1-\gamma) \sum_{h=t+1}^{T-1} \gamma^{h-t-1} \bar{G}_{t: h}+\gamma^{T-t-1} \bar{G}_{t: T}
+=&(1-\gamma) \sum_{h=t+1}^{T-1} \gamma^{h-t-1} \bar{G}<em>{t: h}+\gamma^{T-t-1} \bar{G}</em>{t: T}
 \end{aligned}
 $$</p>
 <p>對這個 flat partial returns 以 importance-sampling ratio 進行放大，oridinary importance sampling：</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}_{t: h}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{|\mathcal{T}(s)|}
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}<em>{t: h}+\gamma^{T(t)-t-1} \rho</em>{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{|\mathcal{T}(s)|}
 $$</p>
 <p>Weighted importance sampling:</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}_{t: h}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1}\right)}
+V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}<em>{t: h}+\gamma^{T(t)-t-1} \rho</em>{t: T(t)-1} \bar{G}<em>{t: T(t)}\right)}{\sum</em>{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1}\right)}
 $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=per-decision-importance-sampling>
