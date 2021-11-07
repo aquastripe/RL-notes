@@ -202,3 +202,41 @@ $$
 - 相對來說，Sarsa 只能用在長期且很小的 $\alpha$，效果也比較差。
 
 ![](6.4.png)
+
+## Games, Afterstates, and Other Special Cases
+
+這本書嘗試提出一個通用的方法來處理廣大的應用情境，不過總是會有必須特別對待的例子。
+- 通用的目標是尋找 action-value，不過第一章使用 state-value 來進行 tic-tac-toe 遊戲
+- 更仔細來看，一般學習到的 function 不是 action-value 也不是 state-value
+  - 傳統的 state-value function 評估一個 state 在 agent 有選擇動作的選項時
+  - tic-tac-toe 的 state-value function 評估其狀態在 agent 移動之後。稱為 **afterstates**。
+
+Afterstates 好用在當我們得知 *一部分* 環境的動態 (dynamics) 而不必是 *所有的*。
+- 例如：下棋的時候我們會知道每一個落子之後的位置，但不知道對手如何應對。
+- Afterstates value function 更有效的處理這類問題。
+
+![](tic-tac-toe.png)
+- 這個例子中，下面的結果都來自上面兩種落子順序。
+- 傳統的方法會個別計算上面兩種落子的 action-value
+- 但是 afterstates 可以馬上發現這兩種情況是相同的
+
+Afterstates 其他應用
+- queuing tasks:
+  - 指派 customers 給 servers
+  - 拒絕 customers
+  - 丟棄資訊
+
+## Summary
+
+Temporal-difference (TD)
+- prediction problem
+- control problem
+  - GPI 
+
+TD control
+- on-policy
+  - Sarsa
+- off-policy
+  - Q-learning
+  - expected Sarsa
+- actor-critic (Ch. 13)
