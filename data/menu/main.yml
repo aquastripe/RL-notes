@@ -3,19 +3,19 @@ main:
   - name: "Reinforcement Learning: An Introduction"
     sub:
     - name: "Ch 1. Introduction"
-      ref: "/Reinforcement Learning: An Introduction/introduction"
+      ref: "/sutton/introduction"
     - name: "Part I: Tabular Solution Methods"
-      ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods"
+      ref: "/sutton/tabular-solution-methods"
       sub:
         - name: Ch 2. Multi-Armed Bandits
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/multi-armed-bandits/"
+          ref: "/sutton/tabular-solution-methods/multi-armed-bandits/"
         - name: Ch 3. Finite Markov Decision Processes
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/finite-markov-decision-processes/"
+          ref: "/sutton/tabular-solution-methods/finite-markov-decision-processes/"
         - name: Ch 4. Dynamic Programming
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/dynamic-programming/"
+          ref: "/sutton/tabular-solution-methods/dynamic-programming/"
         - name: Ch 5. Monte Carlo Methods
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/monte-carlo-methods/"
+          ref: "/sutton/tabular-solution-methods/monte-carlo-methods/"
         - name: Ch 6. Temporal-Difference Learning
-          ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/temporal-difference-learning/"
+          ref: "/sutton/tabular-solution-methods/temporal-difference-learning/"
         - name: Ch 7. n-step Bootstrapping
-          ref: "/Reinforcement Learning: An Introduction/n-step-bootstrapping/"
+          ref: "/sutton/n-step-bootstrapping/"
