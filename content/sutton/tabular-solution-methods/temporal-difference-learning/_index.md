@@ -88,6 +88,8 @@ TD 和 Monte Carlo 都能保證收斂的情況下，哪個收斂得更快？
 - 這還是一個開放問題，目前沒有數學方法證明出來。
 - 實務上，在隨機的任務上 TD 法通常比 constant-$\alpha$ MC 收斂得更快。
 
+### Example 6.2
+
 ![](ex-6.2.png)
 
 ## Optimality of TD(0)
