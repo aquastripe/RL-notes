@@ -18,4 +18,4 @@ main:
         - name: Ch 6. Temporal-Difference Learning
           ref: "/sutton/tabular-solution-methods/temporal-difference-learning/"
         - name: Ch 7. n-step Bootstrapping
-          ref: "/sutton/n-step-bootstrapping/"
+          ref: "/sutton/tabular-solution-methods/n-step-bootstrapping/"
