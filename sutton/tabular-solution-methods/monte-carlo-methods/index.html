@@ -54,50 +54,57 @@
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/introduction/ class=gdoc-nav__entry>
 Ch 1. Introduction
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/ class=gdoc-nav__entry>
 Part I: Tabular Solution Methods
 </a>
 </span>
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
 Ch 2. Multi-Armed Bandits
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
 Ch 3. Finite Markov Decision Processes
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
 Ch 4. Dynamic Programming
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ class="gdoc-nav__entry is-active">
+<a href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ class="gdoc-nav__entry is-active">
 Ch 5. Monte Carlo Methods
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
 Ch 6. Temporal-Difference Learning
+</a>
+</span>
+</li>
+<li>
+<span class=flex>
+<a href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ class=gdoc-nav__entry>
+Ch 7. n-step Bootstrapping
 </a>
 </span>
 </li>
@@ -127,7 +134,7 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/reinforcement-learning-an-introduction/ href=/RL-notes/reinforcement-learning-an-introduction/><span itemprop=name>Reinforcement Learning: An Introduction</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Ch 5. Monte Carlo Methods</span><meta itemprop=position content="5"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Ch 5. Monte Carlo Methods</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
@@ -188,7 +195,7 @@ Monte Carlo 只憑借「經驗」：從環境互動或是透過模擬來採樣 s
 <div class=gdoc-page__anchorwrap>
 <h2 id=monte-carlo-prediction>
 Monte Carlo Prediction
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Prediction" href=#monte-carlo-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Prediction" href=#monte-carlo-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>問題：給定一個 policy，如何學習 state-value function $v_{\pi}(s)$？<br>
@@ -222,7 +229,7 @@ Monte Carlo Prediction
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-51-blackjack>
 Example 5.1: Blackjack
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-51-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.1: Blackjack" href=#example-51-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#example-51-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.1: Blackjack" href=#example-51-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p><img src=5.1.png alt></p>
@@ -244,7 +251,7 @@ Example 5.1: Blackjack
 <div class=gdoc-page__anchorwrap>
 <h2 id=monte-carlo-estimation-of-action-values>
 Monte Carlo Estimation of Action Values
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-estimation-of-action-values class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Estimation of Action Values" href=#monte-carlo-estimation-of-action-values><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-estimation-of-action-values class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Estimation of Action Values" href=#monte-carlo-estimation-of-action-values><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>如果環境模型不存在，那麼估計 action-values $q_{\pi}(s, a)$ 會比 state-values $v_{\pi}(s)$ 更有效。</p>
@@ -257,7 +264,7 @@ Monte Carlo Estimation of Action Values
 <div class=gdoc-page__anchorwrap>
 <h3 id=exploring-starts>
 Exploring starts
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#exploring-starts class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Exploring starts" href=#exploring-starts><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#exploring-starts class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Exploring starts" href=#exploring-starts><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>為了可以比較，必須估計所有 action 的 value。<strong>Exploring starts</strong> 假設：在每個 episode 開始時會指定一個 state-action pair，並強迫所有 pair 都有機會被選擇到。</p>
@@ -266,7 +273,7 @@ Exploring starts
 <div class=gdoc-page__anchorwrap>
 <h2 id=monte-carlo-control>
 Monte Carlo Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control" href=#monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control" href=#monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>這一章討論如何把 Monte Carlo estimation 用來近似最佳策略 (optimal policies)。<br>
@@ -312,7 +319,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-53-solving-blackjack>
 Example 5.3: Solving Blackjack
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-53-solving-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.3: Solving Blackjack" href=#example-53-solving-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#example-53-solving-blackjack class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.3: Solving Blackjack" href=#example-53-solving-blackjack><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>接續 Example 5.1，使用 &ldquo;20, 21 就停止，其他則跟注&rdquo; 作為初始的 policy，再以 Monte Carlo ES 找到 optimal policy，結果如下圖：</p>
@@ -321,7 +328,7 @@ Example 5.3: Solving Blackjack
 <div class=gdoc-page__anchorwrap>
 <h2 id=monte-carlo-control-without-exploring-starts>
 Monte Carlo Control without Exploring Starts
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control-without-exploring-starts class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control without Exploring Starts" href=#monte-carlo-control-without-exploring-starts><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-control-without-exploring-starts class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Control without Exploring Starts" href=#monte-carlo-control-without-exploring-starts><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Exploring starts 是一種不太可能發生的情形，因此以下討論如何避免這項假設。<br>
@@ -338,7 +345,7 @@ Monte Carlo Control without Exploring Starts
 <div class=gdoc-page__anchorwrap>
 <h3 id=on-policy-control-methods>
 On-policy control methods
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#on-policy-control-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor On-policy control methods" href=#on-policy-control-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#on-policy-control-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor On-policy control methods" href=#on-policy-control-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>這類的方法，policy 一般來說都是 <em>soft</em>: $\pi(a | s) > 0$ 對所有 $s \in \mathcal{S}$ 和 $a \in \mathcal{A}(s)$，但是越來越接近成一個確定性的 optimal policy。大部分 Ch 2. 的方法都是這樣的機制，例如 $\varepsilon$&ndash;greedy: 大部分選擇的動作是根據最大的 action-value，而少部份根據 $\varepsilon$ 機率來隨機選擇，也就是 $\frac{\varepsilon}{| \mathcal{A}(s) |}$，而 greedy action 是 $1 - \varepsilon + \frac{\varepsilon}{| \mathcal{A}(s) |}$。</p>
@@ -360,7 +367,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=off-policy-prediction-via-importance-sampling>
 Off-policy Prediction via Importance Sampling
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#off-policy-prediction-via-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Prediction via Importance Sampling" href=#off-policy-prediction-via-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#off-policy-prediction-via-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Prediction via Importance Sampling" href=#off-policy-prediction-via-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>所有的學習控制 (learning control) 方法都面臨兩難：</p>
@@ -462,7 +469,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-54-off-policy-estimation-of-a-blackjack-state-value>
 Example 5.4: Off-policy Estimation of a Blackjack State Value
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#example-54-off-policy-estimation-of-a-blackjack-state-value class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.4: Off-policy Estimation of a Blackjack State Value" href=#example-54-off-policy-estimation-of-a-blackjack-state-value><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#example-54-off-policy-estimation-of-a-blackjack-state-value class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 5.4: Off-policy Estimation of a Blackjack State Value" href=#example-54-off-policy-estimation-of-a-blackjack-state-value><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>以行為策略來估計目標策略的 value。</p>
@@ -479,7 +486,7 @@ Example 5.4: Off-policy Estimation of a Blackjack State Value
 <div class=gdoc-page__anchorwrap>
 <h2 id=incremental-implementation>
 Incremental Implementation
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#incremental-implementation class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Incremental Implementation" href=#incremental-implementation><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#incremental-implementation class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Incremental Implementation" href=#incremental-implementation><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>以下考慮如何以增量計算進行 MC prediction。</p>
@@ -488,7 +495,7 @@ Incremental Implementation
 <div class=gdoc-page__anchorwrap>
 <h3 id=ordinary-importance-sampling>
 Ordinary importance sampling
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#ordinary-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Ordinary importance sampling" href=#ordinary-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#ordinary-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Ordinary importance sampling" href=#ordinary-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>Ordinary importance sampling 中，returns 以 importance sampling ratio $\rho_{t:T(t)-1}$ 進行放大，如下：</p>
@@ -506,7 +513,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=weighted-importance-sampling>
 Weighted importance sampling
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#weighted-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Weighted importance sampling" href=#weighted-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#weighted-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Weighted importance sampling" href=#weighted-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>假設我們有 returns 序列 $G_1, G_2, \ldots, G_{n-1}$，從相同的狀態開始，每個狀態對應一個隨機的權重 $W_i$。我們要估計的如下式：</p>
@@ -526,7 +533,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=off-policy-monte-carlo-control>
 Off-policy Monte Carlo Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#off-policy-monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Monte Carlo Control" href=#off-policy-monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#off-policy-monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Monte Carlo Control" href=#off-policy-monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_<em>$ 和 $q_</em>$。</p>
@@ -542,7 +549,7 @@ Off-policy Monte Carlo Control
 <div class=gdoc-page__anchorwrap>
 <h2 id=discounting-aware-importance-sampling>
 *Discounting-aware Importance Sampling
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#discounting-aware-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor *Discounting-aware Importance Sampling" href=#discounting-aware-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#discounting-aware-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor *Discounting-aware Importance Sampling" href=#discounting-aware-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>考慮一種情況：當 episodes 很長且 $\gamma \ll 1$，例如 100 steps 和 $\gamma = 0$。<br>
@@ -582,7 +589,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=per-decision-importance-sampling>
 *Per-decision Importance Sampling
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#per-decision-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor *Per-decision Importance Sampling" href=#per-decision-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#per-decision-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor *Per-decision Importance Sampling" href=#per-decision-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>另一種方式來減少變異數，可以用在即使有 discounting ($\gamma$) 的情況。</p>
@@ -629,7 +636,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=summary>
 Summary
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Monte Carlo 方法被提出來，以採樣的方式來學習 value functions 和 optimal policies。對比於 DP 法，有至少三個優勢：</p>
@@ -642,10 +649,10 @@ Summary
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ title="Ch 4. Dynamic Programming"> Ch 4. Dynamic Programming</a>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ title="Ch 4. Dynamic Programming"> Ch 4. Dynamic Programming</a>
 </span>
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ title="Ch 6. Temporal-Difference Learning">Ch 6. Temporal-Difference Learning </a>
+<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ title="Ch 6. Temporal-Difference Learning">Ch 6. Temporal-Difference Learning </a>
 </span>
 </div>
 </div>

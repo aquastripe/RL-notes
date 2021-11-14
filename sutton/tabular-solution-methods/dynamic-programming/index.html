@@ -54,50 +54,57 @@
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/introduction/ class=gdoc-nav__entry>
 Ch 1. Introduction
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/ class=gdoc-nav__entry>
 Part I: Tabular Solution Methods
 </a>
 </span>
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
 Ch 2. Multi-Armed Bandits
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
 Ch 3. Finite Markov Decision Processes
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ class="gdoc-nav__entry is-active">
+<a href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ class="gdoc-nav__entry is-active">
 Ch 4. Dynamic Programming
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
 Ch 5. Monte Carlo Methods
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
 Ch 6. Temporal-Difference Learning
+</a>
+</span>
+</li>
+<li>
+<span class=flex>
+<a href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ class=gdoc-nav__entry>
+Ch 7. n-step Bootstrapping
 </a>
 </span>
 </li>
@@ -127,7 +134,7 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/reinforcement-learning-an-introduction/ href=/RL-notes/reinforcement-learning-an-introduction/><span itemprop=name>Reinforcement Learning: An Introduction</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Ch 4. Dynamic Programming</span><meta itemprop=position content="5"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Ch 4. Dynamic Programming</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
@@ -164,7 +171,7 @@ hidden-mobile" itemprop=breadcrumb>
 <div class=gdoc-page__anchorwrap>
 <h2 id=policy-evaluation-prediction>
 Policy Evaluation (Prediction)
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#policy-evaluation-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Evaluation (Prediction)" href=#policy-evaluation-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-evaluation-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Evaluation (Prediction)" href=#policy-evaluation-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Policy evaluation: 如何為任意的策略 $\pi$ 計算 狀態-價值函數 $v_{\pi}$</p>
@@ -189,7 +196,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=iterative-policy-evaluation-迭代策略評估>
 Iterative policy evaluation (迭代策略評估)
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#iterative-policy-evaluation-迭代策略評估 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Iterative policy evaluation (迭代策略評估)" href=#iterative-policy-evaluation-%e8%bf%ad%e4%bb%a3%e7%ad%96%e7%95%a5%e8%a9%95%e4%bc%b0><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#iterative-policy-evaluation-迭代策略評估 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Iterative policy evaluation (迭代策略評估)" href=#iterative-policy-evaluation-%e8%bf%ad%e4%bb%a3%e7%ad%96%e7%95%a5%e8%a9%95%e4%bc%b0><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>迭代解法會更適用 RL 的情境。</p>
@@ -230,7 +237,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=policy-improvement>
 Policy Improvement
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#policy-improvement class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Improvement" href=#policy-improvement><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-improvement class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Improvement" href=#policy-improvement><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>計算 價值函數 是為了找到更好的 策略。</p>
@@ -246,7 +253,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=policy-improvement-theorem>
 Policy improvement theorem
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#policy-improvement-theorem class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy improvement theorem" href=#policy-improvement-theorem><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-improvement-theorem class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy improvement theorem" href=#policy-improvement-theorem><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>Let $\pi$ and $\pi^\prime$ be any pair of deterministic policies such that, for all $s \in \mathcal{S}$, (4.7):</p>
@@ -263,7 +270,7 @@ Policy improvement theorem
 <div class=gdoc-page__anchorwrap>
 <h2 id=policy-iteration>
 Policy Iteration
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#policy-iteration class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Iteration" href=#policy-iteration><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-iteration class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Iteration" href=#policy-iteration><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>一個策略 $\pi$ 經由價值函數 $v_{\pi}$ 產生更好的策略 $\pi^\prime$，之後進一步計算新的價值函數與更好的策略&mldr;由此可以得到一個序列：</p>
@@ -306,7 +313,7 @@ $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in
 <div class=gdoc-page__anchorwrap>
 <h2 id=value-iteration>
 Value Iteration
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#value-iteration class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Value Iteration" href=#value-iteration><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#value-iteration class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Value Iteration" href=#value-iteration><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Policy iteration 的一個缺陷是迭代涉及 policy evaluation，這需要多次的 sweep (採訪所有狀態後進行更新)，導致計算緩慢。從圖 4.1 可以得到一點線索，或許可以裁剪 policy evaluation，因為在第三次以後 policy evaluation 就不會再改變 policy。裁剪並不破壞收斂性的方式有很多種，最重要的一種方式稱為 value iteration (價值迭代) (4.10):</p>
@@ -331,14 +338,14 @@ $\pi(s)=\arg \max_{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)
 <div class=gdoc-page__anchorwrap>
 <h2 id=asynchronous-dynamic-programming>
 Asynchronous Dynamic Programming
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#asynchronous-dynamic-programming class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Asynchronous Dynamic Programming" href=#asynchronous-dynamic-programming><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#asynchronous-dynamic-programming class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Asynchronous Dynamic Programming" href=#asynchronous-dynamic-programming><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>DP 法主要的缺陷是涉及 sweep 整個狀態集。如果整個狀態集非常大，就會需要昂貴運算量。非同步的 DP</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=generalized-policy-iteration-gpi>
 Generalized Policy Iteration (GPI)
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#generalized-policy-iteration-gpi class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Generalized Policy Iteration (GPI)" href=#generalized-policy-iteration-gpi><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#generalized-policy-iteration-gpi class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Generalized Policy Iteration (GPI)" href=#generalized-policy-iteration-gpi><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Policy iteration 包含兩個同時、互動的過程：</p>
@@ -351,7 +358,7 @@ Generalized Policy Iteration (GPI)
 <div class=gdoc-page__anchorwrap>
 <h2 id=efficiency-of-dynamic-programming>
 Efficiency of Dynamic Programming
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#efficiency-of-dynamic-programming class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Efficiency of Dynamic Programming" href=#efficiency-of-dynamic-programming><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#efficiency-of-dynamic-programming class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Efficiency of Dynamic Programming" href=#efficiency-of-dynamic-programming><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>DP 在大多數的問題上並不實用，但是相較其他解決 MDPs 的方法，DP 非常有效率。在 worst case，DP 找到最佳策略的時間保證是狀態與動作數量的多項式函數，即使 (決定性的) 策略的總數是 $k^n$。</p>
@@ -360,7 +367,7 @@ Efficiency of Dynamic Programming
 <div class=gdoc-page__anchorwrap>
 <h2 id=summary>
 Summary
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><ul>
@@ -378,10 +385,10 @@ Summary
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ title="Ch 3. Finite Markov Decision Processes"> Ch 3. Finite Markov Decision Processes</a>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ title="Ch 3. Finite Markov Decision Processes"> Ch 3. Finite Markov Decision Processes</a>
 </span>
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods">Ch 5. Monte Carlo Methods </a>
+<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods">Ch 5. Monte Carlo Methods </a>
 </span>
 </div>
 </div>

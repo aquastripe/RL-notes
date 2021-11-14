@@ -54,50 +54,57 @@
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/introduction/ class=gdoc-nav__entry>
 Ch 1. Introduction
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/ class=gdoc-nav__entry>
 Part I: Tabular Solution Methods
 </a>
 </span>
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
 Ch 2. Multi-Armed Bandits
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
 Ch 3. Finite Markov Decision Processes
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
 Ch 4. Dynamic Programming
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
 Ch 5. Monte Carlo Methods
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class="gdoc-nav__entry is-active">
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class="gdoc-nav__entry is-active">
 Ch 6. Temporal-Difference Learning
+</a>
+</span>
+</li>
+<li>
+<span class=flex>
+<a href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ class=gdoc-nav__entry>
+Ch 7. n-step Bootstrapping
 </a>
 </span>
 </li>
@@ -127,7 +134,7 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/reinforcement-learning-an-introduction/ href=/RL-notes/reinforcement-learning-an-introduction/><span itemprop=name>Reinforcement Learning: An Introduction</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Temporal Difference Learning</span><meta itemprop=position content="5"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Temporal Difference Learning</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
@@ -142,7 +149,11 @@ hidden-mobile" itemprop=breadcrumb>
 </ul>
 <div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents><ul>
 <li><a href=#td-prediction>TD Prediction</a></li>
-<li><a href=#advantages-of-td-prediction-methods>Advantages of TD Prediction Methods</a></li>
+<li><a href=#advantages-of-td-prediction-methods>Advantages of TD Prediction Methods</a>
+<ul>
+<li><a href=#example-62>Example 6.2</a></li>
+</ul>
+</li>
 <li><a href=#optimality-of-td0>Optimality of TD(0)</a>
 <ul>
 <li><a href=#batch-updating>Batch updating</a></li>
@@ -161,7 +172,7 @@ hidden-mobile" itemprop=breadcrumb>
 <div class=gdoc-page__anchorwrap>
 <h2 id=td-prediction>
 TD Prediction
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#td-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor TD Prediction" href=#td-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#td-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor TD Prediction" href=#td-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>一個 every-visit Monte Carlo 適用於 nonstationary 的環境，value function 更新如下：</p>
@@ -219,7 +230,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=advantages-of-td-prediction-methods>
 Advantages of TD Prediction Methods
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#advantages-of-td-prediction-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Advantages of TD Prediction Methods" href=#advantages-of-td-prediction-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#advantages-of-td-prediction-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Advantages of TD Prediction Methods" href=#advantages-of-td-prediction-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>TD 與 DP 相比的優勢：</p>
@@ -239,17 +250,23 @@ $$</p>
 <li>這還是一個開放問題，目前沒有數學方法證明出來。</li>
 <li>實務上，在隨機的任務上 TD 法通常比 constant-$\alpha$ MC 收斂得更快。</li>
 </ul>
-<p><img src=ex-6.2.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=example-62>
+Example 6.2
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#example-62 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.2" href=#example-62><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p><img src=ex-6.2.png alt></p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=optimality-of-td0>
 Optimality of TD(0)
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#optimality-of-td0 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimality of TD(0)" href=#optimality-of-td0><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#optimality-of-td0 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimality of TD(0)" href=#optimality-of-td0><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><div class=gdoc-page__anchorwrap>
 <h3 id=batch-updating>
 Batch updating
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#batch-updating class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Batch updating" href=#batch-updating><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#batch-updating class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Batch updating" href=#batch-updating><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p>假設在有限個 episodes。這種情況下，有一種常見的訓練策略：<br>
@@ -298,7 +315,7 @@ Batch updating
 <div class=gdoc-page__anchorwrap>
 <h2 id=sarsa-on-policy-td-control>
 Sarsa: On-policy TD Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#sarsa-on-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Sarsa: On-policy TD Control" href=#sarsa-on-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#sarsa-on-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Sarsa: On-policy TD Control" href=#sarsa-on-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>現在來探討如何使用 TD prediction 來解決 control problem.</p>
@@ -316,7 +333,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=q-learning-off-policy-td-control>
 Q-learning: Off-policy TD Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#q-learning-off-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Q-learning: Off-policy TD Control" href=#q-learning-off-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#q-learning-off-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Q-learning: Off-policy TD Control" href=#q-learning-off-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Q-learning 的更新式定義如下：</p>
@@ -332,7 +349,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-66-cliff-walking>
 Example 6.6: Cliff Walking
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#example-66-cliff-walking class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.6: Cliff Walking" href=#example-66-cliff-walking><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#example-66-cliff-walking class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.6: Cliff Walking" href=#example-66-cliff-walking><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
 </div><p><img src=ex-6.6.png alt></p>
@@ -354,7 +371,7 @@ Example 6.6: Cliff Walking
 <div class=gdoc-page__anchorwrap>
 <h2 id=expected-sarsa>
 Expected Sarsa
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#expected-sarsa class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Expected Sarsa" href=#expected-sarsa><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#expected-sarsa class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Expected Sarsa" href=#expected-sarsa><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>把尋找 <strong>最大</strong> 的 value 改為尋找其 <strong>期望值</strong>，如下：</p>
@@ -384,7 +401,7 @@ $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=games-afterstates-and-other-special-cases>
 Games, Afterstates, and Other Special Cases
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#games-afterstates-and-other-special-cases class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Games, Afterstates, and Other Special Cases" href=#games-afterstates-and-other-special-cases><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#games-afterstates-and-other-special-cases class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Games, Afterstates, and Other Special Cases" href=#games-afterstates-and-other-special-cases><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>這本書嘗試提出一個通用的方法來處理廣大的應用情境，不過總是會有必須特別對待的例子。</p>
@@ -421,7 +438,7 @@ Games, Afterstates, and Other Special Cases
 <div class=gdoc-page__anchorwrap>
 <h2 id=summary>
 Summary
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
 </div><p>Temporal-difference (TD)</p>
@@ -451,9 +468,10 @@ Summary
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods"> Ch 5. Monte Carlo Methods</a>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods"> Ch 5. Monte Carlo Methods</a>
 </span>
 <span class=gdoc-page__nav>
+<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ title="Ch 7. n-step Bootstrapping">Ch 7. n-step Bootstrapping </a>
 </span>
 </div>
 </div>

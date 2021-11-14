@@ -3,8 +3,8 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Reinforcement Learning Notes">
-<title>Reinforcement Learning: An Introduction | Reinforcement Learning Notes</title>
+<meta name=description content="The Agent-Environment Interface Goals and Rewards Returns and Episodes Episodic tasks Continuing tasks Discounting Unified Notation for Episodic and Continuing Tasks Policies and Value Functions Optimal Policies and Optimal Value Functions Optimality and Approximation 這章談論的問題是 associative aspect: 在不同狀況選擇不同的動作。 MDPs 是一個經典的連續決策的形">
+<title>Ch 3. Finite Markov Decision Processes | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
 <link rel=preload as=font href=/RL-notes/fonts/Metropolis.woff2 type=font/woff2 crossorigin=anonymous>
@@ -54,50 +54,57 @@
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/introduction/ class=gdoc-nav__entry>
 Ch 1. Introduction
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/ class=gdoc-nav__entry>
 Part I: Tabular Solution Methods
 </a>
 </span>
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
 Ch 2. Multi-Armed Bandits
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ class="gdoc-nav__entry is-active">
 Ch 3. Finite Markov Decision Processes
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
 Ch 4. Dynamic Programming
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
 Ch 5. Monte Carlo Methods
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
 Ch 6. Temporal-Difference Learning
+</a>
+</span>
+</li>
+<li>
+<span class=flex>
+<a href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ class=gdoc-nav__entry>
+Ch 7. n-step Bootstrapping
 </a>
 </span>
 </li>
@@ -127,17 +134,231 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Reinforcement Learning: An Introduction</span><meta itemprop=position content="3"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Ch 3. Finite Markov Decision Processes</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
+<script>MathJax={tex:{inlineMath:[["$","$"]]},displayMath:[["$$","$$"],["[[","]]"]],svg:{fontCache:"global"}}</script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
 <article class="gdoc-markdown gdoc-markdown__align--left">
-<h1>Reinforcement Learning: An Introduction</h1>
+<h1>Ch 3. Finite Markov Decision Processes</h1>
+<div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents><ul>
+<li><a href=#the-agent-environment-interface>The Agent-Environment Interface</a></li>
+<li><a href=#goals-and-rewards>Goals and Rewards</a></li>
+<li><a href=#returns-and-episodes>Returns and Episodes</a>
+<ul>
+<li><a href=#episodic-tasks>Episodic tasks</a></li>
+<li><a href=#continuing-tasks>Continuing tasks</a></li>
+<li><a href=#discounting>Discounting</a></li>
+</ul>
+</li>
+<li><a href=#unified-notation-for-episodic-and-continuing-tasks>Unified Notation for Episodic and Continuing Tasks</a></li>
+<li><a href=#policies-and-value-functions>Policies and Value Functions</a></li>
+<li><a href=#optimal-policies-and-optimal-value-functions>Optimal Policies and Optimal Value Functions</a></li>
+<li><a href=#optimality-and-approximation>Optimality and Approximation</a></li>
+</ul></nav><hr></div>
+<p>這章談論的問題是 associative aspect: 在不同狀況選擇不同的動作。</p>
+<p>MDPs 是一個經典的連續決策的形式，動作會影響當下的獎勵、子序列的狀態，還有未來的獎勵。</p>
+<p>權衡:</p>
+<ul>
+<li>immediate reward (當下的獎勵)</li>
+<li>delayed reward (延遲的獎勵)</li>
+</ul>
+<p>差異:</p>
+<ul>
+<li>bandit problem: 估計價值 $q_{*}(a)$</li>
+<li>MDPs: 估計
+<ul>
+<li>狀態動作價值 $q_{*}(s, a)$</li>
+<li>狀態價值 $v_{*}(s)$ (given optimal action selections)</li>
+</ul>
+</li>
+</ul>
+<p>關鍵元素:</p>
+<ul>
+<li>mathematical structure</li>
+<li>returns</li>
+<li>value functions</li>
+<li>Bellman equations</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h2 id=the-agent-environment-interface>
+The Agent-Environment Interface
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#the-agent-environment-interface class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor The Agent-Environment Interface" href=#the-agent-environment-interface><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p><img src=3.1.png alt></p>
+<p>$$S_0, A_0, R_1, S_1, A_1, R_2, \dots$$</p>
+<p>在有限的 MDP, 隨機變數 $R_t$ 和 $S_t$ 有隨機機率分佈只依賴於先前的動作和狀態。</p>
+<p>$$p( s^{\prime}, r \mid s, a) \doteq \operatorname{Pr} \lbrace S_{t}=s^{\prime}, R_{t}=r \mid S_{t-1}=s, A_{t-1}=a \rbrace$$</p>
+<p>for all $s', s \in \mathcal{S}, r \in \mathcal{R}$, and $a \in \mathcal{A}(s)$.</p>
+<p>函數 $p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0, 1]$ 定義了 MDP 的 <strong>dynamics</strong>.</p>
+<p>條件機率的符號提醒我們：$p$ 對每個選擇 $s$ 和 $a$ 指定一個機率分佈，也就是:</p>
+<p>$$\sum_{s^{\prime} \in \mathcal{S}} \sum_{r \in \mathcal{R}} p (s^{\prime}, r \mid s, a ) = 1, \text { for all } s \in \mathcal{S}, a \in \mathcal{A}(s)$$</p>
+<p>$S_t$ 和 $A_t$ 的機率只依賴於先前的狀態和動作, $S_{t-1}$ and $A_{t-1}$.</p>
+<ul>
+<li>這是一個馬可夫性質 (Markov property)。</li>
+</ul>
+<p>對於環境，我們可以計算狀態轉移機率 $p: \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow [0, 1]$</p>
+<p>$$p\left(s^{\prime} \mid s, a\right) \doteq \operatorname{Pr}\lbrace S_{t}=s^{\prime} \mid S_{t-1}=s, A_{t-1}=a\rbrace=\sum_{r \in \mathcal{R}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
+<p>計算 狀態-動作 (state-action pairs) 的期望獎勵 (expected rewards) $r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$</p>
+<p>$$r(s, a) \doteq \mathbb{E}\left[R_{t} \mid S_{t-1}=s, A_{t-1}=a\right]=\sum_{r \in \mathcal{R}} r \sum_{s^{\prime} \in \mathcal{S}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
+<p>計算 狀態-動作-下個狀態 (state-action-next-state pairs) 的期望獎勵 $r: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$</p>
+<p>$$r\left(s, a, s^{\prime}\right) \doteq \mathbb{E}\left[R_{t} \mid S_{t-1}=s, A_{t-1}=a, S_{t}=s^{\prime}\right]=\sum_{r \in \mathcal{R}} r \frac{p\left(s^{\prime}, r \mid s, a\right)}{p\left(s^{\prime} \mid s, a\right)}$$</p>
+<p>通用的規則是：任何事情無法被智慧主體任意改變的，都被視為它的外部，也就成為環境的一部分。智慧主體和環境的邊界在於智慧主體的可以絕對控制的範圍。</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=goals-and-rewards>
+Goals and Rewards
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#goals-and-rewards class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Goals and Rewards" href=#goals-and-rewards><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Reward hypothesis:</p>
+<p>可以把目標視為最大化累積獎勵的期望值。</p>
+<p>The reward signal is your way of communicating to the agent what you want to achieve, not how you want it to achieve.</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=returns-and-episodes>
+Returns and Episodes
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#returns-and-episodes class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Returns and Episodes" href=#returns-and-episodes><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>We have said that the agent’s goal is to maximize the cumulative reward it receives in the long run.</p>
+<p>$$G_{t} \doteq R_{t+1}+R_{t+2}+R_{t+3}+\cdots+R_{T}$$</p>
+<ul>
+<li>Return: 獎勵序列的某個特定函數</li>
+<li>Episodes: 當智慧主體和環境的互動自然的分成子序列的時刻</li>
+<li>Terminal state: 每個 episode 在特別的狀態下結束，之後會重整為起始狀態。</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h3 id=episodic-tasks>
+Episodic tasks
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#episodic-tasks class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Episodic tasks" href=#episodic-tasks><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>有 episode 的任務稱作 episodic tasks。</p>
+<ul>
+<li>non-terminal states: $\mathcal{S}$</li>
+<li>terminal state: $\mathcal{S}^+$</li>
+<li>終止時間 $T$ 是一個隨機變數，會隨著 episode 變化。</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h3 id=continuing-tasks>
+Continuing tasks
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#continuing-tasks class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Continuing tasks" href=#continuing-tasks><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>$T=\infty$</p>
+<p>Thus, in this book we usually use a definition of return that is slightly more complex conceptually but much simpler mathematically</p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=discounting>
+Discounting
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#discounting class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Discounting" href=#discounting><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>$$G_{t} \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots=\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}$$</p>
+<ul>
+<li>$\gamma$: a parameter $0 \le \gamma \le 1$</li>
+<li>$\gamma \lt 1$: $G_t$ is a finite value as long as the reward sequence ${R_k}$ is bounded.
+<ul>
+<li>$R_k$ 數值有上限</li>
+</ul>
+</li>
+<li>$\gamma = 0$: the agent is myopic</li>
+<li>$\gamma \approx 1$: the agent is farsighted</li>
+</ul>
+<p>$$\begin{aligned}
+G_{t} & \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} R_{t+4}+\cdots \newline
+&=R_{t+1}+\gamma\left(R_{t+2}+\gamma R_{t+3}+\gamma^{2} R_{t+4}+\cdots\right) \newline
+&=R_{t+1}+\gamma G_{t+1}
+\end{aligned}$$</p>
+<p>即使是無限項，reward 還是有限的</p>
+<p>e.g. if the reward is constant $+1$</p>
+<p>$$G_{t}=\sum_{k=0}^{\infty} \gamma^{k}=\frac{1}{1-\gamma}$$</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=unified-notation-for-episodic-and-continuing-tasks>
+Unified Notation for Episodic and Continuing Tasks
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#unified-notation-for-episodic-and-continuing-tasks class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Unified Notation for Episodic and Continuing Tasks" href=#unified-notation-for-episodic-and-continuing-tasks><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>可以藉由把 episode termination 是否進入 absorbing state 來統一兩種 tasks</p>
+<p>吸收狀態 (absorbing state): 狀態只會轉移到自己，並且產生 0 reward</p>
+<p><img src=3.4.png alt></p>
+<p>重新定義 return 的計算，省略了 episode 次數：</p>
+<p>$$G_{t} \doteq \sum_{k=t+1}^{T} \gamma^{k-t-1} R_{k}$$</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=policies-and-value-functions>
+Policies and Value Functions
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#policies-and-value-functions class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policies and Value Functions" href=#policies-and-value-functions><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Policy: 映射 states 到選擇某個動作的機率</p>
+<ul>
+<li>$\pi (a | s)$</li>
+</ul>
+<p>Value functions: 給定 states 或 state-action pairs，估計 agent 的 states 有多好。</p>
+<ul>
+<li>$v_{\pi} (s)$</li>
+</ul>
+<p>$$v_{\pi}(s) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s\right], \text { for all } s \in \mathcal{S}$$</p>
+<ul>
+<li>the state-action-value function for policy $\pi$</li>
+</ul>
+<p>$$q_{\pi}(s, a) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s, A_{t}=a\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s, A_{t}=a\right]$$</p>
+<ul>
+<li>the state-value function for policy $\pi$</li>
+</ul>
+<p>$$\begin{aligned}
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
+\end{aligned}$$</p>
+<p>Monte Carlo method: 採樣的次數越多 (趨近於無限)，價值估計就會越準 (收斂)。</p>
+<p>一個使用 RL 和 動態規劃的價值函數性質：符合遞迴關係式。</p>
+<p>Bellman equation:</p>
+<p>$$\begin{aligned}
+v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
+&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
+&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
+\end{aligned}$$</p>
+<p>$s^\prime$: 下個狀態</p>
+<p><img src=backup_diagram.png alt></p>
+<ul>
+<li>空心圓代表一個 state</li>
+<li>實心圓代表一個 state-action pair</li>
+</ul>
+<div class=gdoc-page__anchorwrap>
+<h2 id=optimal-policies-and-optimal-value-functions>
+Optimal Policies and Optimal Value Functions
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#optimal-policies-and-optimal-value-functions class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimal Policies and Optimal Value Functions" href=#optimal-policies-and-optimal-value-functions><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Optimal policy: $\pi \ge \pi^\prime$ if and only if $v_\pi (s) \ge v_{\pi^\prime} (s)$ for all $s \in \mathcal{S}$</p>
+<p>如果超過一個：就把所有的 optimal policies 定義為 $\pi_{*}$</p>
+<p>Optimal state-value function:</p>
+<p>$$\begin{array}{l}
+v_{*}(s) \doteq \max_{\pi}{v_{\pi}(s)} \newline
+\text { for all } s \in \mathcal{S} .
+\end{array}$$</p>
+<p>Optimal action-value function</p>
+<p>$$q_{*}(s, a) \doteq \max_{\pi} {q_{\pi}(s, a)},$$</p>
+<p>可以用 $v_{*}$ 重寫如下：</p>
+<p>$$q_{<em>}(s, a)=\mathbb{E}\left[R_{t+1}+\gamma v_{</em>}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right]$$</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=optimality-and-approximation>
+Optimality and Approximation
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#optimality-and-approximation class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimality and Approximation" href=#optimality-and-approximation><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>我們定義了 optimal value functions 和 optimal policies。不過實務上難以使用，因為計算量太大了。即使我們有個精準估計環境的模型，通常也不可能透過解出 Bellman optimality equation 計算一個 optimal policy。</p>
+<p>記憶體大小是重要的條件。對於狀態空間小的，可以求出近似解，這種案例稱為 tabular case。實務上，多數的問題涉及更大的狀態，這類的必須要用某種參數化的函數 (parameterized function representation)。</p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ title="Ch 2. Multi-Armed Bandits"> Ch 2. Multi-Armed Bandits</a>
 </span>
 <span class=gdoc-page__nav>
+<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ title="Ch 4. Dynamic Programming">Ch 4. Dynamic Programming </a>
 </span>
 </div>
 </div>

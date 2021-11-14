@@ -3,8 +3,8 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="表格式解法 (Tabular Solution Method) 為 RL 最簡單的形式：當所有的狀態和動作數量少到可以用多維陣列來表示價值函數。這些方法通常可以找到精確解 (exact solution)，也">
-<title>Part I: Tabular Solution Methods | Reinforcement Learning Notes</title>
+<meta name=description content="本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。 n-step TD Prediction Error reduction property Example 7.1: n-step TD Methods on the Random Walk n-step TD Prediction 比較 MC 與 TC 之間的差異。 考慮如何從以 $\pi$ 產生的 episodes 預估 $v_{\pi}$">
+<title>n-step Bootstrapping | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
 <link rel=preload as=font href=/RL-notes/fonts/Metropolis.woff2 type=font/woff2 crossorigin=anonymous>
@@ -54,50 +54,57 @@
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/introduction/ class=gdoc-nav__entry>
 Ch 1. Introduction
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/ class="gdoc-nav__entry is-active">
+<a href=/RL-notes/sutton/tabular-solution-methods/ class=gdoc-nav__entry>
 Part I: Tabular Solution Methods
 </a>
 </span>
 <ul class=gdoc-nav__list>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/multi-armed-bandits/ class=gdoc-nav__entry>
 Ch 2. Multi-Armed Bandits
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/ class=gdoc-nav__entry>
 Ch 3. Finite Markov Decision Processes
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/dynamic-programming/ class=gdoc-nav__entry>
 Ch 4. Dynamic Programming
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ class=gdoc-nav__entry>
 Ch 5. Monte Carlo Methods
 </a>
 </span>
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
 Ch 6. Temporal-Difference Learning
+</a>
+</span>
+</li>
+<li>
+<span class=flex>
+<a href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ class="gdoc-nav__entry is-active">
+Ch 7. n-step Bootstrapping
 </a>
 </span>
 </li>
@@ -127,39 +134,104 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/reinforcement-learning-an-introduction/ href=/RL-notes/reinforcement-learning-an-introduction/><span itemprop=name>Reinforcement Learning: An Introduction</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Part I: Tabular Solution Methods</span><meta itemprop=position content="4"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>n-step Bootstrapping</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
 <script>MathJax={tex:{inlineMath:[["$","$"]]},displayMath:[["$$","$$"],["[[","]]"]],svg:{fontCache:"global"}}</script>
 <script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
 <article class="gdoc-markdown gdoc-markdown__align--left">
-<h1>Part I: Tabular Solution Methods</h1>
-<div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents></nav><hr></div>
-<p><strong>表格式解法</strong> (<strong>Tabular Solution Method</strong>) 為 RL 最簡單的形式：當所有的狀態和動作數量少到可以用多維陣列來表示價值函數。這些方法通常可以找到精確解 (exact solution)，也就是精確的 價值函數 和 策略 的極值。</p>
-<p>第一章是 RL 的特殊形式：只有一個狀態，稱為 <strong>吃角子老虎機問題</strong> (bandit problems)。</p>
-<p>第二章是更通用的問題形式：有限馬可夫決策過程，主要概念包含 <strong>貝爾曼方程 (Bellman equations</strong>；又稱為 <strong>動態規劃方程</strong>) 和 <strong>價值函數</strong>。</p>
-<p>第三、四、五章描述三個基本類型的方法來解決 有限馬可夫決策 問題：<strong>動態規劃</strong> (<strong>dynamic programming</strong>)、<strong>蒙地卡羅法 (Monte Carlo methods</strong>)、<strong>時序差分學習法</strong> (<strong>temporal difference learning</strong>)。每個方法各有優劣：</p>
+<h1>n-step Bootstrapping</h1>
+<p>本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。</p>
+<div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents><ul>
+<li><a href=#n-step-td-prediction>n-step TD Prediction</a>
 <ul>
-<li>動態規劃：需要完整且精確的環境模型</li>
-<li>蒙地卡羅法：不需要完整且精確的環境模型，但是不適合逐步的增量計算。
-<ul>
-<li>增量計算 (incremental computation): 是一個軟體功能，當只有一小塊資料改變的時候，只會對產生變化的部分進行計算和更新，以節省計算時間。(is a software feature which, whenever a piece of data changes, attempts to save time by only recomputing those outputs which depend on the changed data.)</li>
+<li><a href=#error-reduction-property>Error reduction property</a></li>
+<li><a href=#example-71-n-step-td-methods-on-the-random-walk>Example 7.1: n-step TD Methods on the Random Walk</a></li>
 </ul>
 </li>
-<li>時序差分學習法：不需要完整的環境模型，也完全支援增量計算，但是更複雜而難以分析。</li>
-</ul>
-<p>第六、七章描述這三種方法如何結合各自的優點。第六章描述如何用 <strong>多步拔靴法</strong> (<strong>自助法</strong>；<strong>自助抽樣法</strong>；<strong>multi-step bootstrapping methods</strong>) 結合 <strong>蒙地卡羅法</strong> 和 <strong>時間差分學習法</strong>。第七章描述如何以 時序差分學習法 結合 模型學習 (model learning) 和 規劃法 (例如動態規劃) 來解決通用的表格式 RL 問題。</p>
+</ul></nav><hr></div>
+<div class=gdoc-page__anchorwrap>
+<h2 id=n-step-td-prediction>
+n-step TD Prediction
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#n-step-td-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor n-step TD Prediction" href=#n-step-td-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>比較 MC 與 TC 之間的差異。</p>
+<p>考慮如何從以 $\pi$ 產生的 episodes 預估 $v_{\pi}$：</p>
 <ul>
-<li><a class=gdoc-markdown__link href=multi-armed-bandits/>Multi-Armed Bandits</a></li>
+<li>MC: 根據整個 episode 的所有 states 進行更新</li>
+<li>1-step TD: 只根據下一個 state 進行更新</li>
+<li>n-step TD: 介於兩者的中間，根據下 n 個 state 進行更新</li>
+<li>$\infty$-step TD: 等同於 MC</li>
 </ul>
+<p>n-step 的 backup diagram 如下:</p>
+<p><img src=7.1.png alt></p>
+<ul>
+<li>空心: state</li>
+<li>實心: action</li>
+<li>方形: 中止狀態</li>
+</ul>
+<p>考慮到如何估計 $S_{t}, R_{t+1}, S_{t+1}, R_{t+2}, \ldots, R_{T}, S_{T}$ 的 value:</p>
+<p>已知 MC 的更新式如下：
+$$
+G_{t} \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T}
+$$
+其中 $T$ 是最後一個 time step。在此，稱這個量為更新的 <strong>目標</strong> (the <strong>target</strong> of the update)。</p>
+<p>1-step TD 的更新目標如下：
+$$
+G_{t: t+1} \doteq R_{t+1}+\gamma V_{t}\left(S_{t+1}\right)
+$$
+其中 $V_{t}: \mathcal{S} \rightarrow \mathbb{R}$ 代表 $v_{\pi}$ 在時間 $t$ 時的估計值。</p>
+<p>2-step TD 的更新目標可以推廣如下：
+$$
+G_{t: t+2} \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} V_{t+1}\left(S_{t+2}\right)
+$$</p>
+<p>以此類推，n-step TD 更新目標如下：
+$$
+G_{t: t+n} \doteq R_{t+1}+\gamma R_{t+2}+\cdots+\gamma^{n-1} R_{t+n}+\gamma^{n} V_{t+n-1}\left(S_{t+n}\right)
+$$
+對所有 $n, t$ 使得 $n \ge 1$ 且 $0 \le t \le T-n$。</p>
+<p>所有的 n-step 的 returns 都可以被視為用來近似於 &ldquo;所有的 returns&rdquo;，近似的部份為 $V_{t+n-1}(S_{t+n})$。如果 $t+n \ge T$ (亦即：n-step 會考慮到超出中止狀態之後的狀態) 則少掉的項會設定為 0。</p>
+<p>注意：當 $n \gt 1$ 時，n-step returns 會涉及未來的 rewards，所以要到 $t+n$ 後採樣到才能夠計算 $R_{t+n}$ 和 $V_{t+n-1}$。使用 n-step returns 的 state-value 學習演算法如下：
+$$
+V_{t+n}\left(S_{t}\right) \doteq V_{t+n-1}\left(S_{t}\right)+\alpha\left[G_{t: t+n}-V_{t+n-1}\left(S_{t}\right)\right], \quad 0 \leq t&lt;T
+$$
+同時，對於所有 $s \ne S_{t}$ 的 state-value 都保持不變。</p>
+<p><img src=alg-n-step-td.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=error-reduction-property>
+Error reduction property
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#error-reduction-property class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Error reduction property" href=#error-reduction-property><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>n-step returns 使用 $V_{t+n-1}$ 來近似在 $R_{t+n}$ 之後的未知的 rewards。一個重要的性質是：在最糟的狀態下，n-step returns 的期望值保證會比 $V_{t+n-1}$ 更好：
+$$
+\max <em>{s}\left|\mathbb{E}</em>{\pi}\left[G_{t: t+n} \mid S_{t}=s\right]-v_{\pi}(s)\right| \leq \gamma^{n} \max <em>{s}\left|V</em>{t+n-1}(s)-v_{\pi}(s)\right|
+$$
+對所有 $n \ge 1$。</p>
+<p>這個性質稱為 <strong>error reduction property</strong>。這個性質可以說明所有的 n-step 方法都收斂到正確的預測值 (predictions)。</p>
+<div class=gdoc-page__anchorwrap>
+<h3 id=example-71-n-step-td-methods-on-the-random-walk>
+Example 7.1: n-step TD Methods on the Random Walk
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#example-71-n-step-td-methods-on-the-random-walk class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 7.1: n-step TD Methods on the Random Walk" href=#example-71-n-step-td-methods-on-the-random-walk><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h3>
+</div><p>參考 <a class=gdoc-markdown__link href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#example-62>Example 6.2</a>，以下探討設定多少的 n 結果最好。實驗設定：</p>
+<ul>
+<li>參數 $n$ 與 $\alpha$</li>
+<li>計算前 10 個 episodes 的結果</li>
+<li>實驗重複執行 100 次取平均</li>
+</ul>
+<p>結果如下圖：</p>
+<p><img src=7.2.png alt></p>
+<p>從這個實驗可以知道，n-step 有機會比兩個極端 (1-step TD 與 MC) 結果更好。</p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/introduction/ title="Ch 1. Introduction"> Ch 1. Introduction</a>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ title="Ch 6. Temporal-Difference Learning"> Ch 6. Temporal-Difference Learning</a>
 </span>
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/Reinforcement-Learning-An-Introduction/tabular-solution-methods/multi-armed-bandits/ title="Ch 2. Multi-Armed Bandits">Ch 2. Multi-Armed Bandits </a>
 </span>
 </div>
 </div>
