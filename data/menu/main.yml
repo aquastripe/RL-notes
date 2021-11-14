@@ -17,3 +17,5 @@ main:
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/monte-carlo-methods/"
         - name: Ch 6. Temporal-Difference Learning
           ref: "/Reinforcement Learning: An Introduction/tabular-solution-methods/temporal-difference-learning/"
+        - name: Ch 7. n-step Bootstrapping
+          ref: "/Reinforcement Learning: An Introduction/n-step-bootstrapping/"
