@@ -198,7 +198,7 @@ Monte Carlo Prediction
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Prediction" href=#monte-carlo-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>問題：給定一個 policy，如何學習 state-value function $v_{\pi}(s)$？<br>
+</div><p>問題：給定一個 policy，如何學習 state-value function $v_ {\pi}(s)$？<br>
 一個顯而易見的解法：直接採樣 returns 並計算平均值。</p>
 <ul>
 <li>First-visit MC method: the average of the returns following first visits to $s$
@@ -210,7 +210,7 @@ Monte Carlo Prediction
 <li>Every-visit MC method: averages the returns following all visits to $s$
 <ul>
 <li>Ch 9 & Ch 12 再討論</li>
-<li>不檢查是否第一次探訪 $S_t$</li>
+<li>不檢查是否第一次探訪 $S_ t$</li>
 </ul>
 </li>
 </ul>
@@ -254,7 +254,7 @@ Monte Carlo Estimation of Action Values
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#monte-carlo-estimation-of-action-values class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Monte Carlo Estimation of Action Values" href=#monte-carlo-estimation-of-action-values><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>如果環境模型不存在，那麼估計 action-values $q_{\pi}(s, a)$ 會比 state-values $v_{\pi}(s)$ 更有效。</p>
+</div><p>如果環境模型不存在，那麼估計 action-values $q_ {\pi}(s, a)$ 會比 state-values $v_ {\pi}(s)$ 更有效。</p>
 <ul>
 <li>First-visit MC method: 平均每個 episode 第一次遇到的 state-action 的 returns</li>
 <li>Every-visit MC method: 平均所有遇到的 state-action 的 returns</li>
@@ -285,15 +285,15 @@ Monte Carlo Control
 </ul>
 <p>Policy improvement 會以 policy greedy 並根據目前的 value function 來完成。這種情況下，我們有一個 action-value function，因此不需要 model 來建構 policy greedy。Policy greedy 以決定性的方式選擇最大的 action-value：</p>
 <p>$$
-\pi(s) \doteq \arg \max _{a} q(s, a)
+\pi(s) \doteq \arg \max _ {a} q(s, a)
 $$</p>
 <p>根據 policy improvement 定理，對所有 $s \in \mathcal{S}$:</p>
 <p>$$
 \begin{aligned}
-q_{\pi_{k}}\left(s, \pi_{k+1}(s)\right) &=q_{\pi_{k}}\left(s, \underset{a}{\arg \max } q_{\pi_{k}}(s, a)\right) \newline
-&=\max <em>{a} q</em>{\pi_{k}}(s, a) \newline
-& \geq q_{\pi_{k}}\left(s, \pi_{k}(s)\right) \newline
-& \geq v_{\pi_{k}}(s)
+q_ {\pi_ {k}}\left(s, \pi_ {k+1}(s)\right) &=q_ {\pi_ {k}}\left(s, \underset{a}{\arg \max } q_ {\pi_ {k}}(s, a)\right) \newline
+&=\max _ {a} q_ {\pi_ {k}}(s, a) \newline
+& \geq q_ {\pi_ {k}}\left(s, \pi_ {k}(s)\right) \newline
+& \geq v_ {\pi_ {k}}(s)
 \end{aligned}
 $$</p>
 <p>每一輪的 policy 都會比上一輪的更好。</p>
@@ -352,18 +352,18 @@ On-policy control methods
 <p>$\varepsilon$&ndash;soft: $\pi(a | s) \ge \frac{\varepsilon}{| \mathcal{A}(s) |}$ 對所有 states, action, 還有某個 $\varepsilon > 0$。<br>
 $\varepsilon$&ndash;greedy 是一種 $\varepsilon$&ndash;soft。</p>
 <p>On-policy Monte Carlo control 整體的想法還是基於 GPI。少了 exploring starts 的假設，不能直接根據目前的 value function 並使用 greedy 取樣來改善 policy，因為這樣會阻止探索 non-greedy actions。</p>
-<p>對任意 $\varepsilon$&ndash;soft policy $\pi$，任何根據 $q_{\pi}$ 的 $\varepsilon$&ndash;greedy policy 都保證比 $\pi$ 更好，或是一樣好。演算法如下：</p>
+<p>對任意 $\varepsilon$&ndash;soft policy $\pi$，任何根據 $q_ {\pi}$ 的 $\varepsilon$&ndash;greedy policy 都保證比 $\pi$ 更好，或是一樣好。演算法如下：</p>
 <p><img src=on-policy-first-visit-mc-control.png alt></p>
 <p>$$
 \begin{aligned}
-q_{\pi}\left(s, \pi^{\prime}(s)\right) &=\sum_{a} \pi^{\prime}(a \mid s) q_{\pi}(s, a) \newline
-&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \max <em>{a} q</em>{\pi}(s, a) \newline
-& \geq \frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+(1-\varepsilon) \sum_{a} \frac{\pi(a \mid s)-\frac{\varepsilon}{|\mathcal{A}(s)|}}{1-\varepsilon} q_{\pi}(s, a) \newline
-&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)-\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_{a} q_{\pi}(s, a)+\sum_{a} \pi(a \mid s) q_{\pi}(s, a) \newline
-&=v_{\pi}(s)
+q_ {\pi}\left(s, \pi^{\prime}(s)\right) &=\sum_ {a} \pi^{\prime}(a \mid s) q_ {\pi}(s, a) \newline
+&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_ {a} q_ {\pi}(s, a)+(1-\varepsilon) \max _ {a} q_ {\pi}(s, a) \newline
+& \geq \frac{\varepsilon}{|\mathcal{A}(s)|} \sum_ {a} q_ {\pi}(s, a)+(1-\varepsilon) \sum_ {a} \frac{\pi(a \mid s)-\frac{\varepsilon}{|\mathcal{A}(s)|}}{1-\varepsilon} q_ {\pi}(s, a) \newline
+&=\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_ {a} q_ {\pi}(s, a)-\frac{\varepsilon}{|\mathcal{A}(s)|} \sum_ {a} q_ {\pi}(s, a)+\sum_ {a} \pi(a \mid s) q_ {\pi}(s, a) \newline
+&=v_ {\pi}(s)
 \end{aligned}
 $$</p>
-<p>因此，根據 policy improvement 定理，$v_{\pi^\prime}(s) \ge v_{\pi}(s), \forall s \in \mathcal{S}$。</p>
+<p>因此，根據 policy improvement 定理，$v_ {\pi^\prime}(s) \ge v_ {\pi}(s), \forall s \in \mathcal{S}$。</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=off-policy-prediction-via-importance-sampling>
 Off-policy Prediction via Importance Sampling
@@ -406,7 +406,7 @@ Off-policy Prediction via Importance Sampling
 </ul>
 </li>
 </ul>
-<p>從兩種 policy 來估計 $v_\pi$ 或 $q_\pi$：</p>
+<p>從兩種 policy 來估計 $v_ \pi$ 或 $q_ \pi$：</p>
 <ul>
 <li>目標策略: $\pi$</li>
 <li>行為策略: $b$</li>
@@ -416,55 +416,55 @@ Off-policy Prediction via Importance Sampling
 <li>因此，$b$ 必須是隨機性的，並且與 $\pi$ 不同。</li>
 <li>$\pi$ 可能是確定性的</li>
 </ul>
-<p>幾乎所有 off-policy 方法都會利用 importance sampling: 一種通用的技術，在某個分佈下透過給定另一個分佈來估計期望值。<a class=gdoc-markdown__link href=https://en.wikipedia.org/wiki/Importance_sampling>(Importance sampling Wiki)</a></p>
+<p>幾乎所有 off-policy 方法都會利用 importance sampling: 一種通用的技術，在某個分佈下透過給定另一個分佈來估計期望值。[(Importance sampling Wiki)](<a class=gdoc-markdown__link href=https://en.wikipedia.org/wiki/Importance>https://en.wikipedia.org/wiki/Importance</a>_ sampling)</p>
 <blockquote class="gdoc-hint info">
 <p><strong>Importance sampling</strong></p>
 <p>有時我們可能想從一個隨機分佈上面進行採樣，其中想要採樣的範圍發生的機率很低。使用 MC 採樣時，因為發生的機率很低，會導致產生的樣本數極少而失效。在這個「重要的區域」給予更多的權重，稱為「重要性採樣」。一個基本的重要性採樣方法是：想要計算某個分佈 $p$ 時，透過採用另一個分佈 $q$ 來完成。例如：</p>
 <p>$$
-\mu=\int_{\mathcal{D}} f(\boldsymbol{x}) p(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\int_{\mathcal{D}} \frac{f(\boldsymbol{x}) p(\boldsymbol{x})}{q(\boldsymbol{x})} q(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\mathbb{E}_{q}\left(\frac{f(\boldsymbol{X}) p(\boldsymbol{X})}{q(\boldsymbol{X})}\right)
+\mu=\int_ {\mathcal{D}} f(\boldsymbol{x}) p(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\int_ {\mathcal{D}} \frac{f(\boldsymbol{x}) p(\boldsymbol{x})}{q(\boldsymbol{x})} q(\boldsymbol{x}) \mathrm{d} \boldsymbol{x}=\mathbb{E}_ {q}\left(\frac{f(\boldsymbol{X}) p(\boldsymbol{X})}{q(\boldsymbol{X})}\right)
 $$</p>
 <p>Ref: <a class=gdoc-markdown__link href=https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf>https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf</a></p>
 </blockquote>
-<p>給定一個起始狀態 $S_t$，state-action trajectory $A_t, S_{t+1}, A_{t+1}, \ldots, S_T$ 在任意策略 $\pi$ 之下發生的機率為:</p>
+<p>給定一個起始狀態 $S_ t$，state-action trajectory $A_ t, S_ {t+1}, A_ {t+1}, \ldots, S_ T$ 在任意策略 $\pi$ 之下發生的機率為:</p>
 <p>$$
 \begin{array}{l}
-\operatorname{Pr} \lbrace A_{t}, S_{t+1}, A_{t+1}, \ldots, S_{T} \mid S_{t}, A_{t: T-1} \sim \pi \rbrace \newline
-\quad=\pi\left(A_{t} \mid S_{t}\right) p\left(S_{t+1} \mid S_{t}, A_{t}\right) \pi\left(A_{t+1} \mid S_{t+1}\right) \cdots p\left(S_{T} \mid S_{T-1}, A_{T-1}\right) \newline
-\quad=\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)
+\operatorname{Pr} \lbrace A_ {t}, S_ {t+1}, A_ {t+1}, \ldots, S_ {T} \mid S_ {t}, A_ {t: T-1} \sim \pi \rbrace \newline
+\quad=\pi\left(A_ {t} \mid S_ {t}\right) p\left(S_ {t+1} \mid S_ {t}, A_ {t}\right) \pi\left(A_ {t+1} \mid S_ {t+1}\right) \cdots p\left(S_ {T} \mid S_ {T-1}, A_ {T-1}\right) \newline
+\quad=\prod_ {k=t}^{T-1} \pi\left(A_ {k} \mid S_ {k}\right) p\left(S_ {k+1} \mid S_ {k}, A_ {k}\right)
 \end{array}
 $$</p>
 <p>其中，$p$ 是狀態轉移機率函數，在 3.4 中定義。因此，在目標策略和行為策略之下的 trajectory 的相對機率 (importance sampling ratio) 為:</p>
 <p>$$
 \begin{aligned}
-\rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
-&=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\rho_ {t: T-1} &\doteq \frac{\prod_ {k=t}^{T-1} \pi\left(A_ {k} \mid S_ {k}\right) p\left(S_ {k+1} \mid S_ {k}, A_ {k}\right)}{\prod_ {k=t}^{T-1} b\left(A_ {k} \mid S_ {k}\right) p\left(S_ {k+1} \mid S_ {k}, A_ {k}\right)}\newline
+&=\prod_ {k=t}^{T-1} \frac{\pi\left(A_ {k} \mid S_ {k}\right)}{b\left(A_ {k} \mid S_ {k}\right)}
 \end{aligned}
 $$</p>
 <p>雖然兩個 trajectory probabilities 依賴於 MDP 的狀態轉移機率，但它們在分子和分母都有出現且值一樣，所以兩個會消掉。最後，importance sampling ratio 只和兩個 policies 和序列有關，和 MDP 無關。</p>
 <p>我們使用行為策略採樣到的 returns 會估計出 <strong>行為策略</strong> 的 value function:</p>
 <p>$$
-\mathbb{E}\left[ G_{t} \mid S_{t}=s \right]=v_{b}(s)
+\mathbb{E}\left[ G_ {t} \mid S_ {t}=s \right]=v_ {b}(s)
 $$</p>
 <p>但是，透過上面的 importance sampling ratio 可以得到 <strong>目標策略</strong> 的 value function:</p>
 <p>$$
-\mathbb{E}\left[\rho_{t: T-1} G_{t} \mid S_{t}=s\right]=v_{\pi}(s)
+\mathbb{E}\left[\rho_ {t: T-1} G_ {t} \mid S_ {t}=s\right]=v_ {\pi}(s)
 $$</p>
 <p>Notation:</p>
 <ul>
 <li>$\mathcal{T}(s)$: 當 state $s$ 被探訪的情況下，所有 time steps 的集合</li>
 <li>$T(t)$: 在時間點 $t$ 之後第一次停止的時間</li>
-<li>$G_t$: 從 $t$ 到 $T(t)$ 之間的 returns</li>
-<li>$\lbrace G_{t} \rbrace_{t \in \mathcal{T}(s)}$: 屬於 state $s$ 的 returns</li>
-<li>$\lbrace \rho_{t: T(t)-1}\rbrace _{t \in \mathcal{T}(s)}$: 上面對應的重要性採樣比率 (importance-sampling ratios)</li>
+<li>$G_ t$: 從 $t$ 到 $T(t)$ 之間的 returns</li>
+<li>$\lbrace G_ {t} \rbrace_ {t \in \mathcal{T}(s)}$: 屬於 state $s$ 的 returns</li>
+<li>$\lbrace \rho_ {t: T(t)-1}\rbrace _ {t \in \mathcal{T}(s)}$: 上面對應的重要性採樣比率 (importance-sampling ratios)</li>
 </ul>
-<p>為了估計 $v_\pi(s)$，我們簡單的藉由 ratios 並計算平均來放大 returns:</p>
+<p>為了估計 $v_ \pi(s)$，我們簡單的藉由 ratios 並計算平均來放大 returns:</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)} \rho_ {t: T(t)-1} G_ {t}}{|\mathcal{T}(s)|}
 $$</p>
 <p>如果重要性採樣是透過單純的計算平均來完成，稱為 <strong>ordinary importance sampling</strong>。<br>
 另一種方式，是計算加權平均，稱為 <strong>weighted importance sampling</strong>:</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1}}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)} \rho_ {t: T(t)-1} G_ {t}}{\sum_ {t \in \mathcal{T}(s)} \rho_ {t: T(t)-1}}
 $$</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-54-off-policy-estimation-of-a-blackjack-state-value>
@@ -498,16 +498,16 @@ Ordinary importance sampling
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#ordinary-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Ordinary importance sampling" href=#ordinary-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p>Ordinary importance sampling 中，returns 以 importance sampling ratio $\rho_{t:T(t)-1}$ 進行放大，如下：</p>
+</div><p>Ordinary importance sampling 中，returns 以 importance sampling ratio $\rho_ {t:T(t)-1}$ 進行放大，如下：</p>
 <p>$$
 \begin{aligned}
-\rho_{t: T-1} &\doteq \frac{\prod_{k=t}^{T-1} \pi\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}{\prod_{k=t}^{T-1} b\left(A_{k} \mid S_{k}\right) p\left(S_{k+1} \mid S_{k}, A_{k}\right)}\newline
-&=\prod_{k=t}^{T-1} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+\rho_ {t: T-1} &\doteq \frac{\prod_ {k=t}^{T-1} \pi\left(A_ {k} \mid S_ {k}\right) p\left(S_ {k+1} \mid S_ {k}, A_ {k}\right)}{\prod_ {k=t}^{T-1} b\left(A_ {k} \mid S_ {k}\right) p\left(S_ {k+1} \mid S_ {k}, A_ {k}\right)}\newline
+&=\prod_ {k=t}^{T-1} \frac{\pi\left(A_ {k} \mid S_ {k}\right)}{b\left(A_ {k} \mid S_ {k}\right)}
 \end{aligned}
 $$</p>
 <p>然後再平均：</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \rho_{t: T(t)-1} G_{t}}{|\mathcal{T}(s)|}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)} \rho_ {t: T(t)-1} G_ {t}}{|\mathcal{T}(s)|}
 $$</p>
 <p>可以直接套用 Ch 2. 的方法並且計算放大和平均來做增量計算。</p>
 <div class=gdoc-page__anchorwrap>
@@ -516,19 +516,19 @@ Weighted importance sampling
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#weighted-importance-sampling class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Weighted importance sampling" href=#weighted-importance-sampling><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p>假設我們有 returns 序列 $G_1, G_2, \ldots, G_{n-1}$，從相同的狀態開始，每個狀態對應一個隨機的權重 $W_i$。我們要估計的如下式：</p>
+</div><p>假設我們有 returns 序列 $G_ 1, G_ 2, \ldots, G_ {n-1}$，從相同的狀態開始，每個狀態對應一個隨機的權重 $W_ i$。我們要估計的如下式：</p>
 <p>$$
-V_{n} \doteq \frac{\sum_{k=1}^{n-1} W_{k} G_{k}}{\sum_{k=1}^{n-1} W_{k}}, \quad n \geq 2
+V_ {n} \doteq \frac{\sum_ {k=1}^{n-1} W_ {k} G_ {k}}{\sum_ {k=1}^{n-1} W_ {k}}, \quad n \geq 2
 $$</p>
 <p>更新規則如下：</p>
 <p>$$
-V_{n+1} \doteq V_{n}+\frac{W_{n}}{C_{n}}\left[G_{n}-V_{n}\right], \quad n \geq 1
+V_ {n+1} \doteq V_ {n}+\frac{W_ {n}}{C_ {n}}\left[G_ {n}-V_ {n}\right], \quad n \geq 1
 $$</p>
-<p>$C_n$ 為累積和，計算如下：</p>
+<p>$C_ n$ 為累積和，計算如下：</p>
 <p>$$
-C_{n+1} \doteq C_{n}+W_{n+1}
+C_ {n+1} \doteq C_ {n}+W_ {n+1}
 $$</p>
-<p>其中，$C_0 \doteq 0$。</p>
+<p>其中，$C_ 0 \doteq 0$。</p>
 <p><img src=off-policy-mc-prediction.png alt></p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=off-policy-monte-carlo-control>
@@ -536,9 +536,9 @@ Off-policy Monte Carlo Control
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/#off-policy-monte-carlo-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Off-policy Monte Carlo Control" href=#off-policy-monte-carlo-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_<em>$ 和 $q_</em>$。</p>
+</div><p>以下是 off-policy MC control 基於 GPI 和 weighted importance sampling，用來估計 $\pi_ *$ 和 $q_ *$。</p>
 <ul>
-<li>目標策略：根據 $Q$ 的 greedy policy，是一個 $q_\pi$ 的估計值。</li>
+<li>目標策略：根據 $Q$ 的 greedy policy，是一個 $q_ \pi$ 的估計值。</li>
 <li>行為策略：可以是任意的，不過為了確保 $\pi$ 收斂到最佳策略，必須對每一組 state 和 action 取得無限多的 returns。
 <ul>
 <li>可以選擇將 $b$ 設定為 $\varepsilon$-soft 來達到這個條件。</li>
@@ -553,38 +553,38 @@ Off-policy Monte Carlo Control
 </a>
 </h2>
 </div><p>考慮一種情況：當 episodes 很長且 $\gamma \ll 1$，例如 100 steps 和 $\gamma = 0$。<br>
-時間點 $t = 0$ 的時候，return 會是 $G_0 = R_1$，但 importance sampling ratio 會是 100 個乘積：</p>
+時間點 $t = 0$ 的時候，return 會是 $G_ 0 = R_ 1$，但 importance sampling ratio 會是 100 個乘積：</p>
 <p>$$
-\frac{\pi\left(A_{0} \mid S_{0}\right)}{b\left(A_{0} \mid S_{0}\right)} \frac{\pi\left(A_{1} \mid S_{1}\right)}{b\left(A_{1} \mid S_{1}\right)} \cdots \frac{\pi\left(A_{99} \mid S_{99}\right)}{b\left(A_{99} \mid S_{99}\right)}
+\frac{\pi\left(A_ {0} \mid S_ {0}\right)}{b\left(A_ {0} \mid S_ {0}\right)} \frac{\pi\left(A_ {1} \mid S_ {1}\right)}{b\left(A_ {1} \mid S_ {1}\right)} \cdots \frac{\pi\left(A_ {99} \mid S_ {99}\right)}{b\left(A_ {99} \mid S_ {99}\right)}
 $$</p>
-<p>在 ordinary importance sampling 的情況下，return 會被這整個乘積放大，但實際需要的只有第一個，也就是 $\frac{\pi\left(A_{0} \mid S_{0}\right)}{b\left(A_{0} \mid S_{0}\right)}$，其他都是不相關的。期望值會是 1 不變，但變異數會不斷增加到無限大。</p>
+<p>在 ordinary importance sampling 的情況下，return 會被這整個乘積放大，但實際需要的只有第一個，也就是 $\frac{\pi\left(A_ {0} \mid S_ {0}\right)}{b\left(A_ {0} \mid S_ {0}\right)}$，其他都是不相關的。期望值會是 1 不變，但變異數會不斷增加到無限大。</p>
 <p><strong>Flat partial returns</strong>:</p>
 <p>$$
-\bar{G}_ {t: h} \doteq R_{t+1} + R_{t+2} + \cdots + R_{h}, \quad 0 \leq t&lt;h \leq T
+\bar{G}_ {t: h} \doteq R_ {t+1} + R_ {t+2} + \cdots + R_ {h}, \quad 0 \leq t&lt;h \leq T
 $$</p>
 <ul>
 <li>$h$: horizon，return 所要考慮的時間長度。</li>
 </ul>
-<p>完整版的 return $G_t$ 可以視為 flat partial returns 的總和：</p>
+<p>完整版的 return $G_ t$ 可以視為 flat partial returns 的總和：</p>
 <p>$$
 \begin{aligned}
-G_{t} \doteq & R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T} \newline
-=&(1-\gamma) R_{t+1} \newline
-&+(1-\gamma) \gamma\left(R_{t+1}+R_{t+2}\right) \newline
-&+(1-\gamma) \gamma^{2}\left(R_{t+1}+R_{t+2}+R_{t+3}\right) \newline
+G_ {t} \doteq & R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} R_ {t+3}+\cdots+\gamma^{T-t-1} R_ {T} \newline
+=&(1-\gamma) R_ {t+1} \newline
+&+(1-\gamma) \gamma\left(R_ {t+1}+R_ {t+2}\right) \newline
+&+(1-\gamma) \gamma^{2}\left(R_ {t+1}+R_ {t+2}+R_ {t+3}\right) \newline
 & \vdots \newline
-&+(1-\gamma) \gamma^{T-t-2}\left(R_{t+1}+R_{t+2}+\cdots+R_{T-1}\right) \newline
-&+\gamma^{T-t-1}\left(R_{t+1}+R_{t+2}+\cdots+R_{T}\right) \newline
-=&(1-\gamma) \sum_{h=t+1}^{T-1} \gamma^{h-t-1} \bar{G}<em>{t: h}+\gamma^{T-t-1} \bar{G}</em>{t: T}
+&+(1-\gamma) \gamma^{T-t-2}\left(R_ {t+1}+R_ {t+2}+\cdots+R_ {T-1}\right) \newline
+&+\gamma^{T-t-1}\left(R_ {t+1}+R_ {t+2}+\cdots+R_ {T}\right) \newline
+=&(1-\gamma) \sum_ {h=t+1}^{T-1} \gamma^{h-t-1} \bar{G}_ {t: h}+\gamma^{T-t-1} \bar{G}_ {t: T}
 \end{aligned}
 $$</p>
 <p>對這個 flat partial returns 以 importance-sampling ratio 進行放大，oridinary importance sampling：</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}<em>{t: h}+\gamma^{T(t)-t-1} \rho</em>{t: T(t)-1} \bar{G}_{t: T(t)}\right)}{|\mathcal{T}(s)|}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)}\left((1-\gamma) \sum_ {h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_ {t: h-1} \bar{G}_ {t: h}+\gamma^{T(t)-t-1} \rho_ {t: T(t)-1} \bar{G}_ {t: T(t)}\right)}{|\mathcal{T}(s)|}
 $$</p>
 <p>Weighted importance sampling:</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1} \bar{G}<em>{t: h}+\gamma^{T(t)-t-1} \rho</em>{t: T(t)-1} \bar{G}<em>{t: T(t)}\right)}{\sum</em>{t \in \mathcal{T}(s)}\left((1-\gamma) \sum_{h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_{t: h-1}+\gamma^{T(t)-t-1} \rho_{t: T(t)-1}\right)}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)}\left((1-\gamma) \sum_ {h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_ {t: h-1} \bar{G}_ {t: h}+\gamma^{T(t)-t-1} \rho_ {t: T(t)-1} \bar{G}_ {t: T(t)}\right)}{\sum_ {t \in \mathcal{T}(s)}\left((1-\gamma) \sum_ {h=t+1}^{T(t)-1} \gamma^{h-t-1} \rho_ {t: h-1}+\gamma^{T(t)-t-1} \rho_ {t: T(t)-1}\right)}
 $$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=per-decision-importance-sampling>
@@ -596,41 +596,41 @@ $$</p>
 <p>Off-policy estimators (value functions) 的分子，每一項的總和本身也是個總和，如下 (5.11)：</p>
 <p>$$
 \begin{aligned}
-\rho_{t: T-1} G_{t} &=\rho_{t: T-1}\left(R_{t+1}+\gamma R_{t+2}+\cdots+\gamma^{T-t-1} R_{T}\right) \newline
-&=\rho_{t: T-1} R_{t+1}+\gamma \rho_{t: T-1} R_{t+2}+\cdots+\gamma^{T-t-1} \rho_{t: T-1} R_{T}
+\rho_ {t: T-1} G_ {t} &=\rho_ {t: T-1}\left(R_ {t+1}+\gamma R_ {t+2}+\cdots+\gamma^{T-t-1} R_ {T}\right) \newline
+&=\rho_ {t: T-1} R_ {t+1}+\gamma \rho_ {t: T-1} R_ {t+2}+\cdots+\gamma^{T-t-1} \rho_ {t: T-1} R_ {T}
 \end{aligned}
 $$</p>
 <p>每一項都跟期望值有關，所以能用更簡單的方式描述。上式的每項都是一個隨機的 reward 和隨機的 importance-sampling ratio 的乘積，例如：</p>
 <p>$$
-\rho_{t: T-1} R_{t+1}=\frac{\pi\left(A_{t} \mid S_{t}\right)}{b\left(A_{t} \mid S_{t}\right)} \frac{\pi\left(A_{t+1} \mid S_{t+1}\right)}{b\left(A_{t+1} \mid S_{t+1}\right)} \frac{\pi\left(A_{t+2} \mid S_{t+2}\right)}{b\left(A_{t+2} \mid S_{t+2}\right)} \cdots \frac{\pi\left(A_{T-1} \mid S_{T-1}\right)}{b\left(A_{T-1} \mid S_{T-1}\right)} R_{t+1}
+\rho_ {t: T-1} R_ {t+1}=\frac{\pi\left(A_ {t} \mid S_ {t}\right)}{b\left(A_ {t} \mid S_ {t}\right)} \frac{\pi\left(A_ {t+1} \mid S_ {t+1}\right)}{b\left(A_ {t+1} \mid S_ {t+1}\right)} \frac{\pi\left(A_ {t+2} \mid S_ {t+2}\right)}{b\left(A_ {t+2} \mid S_ {t+2}\right)} \cdots \frac{\pi\left(A_ {T-1} \mid S_ {T-1}\right)}{b\left(A_ {T-1} \mid S_ {T-1}\right)} R_ {t+1}
 $$</p>
 <ul>
 <li>有人認為只有第一個和最後一個乘數 (reward) 有用，其他都是在這個 reward 之後發生的事件。</li>
 <li>其他項的期望值是 $1$：</li>
 </ul>
 <p>$$
-\mathbb{E}\left[\frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}\right] \doteq \sum_{a} b\left(a \mid S_{k}\right) \frac{\pi\left(a \mid S_{k}\right)}{b\left(a \mid S_{k}\right)}=\sum_{a} \pi\left(a \mid S_{k}\right)=1
+\mathbb{E}\left[\frac{\pi\left(A_ {k} \mid S_ {k}\right)}{b\left(A_ {k} \mid S_ {k}\right)}\right] \doteq \sum_ {a} b\left(a \mid S_ {k}\right) \frac{\pi\left(a \mid S_ {k}\right)}{b\left(a \mid S_ {k}\right)}=\sum_ {a} \pi\left(a \mid S_ {k}\right)=1
 $$</p>
 <p>每個乘數在期望值上都沒有作用，也就是：</p>
 <p>$$
-\mathbb{E}\left[\rho_{t: T-1} R_{t+1}\right]=\mathbb{E}\left[\rho_{t: t} R_{t+1}\right]
+\mathbb{E}\left[\rho_ {t: T-1} R_ {t+1}\right]=\mathbb{E}\left[\rho_ {t: t} R_ {t+1}\right]
 $$</p>
 <p>如果重複這個流程，對於第 k 個 (5.11) 的子項，可以得到以下：</p>
 <p>$$
-\mathbb{E}\left[\rho_{t: T-1} R_{t+k}\right]=\mathbb{E}\left[\rho_{t: t+k-1} R_{t+k}\right]
+\mathbb{E}\left[\rho_ {t: T-1} R_ {t+k}\right]=\mathbb{E}\left[\rho_ {t: t+k-1} R_ {t+k}\right]
 $$</p>
 <p>原本的期望值可以被寫成如下：</p>
 <p>$$
-\mathbb{E}\left[\rho_{t: T-1} G_{t}\right]=\mathbb{E}\left[\tilde{G}_{t}\right]
+\mathbb{E}\left[\rho_ {t: T-1} G_ {t}\right]=\mathbb{E}\left[\tilde{G}_ {t}\right]
 $$</p>
 <p>其中，</p>
 <p>$$
-\tilde{G}_ {t}=\rho_{t: t} R_{t+1}+\gamma \rho_{t: t+1} R_{t+2}+\gamma^{2} \rho_{t: t+2} R_{t+3}+\cdots+\gamma^{T-t-1} \rho_{t: T-1} R_{T}
+\tilde{G}_ {t}=\rho_ {t: t} R_ {t+1}+\gamma \rho_ {t: t+1} R_ {t+2}+\gamma^{2} \rho_ {t: t+2} R_ {t+3}+\cdots+\gamma^{T-t-1} \rho_ {t: T-1} R_ {T}
 $$</p>
 <p>這個稱為 <strong>per-decision</strong> importance sampling。</p>
 <p>使用這個 importance sampling 套在 ordinary importance sampling 之後，可以得到以下：</p>
 <p>$$
-V(s) \doteq \frac{\sum_{t \in \mathcal{T}(s)} \tilde{G}_{t}}{|\mathcal{T}(s)|}
+V(s) \doteq \frac{\sum_ {t \in \mathcal{T}(s)} \tilde{G}_ {t}}{|\mathcal{T}(s)|}
 $$</p>
 <p>這個會產生較小的變異數。</p>
 <div class=gdoc-page__anchorwrap>

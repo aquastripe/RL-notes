@@ -166,11 +166,11 @@ hidden-mobile" itemprop=breadcrumb>
 </ul>
 <p>差異:</p>
 <ul>
-<li>bandit problem: 估計價值 $q_{*}(a)$</li>
+<li>bandit problem: 估計價值 $q_ {* }(a)$</li>
 <li>MDPs: 估計
 <ul>
-<li>狀態動作價值 $q_{*}(s, a)$</li>
-<li>狀態價值 $v_{*}(s)$ (given optimal action selections)</li>
+<li>狀態動作價值 $q_ {* }(s, a)$</li>
+<li>狀態價值 $v_ {* }(s)$ (given optimal action selections)</li>
 </ul>
 </li>
 </ul>
@@ -188,23 +188,23 @@ The Agent-Environment Interface
 </a>
 </h2>
 </div><p><img src=3.1.png alt></p>
-<p>$$S_0, A_0, R_1, S_1, A_1, R_2, \dots$$</p>
-<p>在有限的 MDP, 隨機變數 $R_t$ 和 $S_t$ 有隨機機率分佈只依賴於先前的動作和狀態。</p>
-<p>$$p( s^{\prime}, r \mid s, a) \doteq \operatorname{Pr} \lbrace S_{t}=s^{\prime}, R_{t}=r \mid S_{t-1}=s, A_{t-1}=a \rbrace$$</p>
+<p>$$S_ 0, A_ 0, R_ 1, S_ 1, A_ 1, R_ 2, \dots$$</p>
+<p>在有限的 MDP, 隨機變數 $R_ t$ 和 $S_ t$ 有隨機機率分佈只依賴於先前的動作和狀態。</p>
+<p>$$p( s^{\prime}, r \mid s, a) \doteq \operatorname{Pr} \lbrace S_ {t}=s^{\prime}, R_ {t}=r \mid S_ {t-1}=s, A_ {t-1}=a \rbrace$$</p>
 <p>for all $s', s \in \mathcal{S}, r \in \mathcal{R}$, and $a \in \mathcal{A}(s)$.</p>
-<p>函數 $p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0, 1]$ 定義了 MDP 的 <strong>dynamics</strong>.</p>
+<p>函數 $p: \mathcal{S} \times \mathcal{R} \times \mathcal{S} \times \mathcal{A} \rightarrow [0, 1]$ 定義了 MDP 的 * * dynamics* * .</p>
 <p>條件機率的符號提醒我們：$p$ 對每個選擇 $s$ 和 $a$ 指定一個機率分佈，也就是:</p>
-<p>$$\sum_{s^{\prime} \in \mathcal{S}} \sum_{r \in \mathcal{R}} p (s^{\prime}, r \mid s, a ) = 1, \text { for all } s \in \mathcal{S}, a \in \mathcal{A}(s)$$</p>
-<p>$S_t$ 和 $A_t$ 的機率只依賴於先前的狀態和動作, $S_{t-1}$ and $A_{t-1}$.</p>
+<p>$$\sum_ {s^{\prime} \in \mathcal{S}} \sum_ {r \in \mathcal{R}} p (s^{\prime}, r \mid s, a ) = 1, \text { for all } s \in \mathcal{S}, a \in \mathcal{A}(s)$$</p>
+<p>$S_ t$ 和 $A_ t$ 的機率只依賴於先前的狀態和動作, $S_ {t-1}$ and $A_ {t-1}$.</p>
 <ul>
 <li>這是一個馬可夫性質 (Markov property)。</li>
 </ul>
 <p>對於環境，我們可以計算狀態轉移機率 $p: \mathcal{S} \times \mathcal{S} \times \mathcal{A} \rightarrow [0, 1]$</p>
-<p>$$p\left(s^{\prime} \mid s, a\right) \doteq \operatorname{Pr}\lbrace S_{t}=s^{\prime} \mid S_{t-1}=s, A_{t-1}=a\rbrace=\sum_{r \in \mathcal{R}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
+<p>$$p\left(s^{\prime} \mid s, a\right) \doteq \operatorname{Pr}\lbrace S_ {t}=s^{\prime} \mid S_ {t-1}=s, A_ {t-1}=a\rbrace=\sum_ {r \in \mathcal{R}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
 <p>計算 狀態-動作 (state-action pairs) 的期望獎勵 (expected rewards) $r: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$</p>
-<p>$$r(s, a) \doteq \mathbb{E}\left[R_{t} \mid S_{t-1}=s, A_{t-1}=a\right]=\sum_{r \in \mathcal{R}} r \sum_{s^{\prime} \in \mathcal{S}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
+<p>$$r(s, a) \doteq \mathbb{E}\left[R_ {t} \mid S_ {t-1}=s, A_ {t-1}=a\right]=\sum_ {r \in \mathcal{R}} r \sum_ {s^{\prime} \in \mathcal{S}} p\left(s^{\prime}, r \mid s, a\right)$$</p>
 <p>計算 狀態-動作-下個狀態 (state-action-next-state pairs) 的期望獎勵 $r: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}$</p>
-<p>$$r\left(s, a, s^{\prime}\right) \doteq \mathbb{E}\left[R_{t} \mid S_{t-1}=s, A_{t-1}=a, S_{t}=s^{\prime}\right]=\sum_{r \in \mathcal{R}} r \frac{p\left(s^{\prime}, r \mid s, a\right)}{p\left(s^{\prime} \mid s, a\right)}$$</p>
+<p>$$r\left(s, a, s^{\prime}\right) \doteq \mathbb{E}\left[R_ {t} \mid S_ {t-1}=s, A_ {t-1}=a, S_ {t}=s^{\prime}\right]=\sum_ {r \in \mathcal{R}} r \frac{p\left(s^{\prime}, r \mid s, a\right)}{p\left(s^{\prime} \mid s, a\right)}$$</p>
 <p>通用的規則是：任何事情無法被智慧主體任意改變的，都被視為它的外部，也就成為環境的一部分。智慧主體和環境的邊界在於智慧主體的可以絕對控制的範圍。</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=goals-and-rewards>
@@ -222,7 +222,7 @@ Returns and Episodes
 </a>
 </h2>
 </div><p>We have said that the agent’s goal is to maximize the cumulative reward it receives in the long run.</p>
-<p>$$G_{t} \doteq R_{t+1}+R_{t+2}+R_{t+3}+\cdots+R_{T}$$</p>
+<p>$$G_ {t} \doteq R_ {t+1}+R_ {t+2}+R_ {t+3}+\cdots+R_ {T}$$</p>
 <ul>
 <li>Return: 獎勵序列的某個特定函數</li>
 <li>Episodes: 當智慧主體和環境的互動自然的分成子序列的時刻</li>
@@ -254,25 +254,25 @@ Discounting
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#discounting class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Discounting" href=#discounting><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p>$$G_{t} \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots=\sum_{k=0}^{\infty} \gamma^{k} R_{t+k+1}$$</p>
+</div><p>$$G_ {t} \doteq R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} R_ {t+3}+\cdots=\sum_ {k=0}^{\infty} \gamma^{k} R_ {t+k+1}$$</p>
 <ul>
 <li>$\gamma$: a parameter $0 \le \gamma \le 1$</li>
-<li>$\gamma \lt 1$: $G_t$ is a finite value as long as the reward sequence ${R_k}$ is bounded.
+<li>$\gamma \lt 1$: $G_ t$ is a finite value as long as the reward sequence ${R_ k}$ is bounded.
 <ul>
-<li>$R_k$ 數值有上限</li>
+<li>$R_ k$ 數值有上限</li>
 </ul>
 </li>
 <li>$\gamma = 0$: the agent is myopic</li>
 <li>$\gamma \approx 1$: the agent is farsighted</li>
 </ul>
 <p>$$\begin{aligned}
-G_{t} & \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} R_{t+4}+\cdots \newline
-&=R_{t+1}+\gamma\left(R_{t+2}+\gamma R_{t+3}+\gamma^{2} R_{t+4}+\cdots\right) \newline
-&=R_{t+1}+\gamma G_{t+1}
+G_ {t} & \doteq R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} R_ {t+3}+\gamma^{3} R_ {t+4}+\cdots \newline
+&=R_ {t+1}+\gamma\left(R_ {t+2}+\gamma R_ {t+3}+\gamma^{2} R_ {t+4}+\cdots\right) \newline
+&=R_ {t+1}+\gamma G_ {t+1}
 \end{aligned}$$</p>
 <p>即使是無限項，reward 還是有限的</p>
 <p>e.g. if the reward is constant $+1$</p>
-<p>$$G_{t}=\sum_{k=0}^{\infty} \gamma^{k}=\frac{1}{1-\gamma}$$</p>
+<p>$$G_ {t}=\sum_ {k=0}^{\infty} \gamma^{k}=\frac{1}{1-\gamma}$$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=unified-notation-for-episodic-and-continuing-tasks>
 Unified Notation for Episodic and Continuing Tasks
@@ -283,7 +283,7 @@ Unified Notation for Episodic and Continuing Tasks
 <p>吸收狀態 (absorbing state): 狀態只會轉移到自己，並且產生 0 reward</p>
 <p><img src=3.4.png alt></p>
 <p>重新定義 return 的計算，省略了 episode 次數：</p>
-<p>$$G_{t} \doteq \sum_{k=t+1}^{T} \gamma^{k-t-1} R_{k}$$</p>
+<p>$$G_ {t} \doteq \sum_ {k=t+1}^{T} \gamma^{k-t-1} R_ {k}$$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=policies-and-value-functions>
 Policies and Value Functions
@@ -296,33 +296,33 @@ Policies and Value Functions
 </ul>
 <p>Value functions: 給定 states 或 state-action pairs，估計 agent 的 states 有多好。</p>
 <ul>
-<li>$v_{\pi} (s)$</li>
+<li>$v_ {\pi} (s)$</li>
 </ul>
-<p>$$v_{\pi}(s) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s\right], \text { for all } s \in \mathcal{S}$$</p>
+<p>$$v_ {\pi}(s) \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right]=\mathbb{E}_ {\pi}\left[\sum_ {k=0}^{\infty} \gamma^{k} R_ {t+k+1} \mid S_ {t}=s\right], \text { for all } s \in \mathcal{S}$$</p>
 <ul>
 <li>the state-action-value function for policy $\pi$</li>
 </ul>
-<p>$$q_{\pi}(s, a) \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s, A_{t}=a\right]=\mathbb{E}<em>{\pi}\left[\sum</em>{k=0}^{\infty} \gamma^{k} R_{t+k+1} \mid S_{t}=s, A_{t}=a\right]$$</p>
+<p>$$q_ {\pi}(s, a) \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s, A_ {t}=a\right]=\mathbb{E}_ {\pi}\left[\sum_ {k=0}^{\infty} \gamma^{k} R_ {t+k+1} \mid S_ {t}=s, A_ {t}=a\right]$$</p>
 <ul>
 <li>the state-value function for policy $\pi$</li>
 </ul>
 <p>$$\begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
+v_ {\pi}(s) & \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma G_ {t+1} \mid S_ {t}=s\right] \newline
+&=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}} \sum_ {r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}_ {\pi}\left[G_ {t+1} \mid S_ {t+1}=s^{\prime}\right]\right] \newline
+&=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
 \end{aligned}$$</p>
 <p>Monte Carlo method: 採樣的次數越多 (趨近於無限)，價值估計就會越準 (收斂)。</p>
 <p>一個使用 RL 和 動態規劃的價值函數性質：符合遞迴關係式。</p>
 <p>Bellman equation:</p>
 <p>$$\begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}} \sum_{r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}<em>{\pi}\left[G</em>{t+1} \mid S_{t+1}=s^{\prime}\right]\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
+v_ {\pi}(s) & \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma G_ {t+1} \mid S_ {t}=s\right] \newline
+&=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}} \sum_ {r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma \mathbb{E}_ {\pi}\left[G_ {t+1} \mid S_ {t+1}=s^{\prime}\right]\right] \newline
+&=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right], \quad \text { for all } s \in \mathcal{S},
 \end{aligned}$$</p>
 <p>$s^\prime$: 下個狀態</p>
-<p><img src=backup_diagram.png alt></p>
+<p>![](backup_ diagram.png)</p>
 <ul>
 <li>空心圓代表一個 state</li>
 <li>實心圓代表一個 state-action pair</li>
@@ -333,17 +333,17 @@ Optimal Policies and Optimal Value Functions
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/finite-markov-decision-processes/#optimal-policies-and-optimal-value-functions class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimal Policies and Optimal Value Functions" href=#optimal-policies-and-optimal-value-functions><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>Optimal policy: $\pi \ge \pi^\prime$ if and only if $v_\pi (s) \ge v_{\pi^\prime} (s)$ for all $s \in \mathcal{S}$</p>
-<p>如果超過一個：就把所有的 optimal policies 定義為 $\pi_{*}$</p>
+</div><p>Optimal policy: $\pi \ge \pi^\prime$ if and only if $v_ \pi (s) \ge v_ {\pi^\prime} (s)$ for all $s \in \mathcal{S}$</p>
+<p>如果超過一個：就把所有的 optimal policies 定義為 $\pi_ {* }$</p>
 <p>Optimal state-value function:</p>
 <p>$$\begin{array}{l}
-v_{*}(s) \doteq \max_{\pi}{v_{\pi}(s)} \newline
+v_ {* }(s) \doteq \max_ {\pi}{v_ {\pi}(s)} \newline
 \text { for all } s \in \mathcal{S} .
 \end{array}$$</p>
 <p>Optimal action-value function</p>
-<p>$$q_{*}(s, a) \doteq \max_{\pi} {q_{\pi}(s, a)},$$</p>
-<p>可以用 $v_{*}$ 重寫如下：</p>
-<p>$$q_{<em>}(s, a)=\mathbb{E}\left[R_{t+1}+\gamma v_{</em>}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right]$$</p>
+<p>$$q_ {* }(s, a) \doteq \max_ {\pi} {q_ {\pi}(s, a)},$$</p>
+<p>可以用 $v_ {* }$ 重寫如下：</p>
+<p>$$q_ {* }(s, a)=\mathbb{E}\left[R_ {t+1}+\gamma v_ {* }\left(S_ {t+1}\right) \mid S_ {t}=s, A_ {t}=a\right]$$</p>
 <div class=gdoc-page__anchorwrap>
 <h2 id=optimality-and-approximation>
 Optimality and Approximation

@@ -174,23 +174,23 @@ Policy Evaluation (Prediction)
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-evaluation-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Evaluation (Prediction)" href=#policy-evaluation-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>Policy evaluation: 如何為任意的策略 $\pi$ 計算 狀態-價值函數 $v_{\pi}$</p>
+</div><p>Policy evaluation: 如何為任意的策略 $\pi$ 計算 狀態-價值函數 $v_ {\pi}$</p>
 <p>$$
 \begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}<em>{\pi}\left[G</em>{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline
-&=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]
+v_ {\pi}(s) & \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma G_ {t+1} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s\right] \newline
+&=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right]
 \end{aligned}
 $$</p>
-<p>$v_{\pi}$ 保證存在且唯一的條件 (任一):</p>
+<p>$v_ {\pi}$ 保證存在且唯一的條件 (任一):</p>
 <ul>
 <li>$\gamma &lt; 1$</li>
 <li>從策略 $\pi$ 之下的所有狀態，最後會進入中止狀態</li>
 </ul>
-<p>如果環境的動態是完全已知的，那麼 (4.4) 式是一個 $| \mathcal{S} |$ 未知的聯立線性方程 (simultaneous linear equations) ($v_{\pi}, s \in \mathcal{S}$)</p>
+<p>如果環境的動態是完全已知的，那麼 (4.4) 式是一個 $| \mathcal{S} |$ 未知的聯立線性方程 (simultaneous linear equations) ($v_ {\pi}, s \in \mathcal{S}$)</p>
 <ul>
-<li>(4.4): $v_{\pi}(s)=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]$</li>
+<li>(4.4): $v_ {\pi}(s)=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right]$</li>
 <li>這種情況可以直接求解 (tedious)</li>
 </ul>
 <div class=gdoc-page__anchorwrap>
@@ -200,13 +200,13 @@ Iterative policy evaluation (迭代策略評估)
 </a>
 </h3>
 </div><p>迭代解法會更適用 RL 的情境。</p>
-<p>考慮到一個近似價值函數的序列 $v_0, v_1, v_2, \dots,$ 每個映射 $\mathcal{S}^+$ 到 $\mathbb{R}$。
-選定任意初始價值 $v_0$ (除了中止狀態必須給值為 0)，對所有狀態 $s \in \mathcal{S}$，可以利用 Bellman equation (4.4) 進行連續近似：</p>
+<p>考慮到一個近似價值函數的序列 $v_ 0, v_ 1, v_ 2, \dots,$ 每個映射 $\mathcal{S}^+$ 到 $\mathbb{R}$。
+選定任意初始價值 $v_ 0$ (除了中止狀態必須給值為 0)，對所有狀態 $s \in \mathcal{S}$，可以利用 Bellman equation (4.4) 進行連續近似：</p>
 <p>$$
-\begin{aligned} v_{k+1}(s) & \doteq \mathbb{E}<em>{\pi}\left[R</em>{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline &=\sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right] \end{aligned}
+\begin{aligned} v_ {k+1}(s) & \doteq \mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma v_ {k}\left(S_ {t+1}\right) \mid S_ {t}=s\right] \newline &=\sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {k}\left(s^{\prime}\right)\right] \end{aligned}
 $$</p>
 <ul>
-<li>當 $k \rightarrow \infty$ 時， $\lbrace v_k \rbrace$ 收斂到 $v_{\pi}$</li>
+<li>當 $k \rightarrow \infty$ 時， $\lbrace v_ k \rbrace$ 收斂到 $v_ {\pi}$</li>
 </ul>
 <p>為了產生每個連續的近似，迭代策略評估對每個狀態 $s$ 套用相同的操作：</p>
 <ul>
@@ -217,7 +217,7 @@ $$</p>
 <li>對所有可能的狀態計算期望值，而非採樣一個狀態。</li>
 </ul>
 <blockquote class="gdoc-hint info">
-<p><strong>Iterative Policy Evaluation, for estimating</strong> $V \approx v_{\pi}$</p>
+<p><strong>Iterative Policy Evaluation, for estimating</strong> $V \approx v_ {\pi}$</p>
 <p>Input $\pi$, the policy to be evaluated</p>
 <p>Algorithm parameter:</p>
 <ul>
@@ -229,7 +229,7 @@ $$</p>
 <li>&mldr; $\Delta \leftarrow 0$</li>
 <li>&mldr; Loop for each $s \in \mathcal{S}:$</li>
 <li>&mldr; &mldr; $v \leftarrow V(s)$</li>
-<li>&mldr; &mldr; $V(s) \leftarrow \sum_{a} \pi(a \mid s) \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
+<li>&mldr; &mldr; $V(s) \leftarrow \sum_ {a} \pi(a \mid s) \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
 <li>&mldr; &mldr; $\Delta \leftarrow \max (\Delta,|v-V(s)|)$</li>
 <li>until $\Delta&lt;\theta$</li>
 </ol>
@@ -241,15 +241,15 @@ Policy Improvement
 </a>
 </h2>
 </div><p>計算 價值函數 是為了找到更好的 策略。</p>
-<p>假設我們已經決定了 價值函數 $v_{\pi}$ 對任意確定性的策略 $\pi$。<br>
+<p>假設我們已經決定了 價值函數 $v_ {\pi}$ 對任意確定性的策略 $\pi$。<br>
 對某個狀態 $s$ 我們可能想知道是否我們應該改變策略來確定性的選擇一個動作 $a \neq \pi(s)$。<br>
-我們想知道 $v_{\pi}(s)$ 有多好，但改變策略可能會變得更好或更壞。</p>
+我們想知道 $v_ {\pi}(s)$ 有多好，但改變策略可能會變得更好或更壞。</p>
 <p>一種方式是：考慮在狀態 $s$ 之下選擇一個動作 $a$，經由目前的策略 $\pi$。這種情況下，價值為：</p>
 <p>$$
-\begin{aligned}q_{\pi}(s, a) & \doteq \mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline
-&=\sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]\end{aligned}
+\begin{aligned}q_ {\pi}(s, a) & \doteq \mathbb{E}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s, A_ {t}=a\right] \newline
+&=\sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right]\end{aligned}
 $$</p>
-<p>這個價值比 $v_{\pi}(s)$ 大或小？如果比較大，代表在狀態 $s$ 下，選擇動作 $a$ 會有較大的價值。</p>
+<p>這個價值比 $v_ {\pi}(s)$ 大或小？如果比較大，代表在狀態 $s$ 下，選擇動作 $a$ 會有較大的價值。</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=policy-improvement-theorem>
 Policy improvement theorem
@@ -257,14 +257,14 @@ Policy improvement theorem
 </a>
 </h3>
 </div><p>Let $\pi$ and $\pi^\prime$ be any pair of deterministic policies such that, for all $s \in \mathcal{S}$, (4.7):</p>
-<p>$$q_{\pi}\left(s, \pi^{\prime}(s)\right) \geq v_{\pi}(s)$$</p>
+<p>$$q_ {\pi}\left(s, \pi^{\prime}(s)\right) \geq v_ {\pi}(s)$$</p>
 <p>Then the policy $\pi^\prime$ must be as good as, or better than, $\pi$. That is, it must obtain greater or equal expected return from all states $s \in \mathcal{S}$, (4.8):</p>
-<p>$$v_{\pi^{\prime}}(s) \geq v_{\pi}(s)$$</p>
+<p>$$v_ {\pi^{\prime}}(s) \geq v_ {\pi}(s)$$</p>
 <p>Moreover, if there is strict inequality of (4.7) at any state, then there must be strict inequality of (4.8) at that state.</p>
-<p>$$\begin{aligned}v_{\pi}(s) & \leq q_{\pi}\left(s, \pi^{\prime}(s)\right) \newline&=\mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=\pi^{\prime}(s)\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma q_{\pi}\left(S_{t+1}, \pi^{\prime}\left(S_{t+1}\right)\right) \mid S_{t}=s\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma \mathbb{E}\left[R_{t+2}+\gamma v_{\pi}\left(S_{t+2}\right) \mid S_{t+1}, A_{t+1}=\pi^{\prime}\left(S_{t+1}\right)\right] \mid S_{t}=s\right] \newline&=\mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} v_{\pi}\left(S_{t+2}\right) \mid S_{t}=s\right] \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} v_{\pi}\left(S_{t+3}\right) \mid S_{t}=s\right] \newline& \vdots \newline& \leq \mathbb{E}<em>{\pi^{\prime}}\left[R</em>{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\gamma^{3} R_{t+4}+\cdots \mid S_{t}=s\right] \newline&=v_{\pi^{\prime}}(s) .\end{aligned}$$</p>
+<p>$$\begin{aligned}v_ {\pi}(s) & \leq q_ {\pi}\left(s, \pi^{\prime}(s)\right) \newline&=\mathbb{E}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s, A_ {t}=\pi^{\prime}(s)\right] \newline&=\mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s\right] \newline& \leq \mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma q_ {\pi}\left(S_ {t+1}, \pi^{\prime}\left(S_ {t+1}\right)\right) \mid S_ {t}=s\right] \newline&=\mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma \mathbb{E}\left[R_ {t+2}+\gamma v_ {\pi}\left(S_ {t+2}\right) \mid S_ {t+1}, A_ {t+1}=\pi^{\prime}\left(S_ {t+1}\right)\right] \mid S_ {t}=s\right] \newline&=\mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} v_ {\pi}\left(S_ {t+2}\right) \mid S_ {t}=s\right] \newline& \leq \mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} R_ {t+3}+\gamma^{3} v_ {\pi}\left(S_ {t+3}\right) \mid S_ {t}=s\right] \newline& \vdots \newline& \leq \mathbb{E}_ {\pi^{\prime}}\left[R_ {t+1}+\gamma R_ {t+2}+\gamma^{2} R_ {t+3}+\gamma^{3} R_ {t+4}+\cdots \mid S_ {t}=s\right] \newline&=v_ {\pi^{\prime}}(s) .\end{aligned}$$</p>
 <p>考慮新的 greedy 策略 $\pi^\prime$</p>
-<p>$$\begin{aligned}\pi^{\prime}(s) & \doteq \underset{a}{\arg \max } q_{\pi}(s, a) \newline&=\underset{a}{\arg \max } \mathbb{E}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline&=\underset{a}{\arg \max } \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{\pi}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
-<p>這個 greedy 策略執行一步後，根據最好的價值 $v_{\pi}$ 來採取動作。</p>
+<p>$$\begin{aligned}\pi^{\prime}(s) & \doteq \underset{a}{\arg \max } q_ {\pi}(s, a) \newline&=\underset{a}{\arg \max } \mathbb{E}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s, A_ {t}=a\right] \newline&=\underset{a}{\arg \max } \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {\pi}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
+<p>這個 greedy 策略執行一步後，根據最好的價值 $v_ {\pi}$ 來採取動作。</p>
 <p>上面討論的是確定性的策略，對於隨機性的策略可以很輕易的由此擴展。圖 4.1 是一個隨機性策略的更新例子。</p>
 <p><img src=4-1.png alt></p>
 <div class=gdoc-page__anchorwrap>
@@ -273,14 +273,14 @@ Policy Iteration
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/dynamic-programming/#policy-iteration class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Policy Iteration" href=#policy-iteration><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>一個策略 $\pi$ 經由價值函數 $v_{\pi}$ 產生更好的策略 $\pi^\prime$，之後進一步計算新的價值函數與更好的策略&mldr;由此可以得到一個序列：</p>
+</div><p>一個策略 $\pi$ 經由價值函數 $v_ {\pi}$ 產生更好的策略 $\pi^\prime$，之後進一步計算新的價值函數與更好的策略&mldr;由此可以得到一個序列：</p>
 <p>$$
-\pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} v_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{<em>} \stackrel{\mathrm{E}}{\longrightarrow} v_{</em>}
+\pi_ {0} \stackrel{\mathrm{E}}{\longrightarrow} v_ {\pi_ {0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_ {1} \stackrel{\mathrm{E}}{\longrightarrow} v_ {\pi_ {1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_ {2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_ {* } \stackrel{\mathrm{E}}{\longrightarrow} v_ {* }
 $$</p>
 <p>其中 $\mathrm{E}$ 表示為 evaluation，$\mathrm{I}$ 表示為 improvement。</p>
 <p>由於 finite MDP 只會有有限個策略數量，這個過程必定在有限的迭代次數收斂到最佳的策略和價值函數。這個尋找最佳策略的方法稱為 policy iteration。這個方法大幅提昇 policy evaluation 的收斂速度。</p>
 <blockquote class="gdoc-hint info">
-<p><strong>Policy Iteration (using iterative policy evaluation) for estimating</strong> $\pi \approx \pi_{*}$</p>
+<p><strong>Policy Iteration (using iterative policy evaluation) for estimating</strong> $\pi \approx \pi_ {*}$</p>
 <ol>
 <li>Initialization<br>
 $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in \mathcal{S}$</li>
@@ -290,7 +290,7 @@ $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in
 <li>&mldr; $\Delta \leftarrow 0$</li>
 <li>&mldr; &mldr; Loop for each $s \in \mathcal{S}$:</li>
 <li>&mldr; &mldr; $v \leftarrow V(s)$</li>
-<li>&mldr; &mldr; $V(s) \leftarrow \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, \pi(s)\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
+<li>&mldr; &mldr; $V(s) \leftarrow \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, \pi(s)\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
 <li>&mldr; &mldr; $\Delta \leftarrow \max (\Delta,|v-V(s)|)$</li>
 <li>until $\Delta&lt;\theta$ (a small positive number determining the accuracy of estimation)</li>
 </ol>
@@ -300,10 +300,10 @@ $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in
 <li>$policy&ndash;stable$ $\leftarrow$ true</li>
 <li>For each $s \in \mathcal{S}$:</li>
 <li>&mldr; old-action $\leftarrow \pi(s)$</li>
-<li>&mldr; $\pi(s) \leftarrow \arg \max_ {a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
+<li>&mldr; $\pi(s) \leftarrow \arg \max_ {a} \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
 <li>&mldr; If old-action $\neq \pi(s)$, then $policy&ndash;stable$ $\leftarrow$ false</li>
 <li>If $policy&ndash;stable$, then</li>
-<li>&mldr; stop and return $V \approx v_{<em>}$ and $\pi \approx \pi_{</em>} ;$</li>
+<li>&mldr; stop and return $V \approx v_ {<em>}$ and $\pi \approx \pi_ {</em>} ;$</li>
 <li>else</li>
 <li>&mldr; go to 2</li>
 </ol>
@@ -317,10 +317,10 @@ Value Iteration
 </a>
 </h2>
 </div><p>Policy iteration 的一個缺陷是迭代涉及 policy evaluation，這需要多次的 sweep (採訪所有狀態後進行更新)，導致計算緩慢。從圖 4.1 可以得到一點線索，或許可以裁剪 policy evaluation，因為在第三次以後 policy evaluation 就不會再改變 policy。裁剪並不破壞收斂性的方式有很多種，最重要的一種方式稱為 value iteration (價值迭代) (4.10):</p>
-<p>$$\begin{aligned}v_{k+1}(s) & \doteq \max <em>{a} \mathbb{E}\left[R</em>{t+1}+\gamma v_{k}\left(S_{t+1}\right) \mid S_{t}=s, A_{t}=a\right] \newline&=\max <em>{a} \sum</em>{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_{k}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
-<p>保證存在 optimal value $v_{<em>}$ 的條件下，$\lbrace v_k \rbrace$ 最後會收斂到 $v_{</em>}$。</p>
+<p>$$\begin{aligned}v_ {k+1}(s) & \doteq \max _ {a} \mathbb{E}\left[R_ {t+1}+\gamma v_ {k}\left(S_ {t+1}\right) \mid S_ {t}=s, A_ {t}=a\right] \newline&=\max _ {a} \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma v_ {k}\left(s^{\prime}\right)\right]\end{aligned}$$</p>
+<p>保證存在 optimal value $v_ {<em>}$ 的條件下，$\lbrace v_ k \rbrace$ 最後會收斂到 $v_ {</em>}$。</p>
 <blockquote class="gdoc-hint info">
-<p><strong>Value Iteration, for estimating</strong> $\pi \approx \pi_{*}$</p>
+<p><strong>Value Iteration, for estimating</strong> $\pi \approx \pi_ {*}$</p>
 <p>Algorithm parameter: a small threshold $\theta>0$ determining accuracy of estimation</p>
 <p>Initialize $V(s)$, for all $s \in \mathcal{S}^{+}$, arbitrarily except that $V(terminal)=0$</p>
 <ol>
@@ -328,12 +328,12 @@ Value Iteration
 <li>&mldr; $\Delta \leftarrow 0$</li>
 <li>&mldr; Loop for each $s \in \mathcal{S}$:</li>
 <li>&mldr; &mldr; $v \leftarrow V(s)$</li>
-<li>&mldr; &mldr; $V(s) \leftarrow \max_{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
+<li>&mldr; &mldr; $V(s) \leftarrow \max_ {a} \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</li>
 <li>&mldr; &mldr; $\Delta \leftarrow \max (\Delta,|v-V(s)|)$</li>
 <li>until $\Delta&lt;\theta$</li>
 </ol>
-<p>Output a deterministic policy, $\pi \approx \pi_{*}$, such that<br>
-$\pi(s)=\arg \max_{a} \sum_{s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</p>
+<p>Output a deterministic policy, $\pi \approx \pi_ {*}$, such that<br>
+$\pi(s)=\arg \max_ {a} \sum_ {s^{\prime}, r} p\left(s^{\prime}, r \mid s, a\right)\left[r+\gamma V\left(s^{\prime}\right)\right]$</p>
 </blockquote>
 <div class=gdoc-page__anchorwrap>
 <h2 id=asynchronous-dynamic-programming>
@@ -371,8 +371,8 @@ Summary
 </a>
 </h2>
 </div><ul>
-<li>Policy evaluation: 一種計算方式，迭代式的計算價值 $v_{\pi}$ 給定一個策略 $\pi$。</li>
-<li>Policy improvement: 一種計算方式，用來改善策略 $\pi$ 給定價值函數 $v_{\pi}$。</li>
+<li>Policy evaluation: 一種計算方式，迭代式的計算價值 $v_ {\pi}$ 給定一個策略 $\pi$。</li>
+<li>Policy improvement: 一種計算方式，用來改善策略 $\pi$ 給定價值函數 $v_ {\pi}$。</li>
 <li>Policy iteration</li>
 <li>Value iteration</li>
 </ul>
