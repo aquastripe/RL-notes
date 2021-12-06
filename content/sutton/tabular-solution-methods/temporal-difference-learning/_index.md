@@ -16,31 +16,31 @@ Temporal-difference (TD) learning 是一個 RL 新穎且重要的觀念，它結
 一個 every-visit Monte Carlo 適用於 nonstationary 的環境，value function 更新如下：
 
 $$
-V\left(S_{t}\right) \leftarrow V\left(S_{t}\right)+\alpha\left[G_{t}-V\left(S_{t}\right)\right]
+V\left(S_ {t}\right) \leftarrow V\left(S_ {t}\right)+\alpha\left[G_ {t}-V\left(S_ {t}\right)\right]
 $$
-- $G_t$: return following $t$
+- $G_ t$: return following $t$
 - $\alpha$: step-size
 
-這個稱為 constant-$\alpha$ MC。Monte Carlo 法必須等到 episode 結束以後才能更新 $V(S_t)$。因此，TD 法概念是希望可以在每個 time step 都能進行更新。最簡單的 TD 形式如下：
+這個稱為 constant-$\alpha$ MC。Monte Carlo 法必須等到 episode 結束以後才能更新 $V(S_ t)$。因此，TD 法概念是希望可以在每個 time step 都能進行更新。最簡單的 TD 形式如下：
 
 $$
-V\left(S_{t}\right) \leftarrow V\left(S_{t}\right)+\alpha\left[R_{t+1}+\gamma V\left(S_{t+1}\right)-V\left(S_{t}\right)\right]
+V\left(S_ {t}\right) \leftarrow V\left(S_ {t}\right)+\alpha\left[R_ {t+1}+\gamma V\left(S_ {t+1}\right)-V\left(S_ {t}\right)\right]
 $$
 
 稱為 TD(0) 或 one-step TD。因為 TD(0) 基於現有的估計值進行更新，所以它是一種 bootstrapping 法，像是 DP。
 
 比較：
-- Monte Carlo: 更新的目標是 $G_t$
-- TD: 更新的目標是 $R_{t+1} + \gamma V(S_{t+1})$
+- Monte Carlo: 更新的目標是 $G_ t$
+- TD: 更新的目標是 $R_ {t+1} + \gamma V(S_ {t+1})$
 
 ![](td-0.png)
 
 
 $$
 \begin{aligned}
-v_{\pi}(s) & \doteq \mathbb{E}_{\pi}\left[G_{t} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma G_{t+1} \mid S_{t}=s\right] \newline
-&=\mathbb{E}_{\pi}\left[R_{t+1}+\gamma v_{\pi}\left(S_{t+1}\right) \mid S_{t}=s\right]
+v_ {\pi}(s) & \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma G_ {t+1} \mid S_ {t}=s\right] \newline
+&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s\right]
 \end{aligned}
 $$
 - Monte Carlo 使用第一式的估計值當作目標。因為
@@ -51,7 +51,7 @@ $$
 TD(0) 更新值是一種誤差，這個值稱為 TD error:
 
 $$
-\delta_{t} \doteq R_{t+1}+\gamma V\left(S_{t+1}\right)-V\left(S_{t}\right)
+\delta_ {t} \doteq R_ {t+1}+\gamma V\left(S_ {t+1}\right)-V\left(S_ {t}\right)
 $$
 
 - TD error 每個時刻的當下產生。但 TD error 相依於下次的 state 和 reward，它要到下一個 time step 才會存在。
@@ -59,12 +59,12 @@ $$
 
 $$
 \begin{aligned}
-G_{t}-V\left(S_{t}\right) &=R_{t+1}+\gamma G_{t+1}-V\left(S_{t}\right)+\gamma V\left(S_{t+1}\right)-\gamma V\left(S_{t+1}\right) \quad(\text { from }(3.9)) \newline
-&=\delta_{t}+\gamma\left(G_{t+1}-V\left(S_{t+1}\right)\right) \newline
-&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2}\left(G_{t+2}-V\left(S_{t+2}\right)\right) \newline
-&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}\left(G_{T}-V\left(S_{T}\right)\right) \newline
-&=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}(0-0) \newline
-&=\sum_{k=t}^{T-1} \gamma^{k-t} \delta_{k}
+G_ {t}-V\left(S_ {t}\right) &=R_ {t+1}+\gamma G_ {t+1}-V\left(S_ {t}\right)+\gamma V\left(S_ {t+1}\right)-\gamma V\left(S_ {t+1}\right) \quad(\text { from }(3.9)) \newline
+&=\delta_ {t}+\gamma\left(G_ {t+1}-V\left(S_ {t+1}\right)\right) \newline
+&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2}\left(G_ {t+2}-V\left(S_ {t+2}\right)\right) \newline
+&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2} \delta_ {t+2}+\cdots+\gamma^{T-t-1} \delta_ {T-1}+\gamma^{T-t}\left(G_ {T}-V\left(S_ {T}\right)\right) \newline
+&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2} \delta_ {t+2}+\cdots+\gamma^{T-t-1} \delta_ {T-1}+\gamma^{T-t}(0-0) \newline
+&=\sum_ {k=t}^{T-1} \gamma^{k-t} \delta_ {k}
 \end{aligned}
 $$
 
@@ -78,10 +78,10 @@ TD 與 DP 相比的優勢：
 TD 與 Monte Carlo 相比的優勢：
 - Monte Carlo 必須等待整個 episode 結束以後才能進行計算
 
-收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_{\pi}$。如果 step-size 參數根據以下 **隨機近似條件** (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：
+收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_ {\pi}$。如果 step-size 參數根據以下 **隨機近似條件** (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：
 
 $$
-\sum_{n=1}^{\infty} \alpha_{n}(a)=\infty \quad \text { and } \quad \sum_{n=1}^{\infty} \alpha_{n}^{2}(a)<\infty
+\sum_ {n=1}^{\infty} \alpha_ {n}(a)=\infty \quad \text { and } \quad \sum_ {n=1}^{\infty} \alpha_ {n}^{2}(a)<\infty
 $$
 
 TD 和 Monte Carlo 都能保證收斂的情況下，哪個收斂得更快？
@@ -139,7 +139,7 @@ Figure 6.2 展示了利用 batch updating 進行 Example 6.2 的結果。TD 的�
 確保收歛性的定理也適用於 action values，如下:
 
 $$
-Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma Q\left(S_{t+1}, A_{t+1}\right)-Q\left(S_{t}, A_{t}\right)\right]
+Q\left(S_ {t}, A_ {t}\right) \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma Q\left(S_ {t+1}, A_ {t+1}\right)-Q\left(S_ {t}, A_ {t}\right)\right]
 $$
 
 ![](backup-diagram-sarsa.png)
@@ -154,10 +154,10 @@ $$
 Q-learning 的更新式定義如下：
 
 $$
-Q\left(S_{t}, A_{t}\right) \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \max _{a} Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+Q\left(S_ {t}, A_ {t}\right) \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \max _ {a} Q\left(S_ {t+1}, a\right)-Q\left(S_ {t}, A_ {t}\right)\right]
 $$
 
-要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_*$，更新過程與 policy 無關。
+要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_ *$，更新過程與 policy 無關。
 - Policy 決定哪個 state-action pairs 要被經歷。
 - 為了要正確的收斂，所有的 pairs 都要連續的被更新。
 
@@ -185,8 +185,8 @@ Reward:
 
 $$
 \begin{aligned}
-Q\left(S_{t}, A_{t}\right) & \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \mathbb{E}_{\pi}\left[Q\left(S_{t+1}, A_{t+1}\right) \mid S_{t+1}\right]-Q\left(S_{t}, A_{t}\right)\right] \newline
-& \leftarrow Q\left(S_{t}, A_{t}\right)+\alpha\left[R_{t+1}+\gamma \sum_{a} \pi\left(a \mid S_{t+1}\right) Q\left(S_{t+1}, a\right)-Q\left(S_{t}, A_{t}\right)\right]
+Q\left(S_ {t}, A_ {t}\right) & \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \mathbb{E}_ {\pi}\left[Q\left(S_ {t+1}, A_ {t+1}\right) \mid S_ {t+1}\right]-Q\left(S_ {t}, A_ {t}\right)\right] \newline
+& \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \sum_ {a} \pi\left(a \mid S_ {t+1}\right) Q\left(S_ {t+1}, a\right)-Q\left(S_ {t}, A_ {t}\right)\right]
 \end{aligned}
 $$
 
