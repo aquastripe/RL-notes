@@ -64,9 +64,11 @@ $$
 ### Error reduction property
 
 n-step returns 使用 $V_{t+n-1}$ 來近似在 $R_{t+n}$ 之後的未知的 rewards。一個重要的性質是：在最糟的狀態下，n-step returns 的期望值保證會比 $V_{t+n-1}$ 更好：
+
 $$
-\max _{s}\left|\mathbb{E}_{\pi}\left[G_{t: t+n} \mid S_{t}=s\right]-v_{\pi}(s)\right| \leq \gamma^{n} \max _{s}\left|V_{t+n-1}(s)-v_{\pi}(s)\right|
+\max_ {s}\left|\mathbb{E}_ {\pi}\left[G_ {t: t+n} \mid S_ {t}=s\right]-v_ {\pi}(s)\right| \leq \gamma^{n} \max _ {s}\left|V_ {t+n-1}(s)-v_ {\pi}(s)\right|
 $$
+
 對所有 $n \ge 1$。
 
 這個性質稱為 **error reduction property**。這個性質可以說明所有的 n-step 方法都收斂到正確的預測值 (predictions)。
@@ -85,3 +87,50 @@ $$
 ![](7.2.png)
 
 從這個實驗可以知道，n-step 有機會比兩個極端 (1-step TD 與 MC) 結果更好。
+
+
+## n-step Sarsa
+
+如何將 n-step 方法從 prediction 推廣到 control?
+- 將 states 改成 actions
+- 使用 $\varepsilon$-greedy
+
+將 n-step returns 重新定義如下:
+$$
+G_ {t: t+n} \doteq R_ {t+1}+\gamma R_ {t+2}+\cdots+\gamma^{n-1} R_ {t+n}+\gamma^{n} Q_ {t+n-1}\left(S_ {t+n}, A_ {t+n}\right), \quad n \geq 1,0 \leq t<T-n
+$$
+with $G_ {t: t+n} \doteq G_ t$ if $t+n \gt T$. The natural algorithm is then
+$$
+Q_ {t+n}\left(S_ {t}, A_ {t}\right) \doteq Q_ {t+n-1}\left(S_ {t}, A_ {t}\right)+\alpha\left[G_ {t: t+n}-Q_ {t+n-1}\left(S_ {t}, A_ {t}\right)\right], \quad 0 \leq t<T
+$$
+對於其他的 states，其 values 維持不變:
+$Q_ {t+n}(s,a) = Q_ {t+n-1}(s,a)$ 對所有 $s \neq S_ t$ or $a \neq A_ t$
+![](backup_diagram-n-step-sarsa.png)
+
+演算法如下:
+![](alg-n-step-sarsa.png)
+
+![](7.4.png)
+- 除了 G 以外的所有的網格初始 values 為 0
+- 左圖表示一條路徑
+- 中右兩圖表示這條路徑中的哪個 action values 會被加強
+- 中圖為 1-step Sarsa
+- 右圖為 n-step Sarsa
+- 從圖上結果可以得知，1-step Sarsa 只會強化最後一個 action，而 n-step Sarsa
+
+n-step return of Sarsa 可以被寫成一種 TD error 的形式如下:
+$$
+G_{t: t+n}=Q_{t-1}\left(S_{t}, A_{t}\right)+\sum_{k=t}^{\min (t+n, T)-1} \gamma^{k-t}\left[R_{k+1}+\gamma Q_{k}\left(S_{k+1}, A_{k+1}\right)-Q_{k-1}\left(S_{k}, A_{k}\right)\right]
+$$
+
+Expected Sarsa: 包含一個類似於 n-step Sarsa 的 actions/states 序列，還有在最後有一個分支，其中包含所有動作的機率
+
+$$
+G_ {t: t+n} \doteq R_ {t+1}+\cdots+\gamma^{n-1} R_ {t+n}+\gamma^{n} \bar{V}_ {t+n-1}\left(S_ {t+n}\right), \quad t+n<T
+$$
+with $G_ {t: t+n} \doteq G_ t$ if $t+n \gt T$. 其中，$\bar{V}_ {t}(s)$ 是 state $s$ 的 expected approximate value (近似期望值)。在 target policy 中計算如下:
+$$
+\bar{V}_ {t}(s) \doteq \sum_ {a} \pi(a \mid s) Q_ {t}(s, a), \quad \text { for all } s \in \mathcal{S}
+$$
+
+Expected approximate value 在本書後面會有更多討論。當 $s$ 為中止狀態時，它的 expected approximate value 定義為 0。
