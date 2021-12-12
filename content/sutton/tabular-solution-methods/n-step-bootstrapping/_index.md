@@ -134,3 +134,22 @@ $$
 $$
 
 Expected approximate value 在本書後面會有更多討論。當 $s$ 為中止狀態時，它的 expected approximate value 定義為 0。
+
+## n-step Off-policy Learning
+
+Off-policy: 學習 target policy $\pi$ 的 value function，同時會利用 behavior policy $b$。一個簡單的 n-step off-policy 可以定義如下：
+
+$$
+V_{t+n}\left(S_{t}\right) \doteq V_{t+n-1}\left(S_{t}\right)+\alpha \rho_{t: t+n-1}\left[G_{t: t+n}-V_{t+n-1}\left(S_{t}\right)\right], \quad 0 \leq t<T,
+$$
+- 其中，$\rho_{t:t+n-1}$ 是 importance sampling ratio，為兩個 policies 採樣 action 的相對機率 (relative probability)，定義如下：
+
+類似的，n-step Sarsa 可以定義如下：
+
+$$
+\rho_{t: h} \doteq \prod_{k=t}^{\min (h, T-1)} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+$$
+
+注意：importance sampling ratio 開始和結束的時間點都比前項還要多一個 step，這是因為這裡更新的是一個 state-action pair，所以我們不關心當前被採樣的 action，而是在採樣該 action 之後的 actions。
+
+![](alg-off-policy-n-step-sarsa.png)
