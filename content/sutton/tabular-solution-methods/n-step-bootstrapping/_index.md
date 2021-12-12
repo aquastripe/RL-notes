@@ -153,3 +153,41 @@ $$
 注意：importance sampling ratio 開始和結束的時間點都比前項還要多一個 step，這是因為這裡更新的是一個 state-action pair，所以我們不關心當前被採樣的 action，而是在採樣該 action 之後的 actions。
 
 ![](alg-off-policy-n-step-sarsa.png)
+
+
+## Per-decision Methods with Control Variates
+
+n-step off-policy 方法夠簡潔，但可能不是最有效率的。
+
+n-step return 經由 h 個時長 (horizon) 可以被下式來描述：
+
+$$
+G_{t: h}=R_{t+1}+\gamma G_{t+1: h}, \quad t<h<T,
+$$
+
+- 其中，$G_{h: h} \doteq V_{h-1} (S_h)$
+
+Importance sampling ratio:
+
+$$
+\rho_{t}=\frac{\pi\left(A_{t} \mid S_{t}\right)}{b\left(A_{t} \mid S_{t}\right)}
+$$
+
+Off-policy return 的計算方式，一種是可以簡單的乘上 importance sampling ratio。問題是，當某些 target policy 沒有採樣到的動作時，其 $\rho = 0$，這會造成很大的變異性。第二種計算方式如下：
+
+$$
+G_{t: h} \doteq \rho_{t}\left(R_{t+1}+\gamma G_{t+1: h}\right)+\left(1-\rho_{t}\right) V_{h-1}\left(S_{t}\right), \quad t<h<T,
+$$
+
+- 其中，$G_{h: h} \doteq V_{h-1} (S_h)$。
+
+這稱為 **control variate**。
+
+對於 action-values 形式，計算如下：
+
+$$
+\begin{aligned}
+G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\left(S_ {t+1}\right)-\rho_ {t+1} Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right), \newline
+&=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t<h \leq T .
+\end{aligned}
+$$
