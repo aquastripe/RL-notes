@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。 n-step TD Prediction Error reduction property Example 7.1: n-step TD Methods on the Random Walk n-step TD Prediction 比較 MC 與 TC 之間的差異。 考慮如何從以 $\pi$ 產生的 episodes 預估 $v_{\pi}$">
+<meta name=description content="本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。 n-step TD Prediction Error reduction property Example 7.1: n-step TD Methods on the Random Walk n-step Sarsa n-step Off-policy Learning Per-decision Methods with Control Variates n-step TD Prediction 比較 MC 與 TC 之間的差異。 考慮如何從以 $\pi$ 產生的 episodes 預">
 <title>n-step Bootstrapping | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
@@ -150,6 +150,9 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#example-71-n-step-td-methods-on-the-random-walk>Example 7.1: n-step TD Methods on the Random Walk</a></li>
 </ul>
 </li>
+<li><a href=#n-step-sarsa>n-step Sarsa</a></li>
+<li><a href=#n-step-off-policy-learning>n-step Off-policy Learning</a></li>
+<li><a href=#per-decision-methods-with-control-variates>Per-decision Methods with Control Variates</a></li>
 </ul></nav><hr></div>
 <div class=gdoc-page__anchorwrap>
 <h2 id=n-step-td-prediction>
@@ -205,11 +208,11 @@ Error reduction property
 <a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#error-reduction-property class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Error reduction property" href=#error-reduction-property><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h3>
-</div><p>n-step returns 使用 $V_{t+n-1}$ 來近似在 $R_{t+n}$ 之後的未知的 rewards。一個重要的性質是：在最糟的狀態下，n-step returns 的期望值保證會比 $V_{t+n-1}$ 更好：
-$$
-\max <em>{s}\left|\mathbb{E}</em>{\pi}\left[G_{t: t+n} \mid S_{t}=s\right]-v_{\pi}(s)\right| \leq \gamma^{n} \max <em>{s}\left|V</em>{t+n-1}(s)-v_{\pi}(s)\right|
-$$
-對所有 $n \ge 1$。</p>
+</div><p>n-step returns 使用 $V_{t+n-1}$ 來近似在 $R_{t+n}$ 之後的未知的 rewards。一個重要的性質是：在最糟的狀態下，n-step returns 的期望值保證會比 $V_{t+n-1}$ 更好：</p>
+<p>$$
+\max_ {s}\left|\mathbb{E}_ {\pi}\left[G_ {t: t+n} \mid S_ {t}=s\right]-v_ {\pi}(s)\right| \leq \gamma^{n} \max _ {s}\left|V_ {t+n-1}(s)-v_ {\pi}(s)\right|
+$$</p>
+<p>對所有 $n \ge 1$。</p>
 <p>這個性質稱為 <strong>error reduction property</strong>。這個性質可以說明所有的 n-step 方法都收斂到正確的預測值 (predictions)。</p>
 <div class=gdoc-page__anchorwrap>
 <h3 id=example-71-n-step-td-methods-on-the-random-walk>
@@ -226,6 +229,104 @@ Example 7.1: n-step TD Methods on the Random Walk
 <p>結果如下圖：</p>
 <p><img src=7.2.png alt></p>
 <p>從這個實驗可以知道，n-step 有機會比兩個極端 (1-step TD 與 MC) 結果更好。</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=n-step-sarsa>
+n-step Sarsa
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#n-step-sarsa class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor n-step Sarsa" href=#n-step-sarsa><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>如何將 n-step 方法從 prediction 推廣到 control?</p>
+<ul>
+<li>將 states 改成 actions</li>
+<li>使用 $\varepsilon$-greedy</li>
+</ul>
+<p>將 n-step returns 重新定義如下:
+$$
+G_ {t: t+n} \doteq R_ {t+1}+\gamma R_ {t+2}+\cdots+\gamma^{n-1} R_ {t+n}+\gamma^{n} Q_ {t+n-1}\left(S_ {t+n}, A_ {t+n}\right), \quad n \geq 1,0 \leq t&lt;T-n
+$$
+with $G_ {t: t+n} \doteq G_ t$ if $t+n \gt T$. The natural algorithm is then
+$$
+Q_ {t+n}\left(S_ {t}, A_ {t}\right) \doteq Q_ {t+n-1}\left(S_ {t}, A_ {t}\right)+\alpha\left[G_ {t: t+n}-Q_ {t+n-1}\left(S_ {t}, A_ {t}\right)\right], \quad 0 \leq t&lt;T
+$$
+對於其他的 states，其 values 維持不變:
+$Q_ {t+n}(s,a) = Q_ {t+n-1}(s,a)$ 對所有 $s \neq S_ t$ or $a \neq A_ t$
+<img src=backup_diagram-n-step-sarsa.png alt></p>
+<p>演算法如下:
+<img src=alg-n-step-sarsa.png alt></p>
+<p><img src=7.4.png alt></p>
+<ul>
+<li>除了 G 以外的所有的網格初始 values 為 0</li>
+<li>左圖表示一條路徑</li>
+<li>中右兩圖表示這條路徑中的哪個 action values 會被加強</li>
+<li>中圖為 1-step Sarsa</li>
+<li>右圖為 n-step Sarsa</li>
+<li>從圖上結果可以得知，1-step Sarsa 只會強化最後一個 action，而 n-step Sarsa</li>
+</ul>
+<p>n-step return of Sarsa 可以被寫成一種 TD error 的形式如下:
+$$
+G_{t: t+n}=Q_{t-1}\left(S_{t}, A_{t}\right)+\sum_{k=t}^{\min (t+n, T)-1} \gamma^{k-t}\left[R_{k+1}+\gamma Q_{k}\left(S_{k+1}, A_{k+1}\right)-Q_{k-1}\left(S_{k}, A_{k}\right)\right]
+$$</p>
+<p>Expected Sarsa: 包含一個類似於 n-step Sarsa 的 actions/states 序列，還有在最後有一個分支，其中包含所有動作的機率</p>
+<p>$$
+G_ {t: t+n} \doteq R_ {t+1}+\cdots+\gamma^{n-1} R_ {t+n}+\gamma^{n} \bar{V}_ {t+n-1}\left(S_ {t+n}\right), \quad t+n&lt;T
+$$
+with $G_ {t: t+n} \doteq G_ t$ if $t+n \gt T$. 其中，$\bar{V}_ {t}(s)$ 是 state $s$ 的 expected approximate value (近似期望值)。在 target policy 中計算如下:
+$$
+\bar{V}_ {t}(s) \doteq \sum_ {a} \pi(a \mid s) Q_ {t}(s, a), \quad \text { for all } s \in \mathcal{S}
+$$</p>
+<p>Expected approximate value 在本書後面會有更多討論。當 $s$ 為中止狀態時，它的 expected approximate value 定義為 0。</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=n-step-off-policy-learning>
+n-step Off-policy Learning
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#n-step-off-policy-learning class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor n-step Off-policy Learning" href=#n-step-off-policy-learning><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>Off-policy: 學習 target policy $\pi$ 的 value function，同時會利用 behavior policy $b$。一個簡單的 n-step off-policy 可以定義如下：</p>
+<p>$$
+V_{t+n}\left(S_{t}\right) \doteq V_{t+n-1}\left(S_{t}\right)+\alpha \rho_{t: t+n-1}\left[G_{t: t+n}-V_{t+n-1}\left(S_{t}\right)\right], \quad 0 \leq t&lt;T,
+$$</p>
+<ul>
+<li>其中，$\rho_{t:t+n-1}$ 是 importance sampling ratio，為兩個 policies 採樣 action 的相對機率 (relative probability)，定義如下：</li>
+</ul>
+<p>類似的，n-step Sarsa 可以定義如下：</p>
+<p>$$
+\rho_{t: h} \doteq \prod_{k=t}^{\min (h, T-1)} \frac{\pi\left(A_{k} \mid S_{k}\right)}{b\left(A_{k} \mid S_{k}\right)}
+$$</p>
+<p>注意：importance sampling ratio 開始和結束的時間點都比前項還要多一個 step，這是因為這裡更新的是一個 state-action pair，所以我們不關心當前被採樣的 action，而是在採樣該 action 之後的 actions。</p>
+<p><img src=alg-off-policy-n-step-sarsa.png alt></p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=per-decision-methods-with-control-variates>
+Per-decision Methods with Control Variates
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#per-decision-methods-with-control-variates class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Per-decision Methods with Control Variates" href=#per-decision-methods-with-control-variates><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>n-step off-policy 方法夠簡潔，但可能不是最有效率的。</p>
+<p>n-step return 經由 h 個時長 (horizon) 可以被下式來描述：</p>
+<p>$$
+G_{t: h}=R_{t+1}+\gamma G_{t+1: h}, \quad t&lt;h&lt;T,
+$$</p>
+<ul>
+<li>其中，$G_{h: h} \doteq V_{h-1} (S_h)$</li>
+</ul>
+<p>Importance sampling ratio:</p>
+<p>$$
+\rho_{t}=\frac{\pi\left(A_{t} \mid S_{t}\right)}{b\left(A_{t} \mid S_{t}\right)}
+$$</p>
+<p>Off-policy return 的計算方式，一種是可以簡單的乘上 importance sampling ratio。問題是，當某些 target policy 沒有採樣到的動作時，其 $\rho = 0$，這會造成很大的變異性。第二種計算方式如下：</p>
+<p>$$
+G_{t: h} \doteq \rho_{t}\left(R_{t+1}+\gamma G_{t+1: h}\right)+\left(1-\rho_{t}\right) V_{h-1}\left(S_{t}\right), \quad t&lt;h&lt;T,
+$$</p>
+<ul>
+<li>其中，$G_{h: h} \doteq V_{h-1} (S_h)$。</li>
+</ul>
+<p>這稱為 <strong>control variate</strong>。</p>
+<p>對於 action-values 形式，計算如下：</p>
+<p>$$
+\begin{aligned}
+G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\left(S_ {t+1}\right)-\rho_ {t+1} Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right), \newline
+&=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t&lt;h \leq T .
+\end{aligned}
+$$</p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
