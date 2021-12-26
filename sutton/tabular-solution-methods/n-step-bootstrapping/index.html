@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。 n-step TD Prediction Error reduction property Example 7.1: n-step TD Methods on the Random Walk n-step Sarsa n-step Off-policy Learning Per-decision Methods with Control Variates n-step TD Prediction 比較 MC 與 TC 之間的差異。 考慮如何從以 $\pi$ 產生的 episodes 預">
+<meta name=description content="本章探討如何結合 Monte Carlo (MC) 與 temporal difference (TD)。 n-step TD Prediction Error reduction property Example 7.1: n-step TD Methods on the Random Walk n-step Sarsa n-step Off-policy Learning Per-decision Methods with Control Variates A Unifying Algorithm: n-step $Q(\sigma)$ n-step TD Prediction 比較 MC 與 TC 之間的差異。 考慮如何從以 $\pi$">
 <title>n-step Bootstrapping | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
@@ -153,6 +153,7 @@ hidden-mobile" itemprop=breadcrumb>
 <li><a href=#n-step-sarsa>n-step Sarsa</a></li>
 <li><a href=#n-step-off-policy-learning>n-step Off-policy Learning</a></li>
 <li><a href=#per-decision-methods-with-control-variates>Per-decision Methods with Control Variates</a></li>
+<li><a href=#a-unifying-algorithm-n-step-qsigma>A Unifying Algorithm: n-step $Q(\sigma)$</a></li>
 </ul></nav><hr></div>
 <div class=gdoc-page__anchorwrap>
 <h2 id=n-step-td-prediction>
@@ -179,8 +180,8 @@ n-step TD Prediction
 <p>已知 MC 的更新式如下：
 $$
 G_{t} \doteq R_{t+1}+\gamma R_{t+2}+\gamma^{2} R_{t+3}+\cdots+\gamma^{T-t-1} R_{T}
-$$
-其中 $T$ 是最後一個 time step。在此，稱這個量為更新的 <strong>目標</strong> (the <strong>target</strong> of the update)。</p>
+$$</p>
+<p>其中 $T$ 是最後一個 time step。在此，稱這個量為更新的 <strong>目標</strong> (the <strong>target</strong> of the update)。</p>
 <p>1-step TD 的更新目標如下：
 $$
 G_{t: t+1} \doteq R_{t+1}+\gamma V_{t}\left(S_{t+1}\right)
@@ -327,6 +328,75 @@ G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\l
 &=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t&lt;h \leq T .
 \end{aligned}
 $$</p>
+<div class=gdoc-page__anchorwrap>
+<h2 id=a-unifying-algorithm-n-step-qsigma>
+A Unifying Algorithm: n-step $Q(\sigma)$
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/#a-unifying-algorithm-n-step-qsigma class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor A Unifying Algorithm: n-step $Q(\sigma)$" href=#a-unifying-algorithm-n-step-qsigma><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+</a>
+</h2>
+</div><p>目前考慮了三種 action-value 演算法：</p>
+<ul>
+<li>$n$-step Sarsa: 擁有完全的採樣轉移 (sample transitions)</li>
+<li>tree-backup 演算法: 擁有完全的 狀態到動作轉移 (state-to-action transitions) 的未採樣的所有分支</li>
+<li>$n$-step Expected Sarsa: 擁有完全的採樣轉移，除了最後一個 狀態到動作 (state-to-action)</li>
+</ul>
+<p>問題：有沒有通用演算法可以統一這三種演算法？</p>
+<p><img src=7.5.png alt></p>
+<p>一種想法如 Figure 7.5:</p>
+<ul>
+<li>把動作當作一次採樣
+<ul>
+<li>如果總是採樣: Sarsa</li>
+</ul>
+</li>
+<li>對所有動作計算期望值
+<ul>
+<li>如果不考慮採樣: tree-backup diagram</li>
+</ul>
+</li>
+<li>如果只對最後一次以外的動作當作採樣: Expected Sarsa</li>
+<li>其他可能性，例如第 4 個 backup diagram</li>
+</ul>
+<p>Notation</p>
+<ul>
+<li>$\sigma_t \in [0, 1]$: 在時間點 $t$ 採樣時的自由度 (degree)
+<ul>
+<li>$\sigma = 1$: 完全採樣</li>
+<li>$\sigma = 0$: 完全不採樣，只算期望值</li>
+</ul>
+</li>
+</ul>
+<p>隨機變數 $\sigma_t$ 可以設定成一種輸入為 state, action, or state-action pair 在時間點 $t$ 的函數。新的演算法稱為 $n$-step $Q(\sigma)$ 。</p>
+<p>首先將 tree-backup $n$-step return 以 horizon $h=t+n$ 和 expected approximate value $\bar{V}$ 的形式改寫 (7.8):</p>
+<p>$$
+\begin{aligned}
+G_{t: h} &=R_{t+1}+\gamma \sum_{a \neq A_{t+1}} \pi\left(a \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, a\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
+&=R_{t+1}+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right)-\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, A_{t+1}\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
+&=R_{t+1}+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right),
+\end{aligned}
+$$</p>
+<p>這個非常像是 $n$-step return for Sarsa with control variates (7.14):</p>
+<p>$$
+\begin{aligned}
+G_{t: h} & \doteq R_{t+1}+\gamma\left(\rho_{t+1} G_{t+1: h}+\bar{V}<em>{h-1}\left(S</em>{t+1}\right)-\rho_{t+1} Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right), \newline
+&=R_{t+1}+\gamma \rho_{t+1}\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right), \quad t&lt;h \leq T .
+\end{aligned}
+$$</p>
+<p>除了把 importance-sampling ratio $\rho_{t+1}$ 替換成 動作機率 (action probability) $\pi(A_{t+1} | S_{t+1})$。</p>
+<p>對 $Q(\sigma)$ ，我們線性滑動這兩個 cases:</p>
+<p>$$
+\begin{aligned}
+G_{t: h} \doteq R_{t+1} &+\gamma\left(\sigma_{t+1} \rho_{t+1}+\left(1-\sigma_{t+1}\right) \pi\left(A_{t+1} \mid S_{t+1}\right)\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right) \newline
+&+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right)
+\end{aligned}
+$$</p>
+<p>$\text{for } t &lt; h \le T$. 遞迴結束條件:</p>
+<ul>
+<li>$G_{h: h} \doteq Q_{h-1}\left(S_{h}, A_{h}\right)\text{ if } h&lt;T$</li>
+<li>$G_{T-1: T} \doteq R_{T} \quad \text{ if }h=T$</li>
+</ul>
+<p>以下是演算法:</p>
+<p><img src=alg-n-step-q-sigma.png alt></p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
