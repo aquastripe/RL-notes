@@ -220,9 +220,9 @@ Notation
 
 $$
 \begin{aligned}
-G_{t: h} &=R_{t+1}+\gamma \sum_{a \neq A_{t+1}} \pi\left(a \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, a\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
-&=R_{t+1}+\gamma \bar{V}_{h-1}\left(S_{t+1}\right)-\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, A_{t+1}\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
-&=R_{t+1}+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}_{h-1}\left(S_{t+1}\right),
+G_ {t: h} &=R_ {t+1}+\gamma \sum_ {a \neq A_ {t+1}} \pi\left(a \mid S_ {t+1}\right) Q_ {h-1}\left(S_ {t+1}, a\right)+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) G_ {t+1: h} \newline
+&=R_ {t+1}+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right)-\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) G_ {t+1: h} \newline
+&=R_ {t+1}+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right)\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right),
 \end{aligned}
 $$
 
@@ -230,25 +230,25 @@ $$
 
 $$
 \begin{aligned}
-G_{t: h} & \doteq R_{t+1}+\gamma\left(\rho_{t+1} G_{t+1: h}+\bar{V}_{h-1}\left(S_{t+1}\right)-\rho_{t+1} Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right), \newline
-&=R_{t+1}+\gamma \rho_{t+1}\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}_{h-1}\left(S_{t+1}\right), \quad t<h \leq T .
+G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\left(S_ {t+1}\right)-\rho_ {t+1} Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right), \newline
+&=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t<h \leq T .
 \end{aligned}
 $$
 
-除了把 importance-sampling ratio $\rho_{t+1}$ 替換成 動作機率 (action probability) $\pi(A_{t+1} | S_{t+1})$。
+除了把 importance-sampling ratio $\rho_ {t+1}$ 替換成 動作機率 (action probability) $\pi(A_ {t+1} | S_ {t+1})$。
 
 對 $Q(\sigma)$ ，我們線性滑動這兩個 cases:
 
 $$
 \begin{aligned}
-G_{t: h} \doteq R_{t+1} &+\gamma\left(\sigma_{t+1} \rho_{t+1}+\left(1-\sigma_{t+1}\right) \pi\left(A_{t+1} \mid S_{t+1}\right)\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right) \newline
-&+\gamma \bar{V}_{h-1}\left(S_{t+1}\right)
+G_ {t: h} \doteq R_ {t+1} &+\gamma\left(\sigma_ {t+1} \rho_ {t+1}+\left(1-\sigma_ {t+1}\right) \pi\left(A_ {t+1} \mid S_ {t+1}\right)\right)\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right) \newline
+&+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right)
 \end{aligned}
 $$
 
 $\text{for } t < h \le T$. 遞迴結束條件:
-- $G_{h: h} \doteq Q_{h-1}\left(S_{h}, A_{h}\right)\text{ if } h<T$
-- $G_{T-1: T} \doteq R_{T} \quad \text{ if }h=T$
+- $G_ {h: h} \doteq Q_ {h-1}\left(S_ {h}, A_ {h}\right)\text{ if } h<T$
+- $G_ {T-1: T} \doteq R_ {T} \quad \text{ if }h=T$
 
 以下是演算法:
 
