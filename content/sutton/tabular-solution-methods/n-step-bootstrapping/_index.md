@@ -193,8 +193,64 @@ $$
 ## A Unifying Algorithm: n-step $Q(\sigma)$
 
 目前考慮了三種 action-value 演算法：
-- $n$-step Sarsa: 有所有的 sample transitions
-- tree-backup 演算法: 有所有的 state-to-action transitions 的未採樣的所有分支
-- $n$-step Expected Sarsa: 有所有的 sample transitions 除了最後一個 state-to-action
+- $n$-step Sarsa: 擁有完全的採樣轉移 (sample transitions)
+- tree-backup 演算法: 擁有完全的 狀態到動作轉移 (state-to-action transitions) 的未採樣的所有分支
+- $n$-step Expected Sarsa: 擁有完全的採樣轉移，除了最後一個 狀態到動作 (state-to-action)
+
+問題：有沒有通用演算法可以統一這三種演算法？
 
 ![](7.5.png)
+
+一種想法如 Figure 7.5:
+- 把動作當作一次採樣
+  - 如果總是採樣: Sarsa
+- 對所有動作計算期望值
+  - 如果不考慮採樣: tree-backup diagram
+- 如果只對最後一次以外的動作當作採樣: Expected Sarsa
+- 其他可能性，例如第 4 個 backup diagram
+
+Notation
+- $\sigma_t \in [0, 1]$: 在時間點 $t$ 採樣時的自由度 (degree)
+  - $\sigma = 1$: 完全採樣
+  - $\sigma = 0$: 完全不採樣，只算期望值
+
+隨機變數 $\sigma_t$ 可以設定成一種輸入為 state, action, or state-action pair 在時間點 $t$ 的函數。新的演算法稱為 $n$-step $Q(\sigma)$ 。
+
+首先將 tree-backup $n$-step return 以 horizon $h=t+n$ 和 expected approximate value $\bar{V}$ 的形式改寫 (7.8):
+
+$$
+\begin{aligned}
+G_{t: h} &=R_{t+1}+\gamma \sum_{a \neq A_{t+1}} \pi\left(a \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, a\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
+&=R_{t+1}+\gamma \bar{V}_{h-1}\left(S_{t+1}\right)-\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, A_{t+1}\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
+&=R_{t+1}+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}_{h-1}\left(S_{t+1}\right),
+\end{aligned}
+$$
+
+這個非常像是 $n$-step return for Sarsa with control variates (7.14):
+
+$$
+\begin{aligned}
+G_{t: h} & \doteq R_{t+1}+\gamma\left(\rho_{t+1} G_{t+1: h}+\bar{V}_{h-1}\left(S_{t+1}\right)-\rho_{t+1} Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right), \newline
+&=R_{t+1}+\gamma \rho_{t+1}\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}_{h-1}\left(S_{t+1}\right), \quad t<h \leq T .
+\end{aligned}
+$$
+
+除了把 importance-sampling ratio $\rho_{t+1}$ 替換成 動作機率 (action probability) $\pi(A_{t+1} | S_{t+1})$。
+
+對 $Q(\sigma)$ ，我們線性滑動這兩個 cases:
+
+$$
+\begin{aligned}
+G_{t: h} \doteq R_{t+1} &+\gamma\left(\sigma_{t+1} \rho_{t+1}+\left(1-\sigma_{t+1}\right) \pi\left(A_{t+1} \mid S_{t+1}\right)\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right) \newline
+&+\gamma \bar{V}_{h-1}\left(S_{t+1}\right)
+\end{aligned}
+$$
+
+$\text{for } t < h \le T$. 遞迴結束條件:
+- $G_{h: h} \doteq Q_{h-1}\left(S_{h}, A_{h}\right)\text{ if } h<T$
+- $G_{T-1: T} \doteq R_{T} \quad \text{ if }h=T$
+
+以下是演算法:
+
+![](alg-n-step-q-sigma.png)
+
