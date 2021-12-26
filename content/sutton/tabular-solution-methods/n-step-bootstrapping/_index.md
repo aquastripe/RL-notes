@@ -189,3 +189,12 @@ G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\l
 &=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t<h \leq T .
 \end{aligned}
 $$
+
+## A Unifying Algorithm: n-step $Q(\sigma)$
+
+目前考慮了三種 action-value 演算法：
+- $n$-step Sarsa: 有所有的 sample transitions
+- tree-backup 演算法: 有所有的 state-to-action transitions 的未採樣的所有分支
+- $n$-step Expected Sarsa: 有所有的 sample transitions 除了最後一個 state-to-action
+
+![](7.5.png)
