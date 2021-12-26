@@ -370,30 +370,30 @@ A Unifying Algorithm: n-step $Q(\sigma)$
 <p>首先將 tree-backup $n$-step return 以 horizon $h=t+n$ 和 expected approximate value $\bar{V}$ 的形式改寫 (7.8):</p>
 <p>$$
 \begin{aligned}
-G_{t: h} &=R_{t+1}+\gamma \sum_{a \neq A_{t+1}} \pi\left(a \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, a\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
-&=R_{t+1}+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right)-\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) Q_{h-1}\left(S_{t+1}, A_{t+1}\right)+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right) G_{t+1: h} \newline
-&=R_{t+1}+\gamma \pi\left(A_{t+1} \mid S_{t+1}\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right),
+G_ {t: h} &=R_ {t+1}+\gamma \sum_ {a \neq A_ {t+1}} \pi\left(a \mid S_ {t+1}\right) Q_ {h-1}\left(S_ {t+1}, a\right)+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) G_ {t+1: h} \newline
+&=R_ {t+1}+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right)-\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right) G_ {t+1: h} \newline
+&=R_ {t+1}+\gamma \pi\left(A_ {t+1} \mid S_ {t+1}\right)\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right),
 \end{aligned}
 $$</p>
 <p>這個非常像是 $n$-step return for Sarsa with control variates (7.14):</p>
 <p>$$
 \begin{aligned}
-G_{t: h} & \doteq R_{t+1}+\gamma\left(\rho_{t+1} G_{t+1: h}+\bar{V}<em>{h-1}\left(S</em>{t+1}\right)-\rho_{t+1} Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right), \newline
-&=R_{t+1}+\gamma \rho_{t+1}\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right)+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right), \quad t&lt;h \leq T .
+G_ {t: h} & \doteq R_ {t+1}+\gamma\left(\rho_ {t+1} G_ {t+1: h}+\bar{V}_ {h-1}\left(S_ {t+1}\right)-\rho_ {t+1} Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right), \newline
+&=R_ {t+1}+\gamma \rho_ {t+1}\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right)+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right), \quad t&lt;h \leq T .
 \end{aligned}
 $$</p>
-<p>除了把 importance-sampling ratio $\rho_{t+1}$ 替換成 動作機率 (action probability) $\pi(A_{t+1} | S_{t+1})$。</p>
+<p>除了把 importance-sampling ratio $\rho_ {t+1}$ 替換成 動作機率 (action probability) $\pi(A_ {t+1} | S_ {t+1})$。</p>
 <p>對 $Q(\sigma)$ ，我們線性滑動這兩個 cases:</p>
 <p>$$
 \begin{aligned}
-G_{t: h} \doteq R_{t+1} &+\gamma\left(\sigma_{t+1} \rho_{t+1}+\left(1-\sigma_{t+1}\right) \pi\left(A_{t+1} \mid S_{t+1}\right)\right)\left(G_{t+1: h}-Q_{h-1}\left(S_{t+1}, A_{t+1}\right)\right) \newline
-&+\gamma \bar{V}<em>{h-1}\left(S</em>{t+1}\right)
+G_ {t: h} \doteq R_ {t+1} &+\gamma\left(\sigma_ {t+1} \rho_ {t+1}+\left(1-\sigma_ {t+1}\right) \pi\left(A_ {t+1} \mid S_ {t+1}\right)\right)\left(G_ {t+1: h}-Q_ {h-1}\left(S_ {t+1}, A_ {t+1}\right)\right) \newline
+&+\gamma \bar{V}_ {h-1}\left(S_ {t+1}\right)
 \end{aligned}
 $$</p>
 <p>$\text{for } t &lt; h \le T$. 遞迴結束條件:</p>
 <ul>
-<li>$G_{h: h} \doteq Q_{h-1}\left(S_{h}, A_{h}\right)\text{ if } h&lt;T$</li>
-<li>$G_{T-1: T} \doteq R_{T} \quad \text{ if }h=T$</li>
+<li>$G_ {h: h} \doteq Q_ {h-1}\left(S_ {h}, A_ {h}\right)\text{ if } h&lt;T$</li>
+<li>$G_ {T-1: T} \doteq R_ {T} \quad \text{ if }h=T$</li>
 </ul>
 <p>以下是演算法:</p>
 <p><img src=alg-n-step-q-sigma.png alt></p>
