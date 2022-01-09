@@ -3,8 +3,8 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=color-scheme content="light dark">
-<meta name=description content="Temporal-difference (TD) learning 是一個 RL 新穎且重要的觀念，它結合 Monte Carlo 和 dynamic programming (DP) 的想法。 Monte Carlo: 類似於 Monte Carlo，TD 法可以直接從原始經驗學習，而不需要環境模型。 DP: 類似於 D">
-<title>Temporal Difference Learning | Reinforcement Learning Notes</title>
+<meta name=description content="Models and Planning 這一章的目標是要統一兩類 RL 方法 model-based dynamic programming, heuristic search planning model-free Monte Carlo, temporal-difference learning Models and Planning Model distribution models: 產生所有可能性的機率 e.g. in dynamic programming (MDP&rsquo;s dynamics, $p(s', r | s, a)$) sample models: 採樣其中一種可能的樣本 e.g.">
+<title>Planning and Learning with Tabular Methods | Reinforcement Learning Notes</title>
 <link rel=icon href=/RL-notes/favicon/favicon-32x32.png type=image/x-icon>
 <script src=/RL-notes/js/darkmode-ce906ea916.min.js></script>
 <link rel=preload as=font href=/RL-notes/fonts/Metropolis.woff2 type=font/woff2 crossorigin=anonymous>
@@ -96,7 +96,7 @@ Ch 5. Monte Carlo Methods
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class="gdoc-nav__entry is-active">
+<a href=/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/ class=gdoc-nav__entry>
 Ch 6. Temporal-Difference Learning
 </a>
 </span>
@@ -110,7 +110,7 @@ Ch 7. n-step Bootstrapping
 </li>
 <li>
 <span class=flex>
-<a href=/RL-notes/sutton/tabular-solution-methods/planning-and-learning-with-tabular-methods/ class=gdoc-nav__entry>
+<a href=/RL-notes/sutton/tabular-solution-methods/planning-and-learning-with-tabular-methods/ class="gdoc-nav__entry is-active">
 Ch 8. Planning and Learning with Tabular Methods
 </a>
 </span>
@@ -141,344 +141,93 @@ justify-between
 hidden-mobile" itemprop=breadcrumb>
 <div><svg class="icon gdoc_path hidden-mobile"><use xlink:href="#gdoc_path"/></svg>
 <ol class=breadcrumb itemscope itemtype=https://schema.org/BreadcrumbList>
-<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Temporal Difference Learning</span><meta itemprop=position content="5"></li>
+<li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/ href=/RL-notes/><span itemprop=name>Reinforcement Learning Notes</span></a><meta itemprop=position content="2"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/ href=/RL-notes/sutton/><span itemprop=name>Sutton</span></a><meta itemprop=position content="3"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><a itemscope itemtype=https://schema.org/WebPage itemprop=item itemid=/RL-notes/sutton/tabular-solution-methods/ href=/RL-notes/sutton/tabular-solution-methods/><span itemprop=name>Part I: Tabular Solution Methods</span></a><meta itemprop=position content="4"></li><li> / </li><li itemprop=itemListElement itemscope itemtype=https://schema.org/ListItem><span itemprop=name>Planning and Learning with Tabular Methods</span><meta itemprop=position content="5"></li>
 </ol>
 </div>
 </div>
 <script>MathJax={tex:{inlineMath:[["$","$"]]},displayMath:[["$$","$$"],["[[","]]"]],svg:{fontCache:"global"}}</script>
 <script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
 <article class="gdoc-markdown gdoc-markdown__align--left">
-<h1>Temporal Difference Learning</h1>
-<p>Temporal-difference (TD) learning 是一個 RL 新穎且重要的觀念，它結合 Monte Carlo 和 dynamic programming (DP) 的想法。</p>
-<ul>
-<li>Monte Carlo: 類似於 Monte Carlo，TD 法可以直接從原始經驗學習，而不需要環境模型。</li>
-<li>DP: 類似於 DP，TD 法可以從另一個已學習的估計來更新估計值，而不用等最後結果。</li>
-</ul>
+<h1>Planning and Learning with Tabular Methods</h1>
 <div class="gdoc-toc gdoc-toc__level--6"><nav id=TableOfContents><ul>
-<li><a href=#td-prediction>TD Prediction</a></li>
-<li><a href=#advantages-of-td-prediction-methods>Advantages of TD Prediction Methods</a>
-<ul>
-<li><a href=#example-62>Example 6.2</a></li>
-</ul>
-</li>
-<li><a href=#optimality-of-td0>Optimality of TD(0)</a>
-<ul>
-<li><a href=#batch-updating>Batch updating</a></li>
-</ul>
-</li>
-<li><a href=#sarsa-on-policy-td-control>Sarsa: On-policy TD Control</a></li>
-<li><a href=#q-learning-off-policy-td-control>Q-learning: Off-policy TD Control</a>
-<ul>
-<li><a href=#example-66-cliff-walking>Example 6.6: Cliff Walking</a></li>
-</ul>
-</li>
-<li><a href=#expected-sarsa>Expected Sarsa</a></li>
-<li><a href=#games-afterstates-and-other-special-cases>Games, Afterstates, and Other Special Cases</a></li>
-<li><a href=#summary>Summary</a></li>
+<li><a href=#models-and-planning>Models and Planning</a></li>
 </ul></nav><hr></div>
-<div class=gdoc-page__anchorwrap>
-<h2 id=td-prediction>
-TD Prediction
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#td-prediction class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor TD Prediction" href=#td-prediction><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>一個 every-visit Monte Carlo 適用於 nonstationary 的環境，value function 更新如下：</p>
-<p>$$
-V\left(S_ {t}\right) \leftarrow V\left(S_ {t}\right)+\alpha\left[G_ {t}-V\left(S_ {t}\right)\right]
-$$</p>
+<p>這一章的目標是要統一兩類 RL 方法</p>
 <ul>
-<li>$G_ t$: return following $t$</li>
-<li>$\alpha$: step-size</li>
-</ul>
-<p>這個稱為 constant-$\alpha$ MC。Monte Carlo 法必須等到 episode 結束以後才能更新 $V(S_ t)$。因此，TD 法概念是希望可以在每個 time step 都能進行更新。最簡單的 TD 形式如下：</p>
-<p>$$
-V\left(S_ {t}\right) \leftarrow V\left(S_ {t}\right)+\alpha\left[R_ {t+1}+\gamma V\left(S_ {t+1}\right)-V\left(S_ {t}\right)\right]
-$$</p>
-<p>稱為 TD(0) 或 one-step TD。因為 TD(0) 基於現有的估計值進行更新，所以它是一種 bootstrapping 法，像是 DP。</p>
-<p>比較：</p>
+<li>model-based
 <ul>
-<li>Monte Carlo: 更新的目標是 $G_ t$</li>
-<li>TD: 更新的目標是 $R_ {t+1} + \gamma V(S_ {t+1})$</li>
-</ul>
-<p><img src=td-0.png alt></p>
-<p>$$
-\begin{aligned}
-v_ {\pi}(s) & \doteq \mathbb{E}_ {\pi}\left[G_ {t} \mid S_ {t}=s\right] \newline
-&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma G_ {t+1} \mid S_ {t}=s\right] \newline
-&=\mathbb{E}_ {\pi}\left[R_ {t+1}+\gamma v_ {\pi}\left(S_ {t+1}\right) \mid S_ {t}=s\right]
-\end{aligned}
-$$</p>
-<ul>
-<li>Monte Carlo 使用第一式的估計值當作目標。因為</li>
-<li>DP 使用第三式的估計值當作目標</li>
-</ul>
-<p>&mldr; (?)</p>
-<p>TD(0) 更新值是一種誤差，這個值稱為 TD error:</p>
-<p>$$
-\delta_ {t} \doteq R_ {t+1}+\gamma V\left(S_ {t+1}\right)-V\left(S_ {t}\right)
-$$</p>
-<ul>
-<li>TD error 每個時刻的當下產生。但 TD error 相依於下次的 state 和 reward，它要到下一個 time step 才會存在。</li>
-<li>如果 $V$ 在 episode 期間不會改變，那麼 Monte Carlo error 可以寫成 TD error 的和：</li>
-</ul>
-<p>$$
-\begin{aligned}
-G_ {t}-V\left(S_ {t}\right) &=R_ {t+1}+\gamma G_ {t+1}-V\left(S_ {t}\right)+\gamma V\left(S_ {t+1}\right)-\gamma V\left(S_ {t+1}\right) \quad(\text { from }(3.9)) \newline
-&=\delta_ {t}+\gamma\left(G_ {t+1}-V\left(S_ {t+1}\right)\right) \newline
-&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2}\left(G_ {t+2}-V\left(S_ {t+2}\right)\right) \newline
-&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2} \delta_ {t+2}+\cdots+\gamma^{T-t-1} \delta_ {T-1}+\gamma^{T-t}\left(G_ {T}-V\left(S_ {T}\right)\right) \newline
-&=\delta_ {t}+\gamma \delta_ {t+1}+\gamma^{2} \delta_ {t+2}+\cdots+\gamma^{T-t-1} \delta_ {T-1}+\gamma^{T-t}(0-0) \newline
-&=\sum_ {k=t}^{T-1} \gamma^{k-t} \delta_ {k}
-\end{aligned}
-$$</p>
-<ul>
-<li>如果 $V$ 在 episode 期間會改變，這個等式就不精確，不過 step size 夠小的話還是很接近。</li>
-</ul>
-<div class=gdoc-page__anchorwrap>
-<h2 id=advantages-of-td-prediction-methods>
-Advantages of TD Prediction Methods
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#advantages-of-td-prediction-methods class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Advantages of TD Prediction Methods" href=#advantages-of-td-prediction-methods><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>TD 與 DP 相比的優勢：</p>
-<ul>
-<li>不需要環境模型 (model of environment)</li>
-</ul>
-<p>TD 與 Monte Carlo 相比的優勢：</p>
-<ul>
-<li>Monte Carlo 必須等待整個 episode 結束以後才能進行計算</li>
-</ul>
-<p>收歛性：對任意固定的 policy $\pi$，如果某個常數的 step-size 參數足夠的小，TD(0) 平均會收斂到 $v_ {\pi}$。如果 step-size 參數根據以下 <strong>隨機近似條件</strong> (stochastic approximation conditions) 進行減少，則收斂的機率是 $1$：</p>
-<p>$$
-\sum_ {n=1}^{\infty} \alpha_ {n}(a)=\infty \quad \text { and } \quad \sum_ {n=1}^{\infty} \alpha_ {n}^{2}(a)&lt;\infty
-$$</p>
-<p>TD 和 Monte Carlo 都能保證收斂的情況下，哪個收斂得更快？</p>
-<ul>
-<li>這還是一個開放問題，目前沒有數學方法證明出來。</li>
-<li>實務上，在隨機的任務上 TD 法通常比 constant-$\alpha$ MC 收斂得更快。</li>
-</ul>
-<div class=gdoc-page__anchorwrap>
-<h3 id=example-62>
-Example 6.2
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#example-62 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.2" href=#example-62><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h3>
-</div><p><img src=ex-6.2.png alt></p>
-<div class=gdoc-page__anchorwrap>
-<h2 id=optimality-of-td0>
-Optimality of TD(0)
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#optimality-of-td0 class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Optimality of TD(0)" href=#optimality-of-td0><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><div class=gdoc-page__anchorwrap>
-<h3 id=batch-updating>
-Batch updating
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#batch-updating class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Batch updating" href=#batch-updating><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h3>
-</div><p>假設在有限個 episodes。這種情況下，有一種常見的訓練策略：<br>
-利用 (6.1) or (6.2) 的 value function 更新式先對每個 time step $t$ 進行增量計算，最後把整個結果加總後更新 value function 一次。更新完畢以後，再重複以上的過程直到收斂。這個方法稱為批次更新 (batch updating)。</p>
-<ul>
-<li>只要 step-size 足夠小，TD(0) 就會收斂到一個確定的解。</li>
-<li>然而，constant-$\alpha$ MC 也會確定性的收斂，但有不同的解。</li>
-</ul>
-<p><img src=6.2.png alt></p>
-<p>Figure 6.2 展示了利用 batch updating 進行 Example 6.2 的結果。TD 的結果總是比 MC 更好，因為 TD 更相關於預測 returns。</p>
-<p><img src=ex-6.4.png alt></p>
-<p>給定以上的 state-rewards，那麼 $V(A)$ 和 $V(B)$ 為何？</p>
-<ul>
-<li>有些人可能會認同 $V(B)=\frac{3}{4}$，因為 $\frac{6}{8}$ 個 returns 為 $1$，剩下的為 $0$。</li>
-<li>$V(A)$ 則有兩種可能：
-<ul>
-<li>根據觀察，$A$ 總是轉移到 $B$，而 $V(B)=\frac{3}{4}$，因此 $V(A)=V(B)=\frac{3}{4}$。可以把它視為一種 Markov process，結果如下圖。這也是 batch TD(0) 計算的結果。</li>
-<li>另一種方式，則是簡單的認為 $A$ 只看過一次且產生出 reward 為 $0$ 的結果，因此 $V(A)=0$。這是 batch MC 的結果。注意到這也會產生最小的訓練誤差，但我們會期望認為第一個答案會更好。如果這個是 Markov process，將會預期在未來的資料產生更小的誤差，而 MC 則會在已知的訓練資料產生較小的誤差。</li>
+<li>dynamic programming, heuristic search</li>
+<li>planning</li>
 </ul>
 </li>
-</ul>
-<p><img src=ex-6.4.2.png alt></p>
-<p>更進一步說明兩種方法的差異：</p>
+<li>model-free
 <ul>
-<li>batch MC: 總是找到最小的訓練誤差。</li>
-<li>batch TD(0): 總是找到正確的 <strong>maximum-likelihood</strong>。
-<ul>
-<li>Maximum-likelihood estimate 的參數，是會使得產生這些資料的機率為最大值的。</li>
-<li>Maximum-likelihood estimate 是 Markov process 的模型：
-<ul>
-<li>預測 從 $i$ 到 $j$ 的轉移機率是觀測到所有從 $i$ 到 $j$ 的轉移的分數 (fraction)</li>
-<li>對應的 reward 期望值是這些轉移所產生的 rewards 的平均值。</li>
-</ul>
-</li>
-<li>在這個模型下，如果模型絕對正確，我們就可以計算絕對正確的 value function。</li>
-<li>這稱為 <strong>certainty-equivalence estimate</strong> (確定等值估計)。</li>
-<li>通常 batch TD(0) 會收練到這個 certainty-equivalence estimate。</li>
-</ul>
-</li>
-</ul>
-<p>複雜度：如果有 $n$ 個狀態，</p>
-<ul>
-<li>形成 maximum-likelihood estimate 需要 $O(n^2)$ 記憶體</li>
-<li>計算 value function 需要 $O(n^3)$ 的複雜度。</li>
-</ul>
-<div class=gdoc-page__anchorwrap>
-<h2 id=sarsa-on-policy-td-control>
-Sarsa: On-policy TD Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#sarsa-on-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Sarsa: On-policy TD Control" href=#sarsa-on-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>現在來探討如何使用 TD prediction 來解決 control problem.</p>
-<p><img src=sequence-of-states-and-state-action-pairs.png alt></p>
-<p>確保收歛性的定理也適用於 action values，如下:</p>
-<p>$$
-Q\left(S_ {t}, A_ {t}\right) \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma Q\left(S_ {t+1}, A_ {t+1}\right)-Q\left(S_ {t}, A_ {t}\right)\right]
-$$</p>
-<p><img src=backup-diagram-sarsa.png alt></p>
-<p>收歛性：</p>
-<ul>
-<li>只要所有 state-action pairs 都以無限次數經歷過，sarsa 會以 $1$ 的機率收斂到 optimal policy 和 action-value function，並且 policy 收斂到 greedy policy 的極限 (converges in the limit to the greedy policy)。</li>
-</ul>
-<p><img src=algorithm-sarsa.png alt></p>
-<div class=gdoc-page__anchorwrap>
-<h2 id=q-learning-off-policy-td-control>
-Q-learning: Off-policy TD Control
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#q-learning-off-policy-td-control class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Q-learning: Off-policy TD Control" href=#q-learning-off-policy-td-control><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>Q-learning 的更新式定義如下：</p>
-<p>$$
-Q\left(S_ {t}, A_ {t}\right) \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \max _ {a} Q\left(S_ {t+1}, a\right)-Q\left(S_ {t}, A_ {t}\right)\right]
-$$</p>
-<p>要被學習的 action-value function $Q$ 直接近似 optimal action-value function $q_ *$，更新過程與 policy 無關。</p>
-<ul>
-<li>Policy 決定哪個 state-action pairs 要被經歷。</li>
-<li>為了要正確的收斂，所有的 pairs 都要連續的被更新。</li>
-</ul>
-<p><img src=algorithm-q-learning.png alt></p>
-<div class=gdoc-page__anchorwrap>
-<h3 id=example-66-cliff-walking>
-Example 6.6: Cliff Walking
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#example-66-cliff-walking class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Example 6.6: Cliff Walking" href=#example-66-cliff-walking><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h3>
-</div><p><img src=ex-6.6.png alt></p>
-<p>Reward:</p>
-<ul>
-<li>在 The Cliff 時: $-100$</li>
-<li>其他: $-1$</li>
-</ul>
-<p>比較:</p>
-<ul>
-<li>Sarsa</li>
-<li>Q-learning + $\varepsilon$-greedy with $\varepsilon = 0.1$</li>
-</ul>
-<p>結果：</p>
-<ul>
-<li>Sarsa: 走了較安全的路，儘管走了較長的路。</li>
-<li>Q-learning: 學習到 optimal policy，但是 online performance 較差。</li>
-</ul>
-<div class=gdoc-page__anchorwrap>
-<h2 id=expected-sarsa>
-Expected Sarsa
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#expected-sarsa class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Expected Sarsa" href=#expected-sarsa><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>把尋找 <strong>最大</strong> 的 value 改為尋找其 <strong>期望值</strong>，如下：</p>
-<p>$$
-\begin{aligned}
-Q\left(S_ {t}, A_ {t}\right) & \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \mathbb{E}_ {\pi}\left[Q\left(S_ {t+1}, A_ {t+1}\right) \mid S_ {t+1}\right]-Q\left(S_ {t}, A_ {t}\right)\right] \newline
-& \leftarrow Q\left(S_ {t}, A_ {t}\right)+\alpha\left[R_ {t+1}+\gamma \sum_ {a} \pi\left(a \mid S_ {t+1}\right) Q\left(S_ {t+1}, a\right)-Q\left(S_ {t}, A_ {t}\right)\right]
-\end{aligned}
-$$</p>
-<p>這稱為 <strong>Expected Sarsa</strong>。</p>
-<ul>
-<li>計算量更大</li>
-<li>消除選擇動作的變異性</li>
-</ul>
-<p><img src=6.3.png alt></p>
-<ul>
-<li>Asymptotic: $100000$ episodes 並實驗 10 次的平均</li>
-<li>Interim: $100$ episodes 並實驗 50000 次的平均</li>
-</ul>
-<p>討論：</p>
-<ul>
-<li>在走懸崖的例子，狀態轉移都是確定性的，所有的隨機性來自選擇動作。</li>
-<li>因此，Expected Sarsa 可以安全的設定為 $\alpha = 1$ 而不會減少任何效能。</li>
-<li>相對來說，Sarsa 只能用在長期且很小的 $\alpha$，效果也比較差。</li>
-</ul>
-<p><img src=6.4.png alt></p>
-<div class=gdoc-page__anchorwrap>
-<h2 id=games-afterstates-and-other-special-cases>
-Games, Afterstates, and Other Special Cases
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#games-afterstates-and-other-special-cases class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Games, Afterstates, and Other Special Cases" href=#games-afterstates-and-other-special-cases><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
-</a>
-</h2>
-</div><p>這本書嘗試提出一個通用的方法來處理廣大的應用情境，不過總是會有必須特別對待的例子。</p>
-<ul>
-<li>通用的目標是尋找 action-value，不過第一章使用 state-value 來進行 tic-tac-toe 遊戲</li>
-<li>更仔細來看，一般學習到的 function 不是 action-value 也不是 state-value
-<ul>
-<li>傳統的 state-value function 評估一個 state 在 agent 有選擇動作的選項時</li>
-<li>tic-tac-toe 的 state-value function 評估其狀態在 agent 移動之後。稱為 <strong>afterstates</strong>。</li>
-</ul>
-</li>
-</ul>
-<p>Afterstates 好用在當我們得知 <em>一部分</em> 環境的動態 (dynamics) 而不必是 <em>所有的</em>。</p>
-<ul>
-<li>例如：下棋的時候我們會知道每一個落子之後的位置，但不知道對手如何應對。</li>
-<li>Afterstates value function 更有效的處理這類問題。</li>
-</ul>
-<p><img src=tic-tac-toe.png alt></p>
-<ul>
-<li>這個例子中，下面的結果都來自上面兩種落子順序。</li>
-<li>傳統的方法會個別計算上面兩種落子的 action-value</li>
-<li>但是 afterstates 可以馬上發現這兩種情況是相同的</li>
-</ul>
-<p>Afterstates 其他應用</p>
-<ul>
-<li>queuing tasks:
-<ul>
-<li>指派 customers 給 servers</li>
-<li>拒絕 customers</li>
-<li>丟棄資訊</li>
+<li>Monte Carlo, temporal-difference</li>
+<li>learning</li>
 </ul>
 </li>
 </ul>
 <div class=gdoc-page__anchorwrap>
-<h2 id=summary>
-Summary
-<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/temporal-difference-learning/#summary class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Summary" href=#summary><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
+<h2 id=models-and-planning>
+Models and Planning
+<a data-clipboard-text=https://aquastripe.github.io/RL-notes/sutton/tabular-solution-methods/planning-and-learning-with-tabular-methods/#models-and-planning class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Models and Planning" href=#models-and-planning><svg class="icon gdoc_link"><use xlink:href="#gdoc_link"/></svg>
 </a>
 </h2>
-</div><p>Temporal-difference (TD)</p>
+</div><p>Model</p>
 <ul>
-<li>prediction problem</li>
-<li>control problem
+<li>distribution models: 產生所有可能性的機率
 <ul>
-<li>GPI</li>
+<li>e.g. in dynamic programming (MDP&rsquo;s dynamics, $p(s', r | s, a)$)</li>
+</ul>
+</li>
+<li>sample models: 採樣其中一種可能的樣本
+<ul>
+<li>e.g. the blackjack example in Ch 5.</li>
 </ul>
 </li>
 </ul>
-<p>TD control</p>
+<p>Distribution models 比 sample models 還要強，sample models 比較容易實作。</p>
+<p>Models 可以用來 模仿 (mimic) 或是 模擬 (simulate) 經驗 (experience)。給定起始的狀態和動作，一個 sample model 產生一個可能的轉移 (transition)，而一個 distribution model 產生所有可能的轉移和對應的機率值作為權重。</p>
+<p>Planning 指涉任何 把模型當作輸入、輸出或是改善策略來和環境模型互動 的計算過程：</p>
+<script defer src=/RL-notes/js/mermaid-b501a5a32f.min.js></script>
+<script defer src=/RL-notes/js/mermaid-loader-1bd1515cbf.min.js></script>
+<pre class="gdoc-mermaid mermaid text-center">
+graph LR
+    A((model)) -- planning --> B((policy))
+</pre>
+<p>在人工智慧領域，有兩種不同的方式來進行 planning:</p>
 <ul>
-<li>on-policy
+<li>state-space planning: 搜尋狀態空間 (state space)</li>
+<li>plan-space planning: 轉換 plan，並且 value function 是定義在 plan 的空間上。
 <ul>
-<li>Sarsa</li>
+<li>e.g. 演化式方法、partial-order planning</li>
+<li>難以應用在隨機性的連續決策問題上 (RL 主要探討的)，所以在本書不會進一步討論。</li>
 </ul>
 </li>
-<li>off-policy
+</ul>
+<p>所有的 state-space planning 共通的結構:</p>
 <ul>
-<li>Q-learning</li>
-<li>expected Sarsa</li>
+<li>所有的 state-space planning 涉及計算 value functions 當作關鍵的中間步驟來改善 policy</li>
+<li>藉由 update 或是 backup 來計算 value functions</li>
 </ul>
-</li>
-<li>actor-critic (Ch. 13)</li>
+<pre class="gdoc-mermaid mermaid text-center">
+graph LR
+    A((model)) --> B((simulated experience)) -- backups --> C((values)) --> D((policy))
+</pre>
+<p>Learning 與 planning 的核心是 藉由 backing-up update 操作來估計 value functions。不同之處在於:</p>
+<ul>
+<li>planning 使用模型模擬產生出來的 experience</li>
+<li>learning 使用環境真實的 experience</li>
 </ul>
+<p>以下展示了一個基於 planning 的 one-step tabular Q-learning 以及隨機從 sample model 採樣的例子，稱為 <strong>random-sample one-step tabular Q-planning</strong>:</p>
+<p><img src=random-sample-one-step-tabular-q-planning.png alt></p>
+<p>除了提供統一 planning 和 learning 的視角之外，本章第二個主題是尋找小步更新的 planning 方法，會比純 planning 更有效率。</p>
 </article>
 <div class="gdoc-page__footer flex flex-wrap justify-between">
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/monte-carlo-methods/ title="Ch 5. Monte Carlo Methods"> Ch 5. Monte Carlo Methods</a>
+<a class="gdoc-page__nav--prev flex align-center" href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ title="Ch 7. n-step Bootstrapping"> Ch 7. n-step Bootstrapping</a>
 </span>
 <span class=gdoc-page__nav>
-<a class="gdoc-page__nav--next flex align-center" href=/RL-notes/sutton/tabular-solution-methods/n-step-bootstrapping/ title="Ch 7. n-step Bootstrapping">Ch 7. n-step Bootstrapping </a>
 </span>
 </div>
 </div>
