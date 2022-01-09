@@ -19,3 +19,5 @@ main:
           ref: "/sutton/tabular-solution-methods/temporal-difference-learning/"
         - name: Ch 7. n-step Bootstrapping
           ref: "/sutton/tabular-solution-methods/n-step-bootstrapping/"
+        - name: Ch 8. Planning and Learning with Tabular Methods
+          ref: "/sutton/tabular-solution-methods/planning-and-learning-with-tabular-methods/"
